@@ -139,7 +139,6 @@ int main()
         if(!paused)
         {
             elapsedTime = GetTime();
-            cout << elapsedTime << '\n';
 
             ClearBackground(GREEN);
 
@@ -168,7 +167,7 @@ int main()
             sprintf_s(time, "%i . %d", inttime, floattime);
             DrawCenteredText(time, 0, 20, YELLOW);
 
-            if(acttime < 20) DrawCenteredText("Survive 100s to beat the AI", 20, 30, GRAY);
+            if(acttime < 20) DrawCenteredText("Survive 100s to beat the AI", 20, 25, GRAY);
 
             if (p1.getScore() >= 5 || p2.getScore() >= 5)
             {
