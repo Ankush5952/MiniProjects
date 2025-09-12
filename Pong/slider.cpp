@@ -31,3 +31,8 @@ void Slider::setScore(int s)
 {
     score = s;
 }
+
+Rectangle Slider::getRect()
+{
+    return rec;
+}

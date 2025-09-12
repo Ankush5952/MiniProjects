@@ -14,10 +14,11 @@ private:
 	pair<int, int> pos;
 	int slideSpeed;
 	int score = 0;
+	Rectangle rec{0,0,20,60};
 
 public:
 	Slider(int h = 60, int w = 20, Color c = WHITE, pair<int,int> p = {0,0}, int v = 40) : 
-		height(h), width(w), color(c), pos(p), slideSpeed(v){ };
+		height(h), width(w), color(c), pos(p), slideSpeed(v), rec{(float)p.first, (float)p.second, (float)w, (float)h} {};
 
 	void DrawSlider();
 	void setPos(int x, int y);
@@ -26,6 +27,7 @@ public:
 	pair<int, int> getPos();
 	int getScore();
 	void setScore(int s);
+	Rectangle getRect();
 };
 #endif
 

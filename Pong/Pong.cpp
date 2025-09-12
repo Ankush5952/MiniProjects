@@ -70,7 +70,7 @@ void MoveBall(Ball& b, Slider& s1, Slider& s2, int scale = 1)
 
     bool leftslidercollision = ny >= leftslidery1 && ny <= leftslidery2;
     bool rightslidercollision = ny >= rightslidery1 && ny <= rightslidery2;
-
+    
     if (leftslidercollision && nx < radius + leftsliderx + 2 && vel.first < 0)
     {
         nx = radius + leftsliderx + 2;
@@ -81,6 +81,7 @@ void MoveBall(Ball& b, Slider& s1, Slider& s2, int scale = 1)
         nx = rightsliderx - radius - 2;
         vel.first = -vel.first;
     }
+        
     if (ny < radius || ny > HEIGHT - radius) vel.second = -vel.second;
 
     if (!leftslidercollision && nx < 0) s2.setScore(s2.getScore() + 1), nx = WIDTH/2, ny = HEIGHT/2, vel.first = -vel.first;
