@@ -113,7 +113,7 @@ void MoveSnake(DIRECTIONS dir)
 			nx = (nx == GRIDX-1) ? 0 : nx + 1;
 			break;
 	}
-	if (isTail(nx, ny)) GameOver();
+	if (isTail(nx, ny)) GameOver(); //Game End Logic
 	else player.headx = nx, player.heady = ny;
 }
 
@@ -156,7 +156,7 @@ void SetTrue(bool& dir)
 
 void Restart()
 {
-	player.headx = 0, player.heady = 1, SpawnApple(), player.tail.clear(), SetTrue(r);
+	player.headx = 0, player.heady = 1, SpawnApple(), player.tail.clear(), SetTrue(r), score = 0;
 	paused = false;
 }
 
@@ -198,10 +198,6 @@ int main()
 			//Eat Apple
 			if (player.headx == apple.x && player.heady == apple.y) { SpawnApple(); AddTail(); }
 
-			//Game Over
-			int x = player.headx, y = player.heady;
-			//if (TouchingTail()) GameOver();
-
 			//Debug
 			if (IsKeyPressed(KEY_N)) AddTail();
 			if (IsKeyPressed(KEY_M)) SpawnApple();
@@ -215,7 +211,12 @@ int main()
 			DrawApple();
 			DrawSnake();
 
-			DrawCenteredText("GAME OVER", HEIGHT / 2 - 15, 30, WHITE);
+			char scoretext[32];
+			sprintf_s(scoretext, "You scored %i apples", score);
+
+			DrawCenteredText("GAME OVER", HEIGHT / 2 - 30, 60, WHITE);
+			DrawCenteredText("PRESS R TO RESTART", HEIGHT / 2 + 30, 25, RED);
+			DrawCenteredText(scoretext, HEIGHT / 2 + 60, 25, VIOLET);
 
 			if(IsKeyPressed(KEY_R)) Restart();
 		}
