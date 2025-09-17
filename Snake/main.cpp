@@ -14,7 +14,7 @@ const int WIDTH = 900;
 const int HEIGHT = 900;
 char TITLE[6] = "Snake";
 
-const int CELLSIZE = 20;
+const int CELLSIZE = 30;
 int GRIDX = WIDTH / CELLSIZE;
 int GRIDY = HEIGHT / CELLSIZE;
 
