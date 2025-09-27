@@ -199,9 +199,9 @@ int main()
 			if (player.headx == apple.x && player.heady == apple.y) { SpawnApple(); AddTail(); }
 
 			//Debug
-			if (IsKeyPressed(KEY_N)) AddTail();
+			/*if (IsKeyPressed(KEY_N)) AddTail();
 			if (IsKeyPressed(KEY_M)) SpawnApple();
-			if (IsKeyPressed(KEY_O)) GameOver();
+			if (IsKeyPressed(KEY_O)) GameOver();*/
 		}
 		else
 		{
