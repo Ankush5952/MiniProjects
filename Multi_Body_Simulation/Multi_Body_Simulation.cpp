@@ -10,6 +10,10 @@ random_device rd;
 mt19937 gen(rd());
 uniform_int_distribution<int> dist(0, 9);
 
+int WIDTH = 1600;
+int HEIGHT = 1000;
+char TITLE[24] = "Multi Body Simulation";
+
 struct Body
 {
 	float mass;
@@ -19,6 +23,9 @@ struct Body
 	float velx = 0;
 	float vely = 0;
 	Color color = colors[dist(gen)];
+	int years = -1;
+	float dxi, dyi;
+	bool passed_initial = false;
 
 	vector<Vector2> trail = {{ posx, posy }};
 
@@ -73,6 +80,26 @@ void MoveBody(Body& b, float dt)
 	b.posx += b.velx * dt;
 	b.posy += b.vely * dt;
 	b.AddTrailPoint();
+
+}
+
+void UpdateYear(Body& b, Body& sun)
+{
+	float dx = b.posx - sun.posx;
+	float dy = b.posy - sun.posy;
+
+	float r = sqrt(dx * dx + dy * dy);
+	float ri = sqrt(b.dxi * b.dxi + b.dyi * b.dyi);
+
+	float nx = dx / r, ny = dy / r;
+	float nxi = b.dxi / ri, nyi = b.dyi / ri;
+
+	float dot = nx * nxi + ny * nyi;
+
+	float angle = acos(dot);
+
+	if (angle < 0.05 && !b.passed_initial) b.years += 1, b.passed_initial = true;
+	if (angle > 0.1) b.passed_initial = false;
 }
 
 void ApplyForces(Body& a, Body& b)
@@ -96,9 +123,12 @@ void ApplyForces(Body& a, Body& b)
 	MoveBody(b, dt);
 }
 
-int WIDTH = 1600;
-int HEIGHT = 1000;
-char TITLE[24] = "Multi Body Simulation";
+void DisplayYears(Body& b, int x, int y)
+{
+	char text[4];
+	sprintf_s(text, "%i", b.years);
+	DrawText(text, x, y, 10, b.color);
+}
 
 int main()
 {
@@ -106,21 +136,34 @@ int main()
 	SetTargetFPS(60);
 
 	Body A{ 100,    10,  WIDTH/2 + 300,   HEIGHT/2,     0,   -500,  RED};
-	Body B{ 100,    10,  WIDTH / 2 - 220, HEIGHT / 2 ,  0,    500,  BLUE};
+	Body B{ 100,    10,  WIDTH / 2 - 220, HEIGHT / 2,   0,    500,  BLUE};
 	Body C{ 100000, 50,  WIDTH/2,         HEIGHT / 2,   0,    0,  YELLOW};
+
+	A.dxi = A.posx - C.posx; A.dyi = A.posy - C.posy;
+	B.dxi = B.posx - C.posx; B.dyi = B.posy - C.posy;
 
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(BLACK);
+
 		ApplyForces(A, B);
 		ApplyForces(A, C);
 		ApplyForces(B, C);
+
 		DrawBody(A);
 		DrawBody(B);
 		DrawBody(C);
+
 		A.DrawOrbit();
 		B.DrawOrbit();
+
+		UpdateYear(A, C);
+		UpdateYear(B, C);
+
+		DisplayYears(A, WIDTH - 100, 15);
+		DisplayYears(B, WIDTH - 100, 30);
+
 		EndDrawing();
 	}
 	CloseWindow();
