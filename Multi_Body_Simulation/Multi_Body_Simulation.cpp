@@ -31,6 +31,7 @@ struct Body
 
 	void AddTrailPoint()
 	{
+		if (trail.size() == 0) trail.push_back({ posx,posy });
 		if(posx != trail[0].x && posy != trail[0].y)
 		{
 			trail.push_back({ posx, posy });
@@ -98,7 +99,12 @@ void UpdateYear(Body& b, Body& sun)
 
 	float angle = acos(dot);
 
-	if (angle < 0.05 && !b.passed_initial) b.years += 1, b.passed_initial = true;
+	if (angle < 0.05 && !b.passed_initial) 
+	{
+		b.years += 1;
+		b.passed_initial = true;
+		b.trail.clear();
+	}
 	if (angle > 0.1) b.passed_initial = false;
 }
 
