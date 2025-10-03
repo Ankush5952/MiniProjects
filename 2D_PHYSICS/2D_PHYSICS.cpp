@@ -1,5 +1,5 @@
 #include"includes.cpp"
-#include"object.h"
+#include"physics_object.h"
 
 int WIDTH = 900;
 int HEIGHT = 900;
@@ -10,28 +10,32 @@ int main()
 	InitWindow(WIDTH, HEIGHT, TITLE);
 	SetTargetFPS(60);
 
-	Object a;
-	a.setPos({ WIDTH / 2, HEIGHT / 2 });
-	a.setShape(CIRCLE);
+	PhysicsObject a;
+	a.setPos({ WIDTH / 2.0f, HEIGHT / 2.0f });
 	a.setColor(GREEN);
+	a.setShape(CIRCLE);
+	a.setRadius(50);
 
-	Object b;
-	b.setPos({ 200,200 });
+	PhysicsObject b;
+	b.setPos(200, 200);
+	b.setColor(BLUE);
 	b.setShape(RECTANGLE);
-	b.setColor(YELLOW);
+	b.setWidth(100);
+	b.setHeight(200);
 
-	Object c;
-	c.setPos(400, 100);
+	PhysicsObject c;
+	c.setPos(100, 400);
+	c.setColor(WHITE);
 	c.setShape(LINE);
-	c.setColor(BLUE);
+	c.setLength(100);
 
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(BLACK);
-		a.Draw(50);
-		b.Draw(50, 100);
-		c.Draw(100,0,false);
+		a.Draw();
+		b.Draw();
+		c.Draw();
 		EndDrawing();
 	}
 	CloseWindow();
