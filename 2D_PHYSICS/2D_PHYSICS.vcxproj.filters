@@ -24,9 +24,15 @@
     <ClCompile Include="physics_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physics_world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="physics_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics_world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

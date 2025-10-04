@@ -1,5 +1,5 @@
 #include"includes.cpp"
-#include"physics_object.h"
+#include"physics_world.h"
 
 int WIDTH = 900;
 int HEIGHT = 900;
@@ -12,44 +12,65 @@ int main()
 	InitWindow(WIDTH, HEIGHT, TITLE);
 	SetTargetFPS(60);
 
-	PhysicsObject a;
-	a.setPos({ WIDTH / 2.0f, HEIGHT / 2.0f });
-	a.setColor(GREEN);
-	a.setShape(CIRCLE);
-	a.setRadius(50);
+	PhysicsWorld world;
+	world.setGravity(gravity);
 
-	PhysicsObject b;
-	b.setPos(200, 200);
-	b.setColor(BLUE);
-	b.setShape(RECTANGLE);
-	b.setWidth(100);
-	b.setHeight(200);
+	PhysicsObject a(LINE,      WIDTH / 2, { 200,200 },                     10, BLUE);
+	PhysicsObject b(CIRCLE,    50,        { WIDTH / 2.0f, HEIGHT / 2.0f }, 20, GREEN);
+	PhysicsObject c(RECTANGLE, 100, 150,  { 600,200 },                     15, RED);
 
-	PhysicsObject c;
-	c.setPos(100, 400);
-	c.setColor(WHITE);
-	c.setShape(LINE);
-	c.setLength(100);
+	world.addObject(&a);
+	world.addObject(&b);
+	world.addObject(&c);
 
 	while (!WindowShouldClose())
 	{
 		float dt = GetFrameTime();
 
+		//Update Physics
+		world.update(dt);
+
+		//User Input
+		if (IsMouseButtonPressed(0))
+		{
+			Vector2 mousePos = GetMousePosition();
+			PhysicsObject* ball = new PhysicsObject(
+				CIRCLE, 20, mousePos, 10, 
+				{ (unsigned char)(rand() % 255),
+				(unsigned char)(rand() % 255),
+				(unsigned char)(rand() % 255),
+				255}
+			);
+			world.addObject(ball);
+		}
+
+//Memory optimization : Delete objects no longer on screen
+		auto objects = world.getObjects();
+		for (auto i : objects)
+		{
+			if (!i->getIsStatic())
+			{
+				float upper;
+				switch (i->getShape())
+				{
+				case LINE:
+					upper = (i->isHorizontal()) ? i->getPos().y : i->getPos().y + i->getLength() / 2;
+				case CIRCLE:
+					upper = i->getPos().y + i->getRadius();
+				case RECTANGLE:
+					upper = i->getPos().y + i->getHeight() / 2;
+				}
+				
+				if (upper > HEIGHT) world.removeObject(i);
+			}
+		}
+
 		BeginDrawing();
 		ClearBackground(BLACK);
-//temporary physics area begin
-		a.ApplyForce(gravity);
-		b.ApplyForce(gravity);
-		c.ApplyForce(gravity);
 
-		a.update(dt);
-		b.update(dt);
-		c.update(dt);
-//temporary physics area end
+		//Render
+		world.draw();
 
-		a.Draw();
-		b.Draw();
-		c.Draw();
 		EndDrawing();
 	}
 	CloseWindow();

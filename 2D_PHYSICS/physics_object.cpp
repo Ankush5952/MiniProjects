@@ -1,23 +1,24 @@
-#include "physics_object.h"
+#include "includes.cpp"
+#include "physics_world.h"
 
 Vector2 PhysicsObject::getPos()
 {
-	return { position.x, position.y };
+	return position;
 }
 
 Vector2 PhysicsObject::getVelocity()
 {
-	return Vector2();
+	return velocity;
 }
 
 float PhysicsObject::getMass()
 {
-	return 0.0f;
+	return mass;
 }
 
 bool PhysicsObject::getIsStatic()
 {
-	return false;
+	return isStatic;
 }
 
 SHAPE PhysicsObject::getShape()
@@ -32,27 +33,27 @@ Color PhysicsObject::getColor()
 
 float PhysicsObject::getRadius()
 {
-	return 0.0f;
+	return radius;
 }
 
 float PhysicsObject::getWidth()
 {
-	return 0.0f;
+	return width;
 }
 
 float PhysicsObject::getHeight()
 {
-	return 0.0f;
+	return height;
 }
 
 float PhysicsObject::getLength()
 {
-	return 0.0f;
+	return length;
 }
 
 bool PhysicsObject::isHorizontal()
 {
-	return false;
+	return horizontal;
 }
 
 void PhysicsObject::setPos(int x, int y)
@@ -181,4 +182,27 @@ void PhysicsObject::update(float dt)
 
 	//reset the acceleration to be updated each frame
 	acceleration = { 0,0 };
+}
+
+PhysicsObject::PhysicsObject(SHAPE s, float dimension, Vector2 pos, float m, Color c, bool is_static)
+{
+	shape = s;
+	position = pos;
+	mass = m;
+	color = c;
+	isStatic = is_static;
+	if (s == LINE) length = dimension;
+	else if (s == CIRCLE) radius = dimension;
+	else width = dimension, height = 1.0f;
+}
+PhysicsObject::PhysicsObject(SHAPE s, float dimension1, float dimension2, Vector2 pos, float m, Color c, bool is_static)
+{
+	shape = s;
+	position = pos;
+	mass = m;
+	color = c;
+	isStatic = is_static;
+	if (shape == RECTANGLE) width = dimension1, height = dimension2;
+	else if (shape == LINE) length = dimension1;
+	else radius = dimension1;
 }

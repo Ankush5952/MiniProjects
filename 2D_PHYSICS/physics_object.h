@@ -104,6 +104,10 @@ public:
 	void Draw();
 	void ApplyForce(Vector2 f);
 	void update(float dt);
+
+//Constructor
+	PhysicsObject(SHAPE s = LINE, float dimension = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false);
+	PhysicsObject(SHAPE s = RECTANGLE, float dimension1 = 1.0f, float dimension2 = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false);
 };
 
 #endif
