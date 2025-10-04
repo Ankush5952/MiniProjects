@@ -99,9 +99,11 @@ public:
 	void setHorizontal(bool b);
 #endif // shape == LINE
 
-
+//PHYSICS
 
 	void Draw();
+	void ApplyForce(Vector2 f);
+	void update(float dt);
 };
 
 #endif

@@ -5,6 +5,8 @@ int WIDTH = 900;
 int HEIGHT = 900;
 char TITLE[12] = "2D PHYSICS";
 
+Vector2 gravity = { 0,980 };
+
 int main()
 {
 	InitWindow(WIDTH, HEIGHT, TITLE);
@@ -31,8 +33,20 @@ int main()
 
 	while (!WindowShouldClose())
 	{
+		float dt = GetFrameTime();
+
 		BeginDrawing();
 		ClearBackground(BLACK);
+//temporary physics area begin
+		a.ApplyForce(gravity);
+		b.ApplyForce(gravity);
+		c.ApplyForce(gravity);
+
+		a.update(dt);
+		b.update(dt);
+		c.update(dt);
+//temporary physics area end
+
 		a.Draw();
 		b.Draw();
 		c.Draw();

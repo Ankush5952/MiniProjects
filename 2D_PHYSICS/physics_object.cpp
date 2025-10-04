@@ -161,3 +161,24 @@ void PhysicsObject::Draw()
 			break;
 	}
 }
+
+void PhysicsObject::ApplyForce(Vector2 f)
+{
+	if (isStatic) return;
+
+	Vector2 a = Vector2Scale(f, 1.0f / mass);
+	acceleration = Vector2Add(acceleration, a);
+}
+
+void PhysicsObject::update(float dt)
+{
+	if (isStatic) return;
+	//v = u + at
+	velocity = Vector2Add(velocity, Vector2Scale(acceleration, dt));
+
+	//sf = si + vt : {s = ut + 1/2 at^2}
+	position = Vector2Add(position, Vector2Scale(velocity, dt));
+
+	//reset the acceleration to be updated each frame
+	acceleration = { 0,0 };
+}
