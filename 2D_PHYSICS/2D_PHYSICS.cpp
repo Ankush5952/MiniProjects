@@ -18,10 +18,12 @@ int main()
 	PhysicsObject a(LINE,      WIDTH / 2, { 200,200 },                     10, BLUE);
 	PhysicsObject b(CIRCLE,    50,        { WIDTH / 2.0f, HEIGHT / 2.0f }, 20, GREEN);
 	PhysicsObject c(RECTANGLE, 100, 150,  { 600,200 },                     15, RED);
+	PhysicsObject floor(RECTANGLE, WIDTH, 1.0f, { WIDTH / 2.0f,HEIGHT - 1.0f }, 50, DARKGREEN, true);
 
 	world.addObject(&a);
 	world.addObject(&b);
 	world.addObject(&c);
+	world.addObject(&floor);
 
 	while (!WindowShouldClose())
 	{
@@ -50,7 +52,7 @@ int main()
 		{
 			if (!i->getIsStatic())
 			{
-				float upper;
+				float upper = 0.0f;
 				switch (i->getShape())
 				{
 				case LINE:

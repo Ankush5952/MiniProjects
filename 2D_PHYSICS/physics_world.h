@@ -21,6 +21,16 @@ public:
 	void removeObject(PhysicsObject* obj);
 	void setGravity(Vector2 g);
 	void setGravity(float x, float y);
+
+//Collision Detection
+	bool checkCircleCircle(PhysicsObject* circle1, PhysicsObject* circle2);
+	bool checkCircleRect(PhysicsObject* circle, PhysicsObject* rectangle);
+	bool checkRectRect(PhysicsObject* rectangle1, PhysicsObject* rectangle2);
+
+//Collision Resolver
+	void resolveCircleCircle(PhysicsObject* circle1, PhysicsObject* circle2);
+	void resolveCircleRect(PhysicsObject* circle, PhysicsObject* rectangle);
+	void resolveRectRect(PhysicsObject* rectangle1, PhysicsObject* rectangle2);
 	
 //physics
 	void update(float dt);
