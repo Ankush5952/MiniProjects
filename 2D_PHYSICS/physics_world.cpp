@@ -136,12 +136,12 @@ void PhysicsWorld::resolveCircleRect(PhysicsObject* circle, PhysicsObject* recta
 	float hh = rectangle->getHeight() / 2; // Half height
 
 	float closestX = fmax(rpos.x - hw, fmin(rpos.x + hw, cpos.x));
-	float closestY = fmax(rpos.y - hh, fmin(rpos.x + hh, cpos.y));
+	float closestY = fmax(rpos.y - hh, fmin(rpos.y + hh, cpos.y));
 
 	Vector2 closest = { closestX, closestY };
 
-	float dist = Vector2Distance(closest, cpos);
-	Vector2 delta = { 0,0 };
+	Vector2 delta = Vector2Subtract(cpos, closest);
+	float dist = Vector2Length(delta);
 
 	if (dist == 0)
 	{
@@ -289,7 +289,7 @@ void PhysicsWorld::update(float dt)
 			PhysicsObject* a = objects[i];
 			PhysicsObject* b = objects[j];
 
-			if (a->getIsStatic() && b->getIsStatic()) return;
+			if (a->getIsStatic() && b->getIsStatic()) continue;
 
 			if (a->getShape() == CIRCLE && b->getShape() == CIRCLE)
 			{

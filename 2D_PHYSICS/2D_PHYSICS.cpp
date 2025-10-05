@@ -18,12 +18,16 @@ int main()
 	PhysicsObject a(LINE,      WIDTH / 2, { 200,200 },                     10, BLUE);
 	PhysicsObject b(CIRCLE,    50,        { WIDTH / 2.0f, HEIGHT / 2.0f }, 20, GREEN);
 	PhysicsObject c(RECTANGLE, 100, 150,  { 600,200 },                     15, RED);
-	PhysicsObject floor(RECTANGLE, WIDTH, 1.0f, { WIDTH / 2.0f,HEIGHT - 1.0f }, 50, DARKGREEN, true);
+	PhysicsObject floor(RECTANGLE, WIDTH, 1.0f,   { WIDTH / 2.0f,HEIGHT - 1.0f },  50, DARKGREEN, true);
+	PhysicsObject rwall(RECTANGLE, 1.0f,  HEIGHT, { 1.0f, HEIGHT / 2.0f },         50, DARKGREEN, true);
+	PhysicsObject lwall(RECTANGLE, 1.0f,  HEIGHT, { WIDTH - 1.0f, HEIGHT / 2.0f }, 50, DARKGREEN, true);
 
 	world.addObject(&a);
 	world.addObject(&b);
 	world.addObject(&c);
 	world.addObject(&floor);
+	world.addObject(&rwall);
+	world.addObject(&lwall);
 
 	while (!WindowShouldClose())
 	{
@@ -57,13 +61,16 @@ int main()
 				{
 				case LINE:
 					upper = (i->isHorizontal()) ? i->getPos().y : i->getPos().y + i->getLength() / 2;
+					break;
 				case CIRCLE:
 					upper = i->getPos().y + i->getRadius();
+					break;
 				case RECTANGLE:
 					upper = i->getPos().y + i->getHeight() / 2;
+					break;
 				}
 				
-				if (upper > HEIGHT) world.removeObject(i);
+				if (upper > HEIGHT * 2) world.removeObject(i);
 			}
 		}
 
