@@ -1,6 +1,6 @@
 #include "physics_world.h"
 
-vector<PhysicsObject*> PhysicsWorld::getObjects()
+vector<PhysicsObject*>& PhysicsWorld::getObjects()
 {
 	return objects;
 }
@@ -8,6 +8,11 @@ vector<PhysicsObject*> PhysicsWorld::getObjects()
 Vector2 PhysicsWorld::getGravity()
 {
 	return gravity;
+}
+
+COLLISSION_ALGO PhysicsWorld::getCollissionAlgo()
+{
+	return algo;
 }
 
 void PhysicsWorld::addObject(PhysicsObject* obj)
@@ -28,6 +33,11 @@ void PhysicsWorld::setGravity(Vector2 g)
 void PhysicsWorld::setGravity(float x, float y)
 {
 	gravity = { x,y };
+}
+
+void PhysicsWorld::setCollissionAlgo(COLLISSION_ALGO c)
+{
+	algo = c;
 }
 
 bool PhysicsWorld::checkCircleCircle(PhysicsObject* circle1, PhysicsObject* circle2)
@@ -106,23 +116,40 @@ void PhysicsWorld::resolveCircleCircle(PhysicsObject* circle1, PhysicsObject* ci
 
 	if (vn > 0) return; //moving away from each other
 
-	float restitution = (circle1->getMass() + circle2->getMass() > 0) ? 0.8f : 1.0f;
+	float restitution = 1;
+	switch (algo)
+	{
+		case MINIMUM:
+			restitution = fmin(circle1->getRestitution(), circle2->getRestitution());
+			break;
+		case AVERAGE:
+			restitution = (circle1->getRestitution() + circle2->getRestitution()) / 2;
+			break;
+		case GEOMETRIC_MEAN:
+			restitution = sqrt(circle1->getRestitution() * circle2->getRestitution());
+			break;
+	}
+	restitution = fminf(fmaxf(restitution, 0.0f), 1.0f);
 
 	//impulse scalar
+	float invM1 = (circle1->getIsStatic()) ? 0.0f : circle1->getInvMass();
+	float invM2 = (circle2->getIsStatic()) ? 0.0f : circle2->getInvMass();
+	float invSum = invM1 + invM2;
+	if (invSum == 0)return;
 	float J = -(1 + restitution) * vn;
-	J /= (1 / circle1->getMass() + 1 / circle2->getMass()); // Jeq = J/(1/m1 + 1/m2)
+	J /= invSum;
 
 	//vector impulse
 	Vector2 impulse = Vector2Scale(normal, J);
 
 	if (!circle1->getIsStatic())
 	{
-		Vector2 newVel = Vector2Subtract(circle1->getVelocity(), Vector2Scale(impulse, 1 / circle1->getMass()));
+		Vector2 newVel = Vector2Subtract(circle1->getVelocity(), Vector2Scale(impulse, invM1));
 		circle1->setVelocity(newVel);
 	}
 	if (!circle2->getIsStatic())
 	{
-		Vector2 newVel = Vector2Add(circle2->getVelocity(), Vector2Scale(impulse, 1 / circle2->getMass()));
+		Vector2 newVel = Vector2Add(circle2->getVelocity(), Vector2Scale(impulse, invM2));
 		circle2->setVelocity(newVel);
 	}
 }
@@ -151,11 +178,11 @@ void PhysicsWorld::resolveCircleRect(PhysicsObject* circle, PhysicsObject* recta
 
 		if (fabs(dx) > fabs(dy))
 		{
-			delta = { dx > 0 ? 1.0f : -1.0f,0 };
+			delta = { dx > 0 ? 1.0f : -1.0f, 0 };
 		}
 		else
 		{
-			delta = { 0,dy > 0 ? 1.0f : -1.0f };
+			delta = { 0, dy > 0 ? 1.0f : -1.0f };
 		}
 		dist = 0.1f;
 	}
@@ -179,10 +206,28 @@ void PhysicsWorld::resolveCircleRect(PhysicsObject* circle, PhysicsObject* recta
 
 	if (vn > 0) return;
 
+	float restitution = 1;
+	switch (algo)
+	{
+		case MINIMUM:
+			restitution = fmin(circle->getRestitution(), rectangle->getRestitution());
+			break;
+		case AVERAGE:
+			restitution = (circle->getRestitution() + rectangle->getRestitution()) / 2;
+			break;
+		case GEOMETRIC_MEAN:
+			restitution = sqrt(circle->getRestitution() * rectangle->getRestitution());
+			break;
+	}
+	restitution = fminf(fmaxf(restitution, 0.0f), 1.0f);
+
 	//impulse
-	float restitution = 0.8;
+	float invM1 = (circle->getIsStatic()) ? 0.0f : circle->getInvMass();
+	float invM2 = (rectangle->getIsStatic()) ? 0.0f : rectangle->getInvMass();
+	float invSum = invM1 + invM2;
+	if (invSum == 0)return;
 	float J = -(1 + restitution) * vn;
-	J /= (1 / circle->getMass() + 1 / rectangle->getMass());
+	J /= invSum;
 
 	//vector impulse
 	Vector2 impulse = Vector2Scale(normal, J);
@@ -190,12 +235,12 @@ void PhysicsWorld::resolveCircleRect(PhysicsObject* circle, PhysicsObject* recta
 	//resolve velocities
 	if (!circle->getIsStatic())
 	{
-		Vector2 newVel = Vector2Add(circle->getVelocity(), Vector2Scale(impulse, 1 / circle->getMass()));
+		Vector2 newVel = Vector2Add(circle->getVelocity(), Vector2Scale(impulse, invM1));
 		circle->setVelocity(newVel);
 	}
 	if (!rectangle->getIsStatic())
 	{
-		Vector2 newVel = Vector2Subtract(rectangle->getVelocity(), Vector2Scale(impulse, 1 / rectangle->getMass()));
+		Vector2 newVel = Vector2Subtract(rectangle->getVelocity(), Vector2Scale(impulse, invM2));
 		rectangle->setVelocity(newVel);
 	}
 }
@@ -204,6 +249,8 @@ void PhysicsWorld::resolveRectRect(PhysicsObject* rectangle1, PhysicsObject* rec
 {
 	Vector2 pos1 = rectangle1->getPos();
 	Vector2 pos2 = rectangle2->getPos();
+	float dx = (pos2.x > pos1.x) ? 1.0 : -1.0;
+	float dy = (pos2.y > pos1.y) ? 1.0f : -1.0f;
 
 	float overlapX = (rectangle1->getWidth() + rectangle2->getWidth()) / 2 - fabs(pos2.x - pos1.x);
 	float overlapY = (rectangle1->getHeight() + rectangle2->getHeight()) / 2 - fabs(pos2.y - pos1.y);
@@ -212,111 +259,182 @@ void PhysicsWorld::resolveRectRect(PhysicsObject* rectangle1, PhysicsObject* rec
 	if (overlapX < overlapY)
 	{
 		//move along x-axis
-		float dir = (pos2.x > pos1.x) ? 1.0 : -1.0;
 
 		if (!rectangle1->getIsStatic() && !rectangle2->getIsStatic())
 		{
 			//move both
-			rectangle1->setPos({ pos1.x - dir * overlapX / 2, pos1.y });
-			rectangle2->setPos({ pos2.x + dir * overlapX / 2, pos2.y });
+			rectangle1->setPos({ pos1.x - dx * overlapX / 2, pos1.y });
+			rectangle2->setPos({ pos2.x + dx * overlapX / 2, pos2.y });
 		}
 		else if (!rectangle1->getIsStatic())
 		{
 			//only move r1
-			rectangle1->setPos({ pos1.x - dir * overlapX,pos1.y });
+			rectangle1->setPos({ pos1.x - dx * overlapX,pos1.y });
 		}
 		else if (!rectangle2->getIsStatic())
 		{
 			//only move r2
-			rectangle2->setPos({ pos2.x + dir * overlapX, pos2.y });
+			rectangle2->setPos({ pos2.x + dx * overlapX, pos2.y });
 		}
 
 		//Bounce
-		if (!rectangle1->getIsStatic()) rectangle1->setVelocity({ -rectangle1->getVelocity().x * 0.8f, rectangle1->getVelocity().y });
-		if (!rectangle2->getIsStatic()) rectangle2->setVelocity({ -rectangle2->getVelocity().x * 0.8f, rectangle2->getVelocity().y });
+		//if (!rectangle1->getIsStatic()) rectangle1->setVelocity({ -rectangle1->getVelocity().x * restitution, rectangle1->getVelocity().y });
+		//if (!rectangle2->getIsStatic()) rectangle2->setVelocity({ -rectangle2->getVelocity().x * restitution, rectangle2->getVelocity().y });
 	}
 	else
 	{
 		//move along y-axis
-		float dir = (pos2.y > pos1.y) ? 1.0f : -1.0f;
 
 		if (!rectangle1->getIsStatic() && !rectangle2->getIsStatic())
 		{
 			//move both
-			rectangle1->setPos({ pos1.x, pos1.y - dir * overlapY / 2 });
-			rectangle2->setPos({ pos2.x, pos2.y + dir * overlapY / 2 });
+			rectangle1->setPos({ pos1.x, pos1.y - dy * overlapY / 2 });
+			rectangle2->setPos({ pos2.x, pos2.y + dy * overlapY / 2 });
 		}
 		else if (!rectangle1->getIsStatic())
 		{
 			//only move r1
-			rectangle1->setPos({ pos1.x, pos1.y - dir * overlapY });
+			rectangle1->setPos({ pos1.x, pos1.y - dy * overlapY });
 		}
 		else if (!rectangle2->getIsStatic())
 		{
 			//only move r2
-			rectangle2->setPos({ pos2.x, pos2.y + dir * overlapY });
+			rectangle2->setPos({ pos2.x, pos2.y + dy * overlapY });
 		}
 
 		//Bounce
-		if (!rectangle1->getIsStatic()) rectangle1->setVelocity({ rectangle1->getVelocity().x, -rectangle1->getVelocity().y * 0.8f });
-		if (!rectangle2->getIsStatic()) rectangle2->setVelocity({ rectangle2->getVelocity().x, -rectangle2->getVelocity().y * 0.8f });
+		//if (!rectangle1->getIsStatic()) rectangle1->setVelocity({ rectangle1->getVelocity().x, -rectangle1->getVelocity().y * restitution });
+		//if (!rectangle2->getIsStatic()) rectangle2->setVelocity({ rectangle2->getVelocity().x, -rectangle2->getVelocity().y * restitution });
+	}
+
+	//relative vel
+	Vector2 normal;
+	if (overlapX < overlapY)
+	{
+		normal = { dx, 0 };
+	}
+	else
+	{
+		normal = { 0, dy };
+	}
+	Vector2 vr = Vector2Subtract(rectangle2->getVelocity(), rectangle1->getVelocity());
+	float vn = Vector2DotProduct(vr, normal);
+	if (vn > 0) return;
+
+	//restitutions
+	float resA = rectangle1->getRestitution();
+	float resB = rectangle2->getRestitution();
+	float restitution = 1;
+	switch (algo)
+	{
+		case MINIMUM:
+			restitution = fmin(resA, resB);
+			break;
+		case AVERAGE:
+			restitution = (resA + resB) / 2;
+			break;
+		case GEOMETRIC_MEAN:
+			restitution = sqrt(resA * resB);
+			break;
+	}
+	restitution = fminf(fmaxf(restitution, 0.0f), 1.0f);
+
+	//impulse scalar
+	float invM1 = (rectangle1->getIsStatic()) ? 0.0f : rectangle1->getInvMass();
+	float invM2 = (rectangle2->getIsStatic()) ? 0.0f : rectangle2->getInvMass();
+	float invSum = invM1 + invM2;
+	if (invSum == 0)return;
+	float J = -(1 + restitution) * vn;
+	J /= invSum;
+
+	//vector impulse
+	Vector2 impulse = Vector2Scale(normal, J);
+
+	//Bounce
+	if (!rectangle1->getIsStatic())
+	{
+		Vector2 newVel = Vector2Subtract(rectangle1->getVelocity(), Vector2Scale(impulse, invM1));
+		rectangle1->setVelocity(newVel);
+	}
+	if (!rectangle2->getIsStatic())
+	{
+		Vector2 newVel = Vector2Add(rectangle2->getVelocity(), Vector2Scale(impulse, invM2));
+		rectangle2->setVelocity(newVel);
 	}
 }
 
 void PhysicsWorld::update(float dt)
 {
-	//Apply Forces
-	for (auto i : objects)
+	//run update <substeps> times per frame
+	int substeps = Clamp((int)(dt / 0.004f), 1, 8);
+	dt = dt / substeps;
+	for(int i = 0; i < substeps; i++)
 	{
-		if (!i->getIsStatic())
+		//Apply Forces
+		for (auto i : objects)
 		{
-			Vector2 force = Vector2Scale(gravity, i->getMass());
-			i->ApplyForce(force);
-		}
-	}
-
-	//Update objects
-	for (auto i : objects) 
-	{
-		i->update(dt);
-	}
-
-	//Detect and resolve collisions
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		for (size_t j = i + 1; j < objects.size(); j++)
-		{
-			PhysicsObject* a = objects[i];
-			PhysicsObject* b = objects[j];
-
-			if (a->getIsStatic() && b->getIsStatic()) continue;
-
-			if (a->getShape() == CIRCLE && b->getShape() == CIRCLE)
+			if (!i->getIsStatic())
 			{
-				if (checkCircleCircle(a, b))
-				{
-					resolveCircleCircle(a, b);
-				}
-			}
-			else if ((a->getShape() == CIRCLE && b->getShape() == RECTANGLE) || (a->getShape() == RECTANGLE && b->getShape() == CIRCLE))
-			{
-				PhysicsObject* c = (a->getShape() == CIRCLE) ? a : b;
-				PhysicsObject* r = (a->getShape() == CIRCLE) ? b : a;
-
-				if (checkCircleRect(c, r))
-				{
-					resolveCircleRect(c, r);
-				}
-			}
-			else if (a->getShape() == RECTANGLE && b->getShape() == RECTANGLE)
-			{
-				if (checkRectRect(a, b))
-				{
-					resolveRectRect(a, b);
-				}
+				Vector2 force = Vector2Scale(gravity, i->getMass());
+				i->ApplyForce(force);
 			}
 		}
+
+		//Update objects
+		for (auto i : objects)
+		{
+			i->update(dt);
+		}
+
+		//Detect and resolve collisions
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			for (size_t j = i + 1; j < objects.size(); j++)
+			{
+				PhysicsObject* a = objects[i];
+				PhysicsObject* b = objects[j];
+
+				if (a->getIsStatic() && b->getIsStatic()) continue;
+
+				if (a->getShape() == CIRCLE && b->getShape() == CIRCLE)
+				{
+					if (checkCircleCircle(a, b))
+					{
+						resolveCircleCircle(a, b);
+					}
+				}
+				else if ((a->getShape() == CIRCLE && b->getShape() == RECTANGLE) || (a->getShape() == RECTANGLE && b->getShape() == CIRCLE))
+				{
+					PhysicsObject* c = (a->getShape() == CIRCLE) ? a : b;
+					PhysicsObject* r = (a->getShape() == CIRCLE) ? b : a;
+
+					if (checkCircleRect(c, r))
+					{
+						resolveCircleRect(c, r);
+					}
+				}
+				else if (a->getShape() == RECTANGLE && b->getShape() == RECTANGLE)
+				{
+					if (checkRectRect(a, b))
+					{
+						resolveRectRect(a, b);
+					}
+				}
+			}
+		}
 	}
+}
+
+void PhysicsWorld::createPhysicsObject(SHAPE s, float d1, float d2, Vector2 pos, float m, Color c, bool st, float res)
+{
+	PhysicsObject* temp = new PhysicsObject(s, d1, d2, pos, m, c, st, res);
+	addObject(temp);
+}
+
+void PhysicsWorld::createPhysicsObject(SHAPE s, float d1, Vector2 pos, float m, Color c, bool st, float res)
+{
+	PhysicsObject* temp = new PhysicsObject(s, d1, pos, m, c, st, res);
+	addObject(temp);
 }
 
 void PhysicsWorld::draw()

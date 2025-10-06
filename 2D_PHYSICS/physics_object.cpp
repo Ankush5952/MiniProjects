@@ -16,6 +16,16 @@ float PhysicsObject::getMass()
 	return mass;
 }
 
+float PhysicsObject::getRestitution()
+{
+	return restitution;
+}
+
+float PhysicsObject::getInvMass()
+{
+	return invM;
+}
+
 bool PhysicsObject::getIsStatic()
 {
 	return isStatic;
@@ -81,6 +91,12 @@ void PhysicsObject::setVelocity(float vx, float vy)
 void PhysicsObject::setMass(float m)
 {
 	mass = m;
+	invM = 1.0f / m;
+}
+
+void PhysicsObject::setRestitution(float r)
+{
+	restitution = r;
 }
 
 void PhysicsObject::setStatic(bool b)
@@ -184,25 +200,31 @@ void PhysicsObject::update(float dt)
 	acceleration = { 0,0 };
 }
 
-PhysicsObject::PhysicsObject(SHAPE s, float dimension, Vector2 pos, float m, Color c, bool is_static)
+PhysicsObject::PhysicsObject(SHAPE s, float dimension, Vector2 pos, float m, Color c, bool is_static, float res)
 {
 	shape = s;
 	position = pos;
 	mass = m;
 	color = c;
 	isStatic = is_static;
+	restitution = res;
 	if (s == LINE) length = dimension;
 	else if (s == CIRCLE) radius = dimension;
 	else width = dimension, height = 1.0f;
+
+	invM = 1.0f / m;
 }
-PhysicsObject::PhysicsObject(SHAPE s, float dimension1, float dimension2, Vector2 pos, float m, Color c, bool is_static)
+PhysicsObject::PhysicsObject(SHAPE s, float dimension1, float dimension2, Vector2 pos, float m, Color c, bool is_static, float res)
 {
 	shape = s;
 	position = pos;
 	mass = m;
 	color = c;
 	isStatic = is_static;
+	restitution = res;
 	if (shape == RECTANGLE) width = dimension1, height = dimension2;
 	else if (shape == LINE) length = dimension1;
 	else radius = dimension1;
+
+	invM = 1.0f / m;
 }

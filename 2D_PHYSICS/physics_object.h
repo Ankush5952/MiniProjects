@@ -18,7 +18,10 @@ private:
 	Vector2 velocity = { 0,0 };
 	Vector2 acceleration = { 0,0 };
 	float mass = 1.0f;
+	float restitution = 0.8f;
 	bool isStatic = false;
+
+	float invM = 0.0f;
 
 	//visual
 
@@ -47,6 +50,8 @@ public:
 	Vector2 getPos();
 	Vector2 getVelocity();
 	float getMass();
+	float getRestitution();
+	float getInvMass();
 	bool getIsStatic();
 
 	//visual
@@ -78,6 +83,7 @@ public:
 	void setVelocity(Vector2 v);
 	void setVelocity(float vx, float vy);
 	void setMass(float m);
+	void setRestitution(float r);
 	void setStatic(bool b);
 
 	//visuals
@@ -106,8 +112,8 @@ public:
 	void update(float dt);
 
 //Constructor
-	PhysicsObject(SHAPE s = LINE, float dimension = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false);
-	PhysicsObject(SHAPE s = RECTANGLE, float dimension1 = 1.0f, float dimension2 = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false);
+	PhysicsObject(SHAPE s = LINE, float dimension = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false, float res = 0.8f);
+	PhysicsObject(SHAPE s = RECTANGLE, float dimension1 = 1.0f, float dimension2 = 1.0f, Vector2 pos = { 0,0 }, float m = 1.0f, Color c = WHITE, bool is_static = false, float res = 0.8f);
 };
 
 #endif
