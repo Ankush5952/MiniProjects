@@ -366,7 +366,7 @@ void PhysicsWorld::resolveRectRect(PhysicsObject* rectangle1, PhysicsObject* rec
 void PhysicsWorld::update(float dt)
 {
 	//run update <substeps> times per frame
-	int substeps = Clamp((int)(dt / 0.004f), 1, 8);
+	substeps = Clamp((int)(dt / 0.004f), 1, 8);
 	dt = dt / substeps;
 	for(int i = 0; i < substeps; i++)
 	{

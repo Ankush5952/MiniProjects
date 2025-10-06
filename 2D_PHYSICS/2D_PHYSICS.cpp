@@ -7,6 +7,17 @@ char TITLE[12] = "2D PHYSICS";
 
 Vector2 gravity = { 0,980 };
 
+int errors = 0;
+
+void LogCollissionErrors()
+{
+	char text[4];
+	sprintf_s(text, "%i", errors);
+	DrawText(text, WIDTH / 2, 50, 30, RED);
+
+	EndDrawing();
+}
+
 int main()
 {
 	InitWindow(WIDTH, HEIGHT, TITLE);
@@ -88,7 +99,7 @@ int main()
 					break;
 				}
 
-				if (upper > HEIGHT * 2) world.removeObject(i);
+				if (upper > HEIGHT * 2) world.removeObject(i), errors++;
 			}
 		}
 #pragma endregion
@@ -96,10 +107,10 @@ int main()
 		BeginDrawing();
 		ClearBackground(BLACK);
 
-		//Render
+//Render
 		world.draw();
-
-		EndDrawing();
+	//Debug
+		//LogCollissionErrors();
 	}
 	CloseWindow();
 }
