@@ -1,23 +1,6 @@
 #include"includes.cpp"
 #include"physics_world.h"
 
-int WIDTH = 900;
-int HEIGHT = 900;
-char TITLE[12] = "2D PHYSICS";
-
-Vector2 gravity = { 0,980 };
-
-int errors = 0;
-
-void LogCollissionErrors()
-{
-	char text[4];
-	sprintf_s(text, "%i", errors);
-	DrawText(text, WIDTH / 2, 50, 30, RED);
-
-	EndDrawing();
-}
-
 int main()
 {
 	InitWindow(WIDTH, HEIGHT, TITLE);
@@ -55,7 +38,7 @@ int main()
 					255                           //a
 				},
 				false,
-				1.0f
+				1
 			);
 		}
 
@@ -111,6 +94,8 @@ int main()
 		world.draw();
 	//Debug
 		//LogCollissionErrors();
+
+		EndDrawing();
 	}
 	CloseWindow();
 }
