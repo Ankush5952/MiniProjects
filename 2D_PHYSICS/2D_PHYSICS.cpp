@@ -1,10 +1,10 @@
 #include"includes.cpp"
 #include"physics_world.h"
 
-PhysicsWorld world;
+static PhysicsWorld world;
 
 //Update Object positions and wall lengths based on window size change
-void updateObjects(float pw, float ph)
+static void updateObjects(float pw, float ph)
 {
 	updateWallParameters();
 
@@ -35,6 +35,7 @@ void updateObjects(float pw, float ph)
 	}
 }
 
+//On Window Resize Event Function
 void onWindowResize(float pw, float ph)
 {
 	updateObjects(pw, ph);
