@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PHYSICSWORLD_H
 #define PHYSICSWORLD_H
 

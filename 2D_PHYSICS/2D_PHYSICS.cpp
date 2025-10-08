@@ -1,29 +1,102 @@
 #include"includes.cpp"
 #include"physics_world.h"
 
+PhysicsWorld world;
+
+//Update Object positions and wall lengths based on window size change
+void updateObjects(float pw, float ph)
+{
+	updateWallParameters();
+
+	vector<PhysicsObject*> objs = world.getObjects();
+	objs[0]->setPos(floorpos);
+	objs[0]->setWidth(floord1);
+	objs[1]->setPos(rwallpos);
+	objs[1]->setHeight(walld2);
+	objs[2]->setPos(lwallpos);
+	objs[2]->setHeight(walld2);
+	objs[3]->setPos(ceilpos);
+	objs[3]->setWidth(floord1);
+
+	float w = WIDTH, h = HEIGHT;
+	if (isFullscreen)
+	{
+		int monitor = GetCurrentMonitor();
+		w = GetMonitorWidth(monitor);
+		h = GetMonitorHeight(monitor);
+	}
+
+	for (int i = 4; i < objs.size(); i++)
+	{
+		Vector2 currPos = objs[i]->getPos();
+		float newPosx = (currPos.x * w) / pw;
+		float newPosy = (currPos.y * h) / ph;
+		objs[i]->setPos(newPosx, newPosy);
+	}
+}
+
+void onWindowResize(float pw, float ph)
+{
+	updateObjects(pw, ph);
+}
+
 int main()
 {
+//WINDOW
+	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(WIDTH, HEIGHT, TITLE);
-	SetTargetFPS(60);
+	SetTargetFPS(60);	
+	createWindowVariables();
 
-	PhysicsWorld world;
+//WORLD
 	world.setGravity(gravity);
 	world.setCollissionAlgo(MINIMUM);
 
-	world.createPhysicsObject(RECTANGLE, WIDTH, 1.0f,  { WIDTH / 2.0f, HEIGHT - 1.0f }, 50, DARKGREEN, true,  1);//floor
-	world.createPhysicsObject(RECTANGLE, 1.0f, HEIGHT, { 1.0f, HEIGHT / 2.0f },         50, DARKGREEN, true,  1);//rwall
-	world.createPhysicsObject(RECTANGLE, 1.0f, HEIGHT, { WIDTH - 1.0f, HEIGHT / 2.0f }, 50, DARKGREEN, true,  1);//lwall
-	world.createPhysicsObject(RECTANGLE, WIDTH, 1.0f,  { WIDTH / 2.0f, 2.0f },          50, DARKGREEN, true,  1);//ceil
+//OBJECTS
+	world.createPhysicsObject(RECTANGLE, floord1, floord2,   floorpos, 50, DARKGREEN, true,  1);//floor
+	world.createPhysicsObject(RECTANGLE, walld1,  walld2, rwallpos, 50, DARKGREEN, true,  1);//rwall
+	world.createPhysicsObject(RECTANGLE, walld1,  walld2, lwallpos, 50, DARKGREEN, true,  1);//lwall
+	world.createPhysicsObject(RECTANGLE, floord1, floord2,   ceilpos,  50, DARKGREEN, true,  1);//ceil
 
+//MAIN LOOP
 	while (!WindowShouldClose())
 	{
+	//Delta time
 		float dt = GetFrameTime();
+		dt = fmin(dt, 0.016f);
 
-		//Update Physics
+	//Update Physics
 		world.update(dt);
 
-		//User Input
-		if (IsMouseButtonPressed(0))
+	//User Input
+		//fullscreen
+		if (IsKeyPressed(KEY_F11))
+		{
+			prevW = GetScreenWidth();
+			prevH = GetScreenHeight();
+
+			ToggleFullscreen();
+
+			if (isFullscreen)
+			{
+				WIDTH = widthBeforeFS;
+				HEIGHT = heightBeforeFS;
+			}
+			else 
+			{
+				widthBeforeFS = prevW;
+				heightBeforeFS = prevH;
+
+				WIDTH = maxW;
+				HEIGHT = maxH;
+			}
+
+			SetWindowSize(WIDTH, HEIGHT);
+
+			isFullscreen = !isFullscreen;
+		}
+		//spawn balls
+		if (IsMouseButtonPressed(0) || IsKeyPressed(KEY_ENTER) || IsKeyDown(KEY_ENTER))
 		{
 			Vector2 mousePos = GetMousePosition();
 			world.createPhysicsObject(
@@ -33,16 +106,16 @@ int main()
 				10, 
 				{ 
 					(unsigned char)(rand() % 255),//r
-					(unsigned char)(rand() % 255),//b
 					(unsigned char)(rand() % 255),//g
+					(unsigned char)(rand() % 255),//b
 					255                           //a
 				},
 				false,
 				1
 			);
 		}
-
-		if (IsMouseButtonPressed(1))
+		//spawn boxes
+		if (IsMouseButtonPressed(1) || IsKeyDown(KEY_SPACE) || IsKeyPressed(KEY_SPACE))
 		{
 			Vector2 mousePos = GetMousePosition();
 			world.createPhysicsObject(
@@ -87,15 +160,22 @@ int main()
 		}
 #pragma endregion
 
+	//Render World
 		BeginDrawing();
 		ClearBackground(BLACK);
 
-//Render
 		world.draw();
-	//Debug
-		//LogCollissionErrors();
 
 		EndDrawing();
+	
+	//Fix values
+		if (!isFullscreen) WIDTH = GetScreenWidth(), HEIGHT = GetScreenHeight();
+		if (prevW != WIDTH || prevH != HEIGHT)
+		{
+			onWindowResize(prevW, prevH);
+			prevW = WIDTH;
+			prevH = HEIGHT;
+		}
 	}
 	CloseWindow();
 }
