@@ -1,0 +1,6 @@
+<h2> PONG</h2>
+
+- PONG
+- SINGLE PLAYER
+- BEATABLE AI
+- SURVIVE ~100s and win
