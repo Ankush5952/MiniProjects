@@ -84,7 +84,7 @@ int main()
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
-				10,
+				int(rand()%10 + 5),
 				5,
 				{
 					(unsigned char)(rand() % 256),
@@ -99,7 +99,8 @@ int main()
 				{
 					50 - float(rand()%100),
 					50 - float(rand()%100)
-				}
+				},
+				ParticleSystem::CollissionAlgo(rand()%7)
 			);
 		}
 

@@ -15,6 +15,11 @@ int ParticleSystem::Particle::getRadius()
     return radius;
 }
 
+Color ParticleSystem::Particle::getColor()
+{
+    return color;
+}
+
 float ParticleSystem::Particle::getLifetime()
 {
     return lifetime;
@@ -23,6 +28,11 @@ float ParticleSystem::Particle::getLifetime()
 float ParticleSystem::Particle::getTimeSinceLifeBegan()
 {
     return timeSinceLifeBegan;
+}
+
+ParticleSystem::CollissionAlgo ParticleSystem::Particle::getCollissionResponse()
+{
+    return collissionResponse;
 }
 
 void ParticleSystem::Particle::setPos(Vector2 p)
@@ -40,9 +50,19 @@ void ParticleSystem::Particle::setRadius(int r)
     radius = r;
 }
 
+void ParticleSystem::Particle::setColor(Color c)
+{
+    color = c;
+}
+
 void ParticleSystem::Particle::setLifetime(int t)
 {
     lifetime = t;
+}
+
+void ParticleSystem::Particle::setCollissionResponse(CollissionAlgo c)
+{
+    collissionResponse = c;
 }
 
 void ParticleSystem::Particle::update(float dt)
@@ -62,13 +82,14 @@ void ParticleSystem::Particle::resetParticle()
     timeSinceLifeBegan = 0.0f;
 }
 
-ParticleSystem::Particle::Particle(int r, float t,Color c, Vector2 pos, Vector2 vel)
+ParticleSystem::Particle::Particle(int r, float t,Color c, Vector2 pos, Vector2 vel, CollissionAlgo response)
 {
     radius = r;
     lifetime = t;
     position = pos;
     velocity = vel;
     color = c;
+    collissionResponse = response;
 
     timeSinceLifeBegan = 0;
 }

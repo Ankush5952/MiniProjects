@@ -3,6 +3,16 @@
 #include"includes.h"
 namespace ParticleSystem
 {
+	enum CollissionAlgo
+	{
+		DESTROY,
+		CONVERT,
+		ABSORB,
+		BOUNCE,
+		REPEL,
+		STICK,
+		FLOW
+	};
 	class Particle
 	{
 	private:
@@ -12,27 +22,32 @@ namespace ParticleSystem
 		Color color = WHITE;
 		float lifetime = 1.0f;
 		float timeSinceLifeBegan = 0.0f;
+		CollissionAlgo collissionResponse = BOUNCE;
 	
 	public:
 	//getters
 		Vector2 getPos();
 		Vector2 getVelocity();
 		int getRadius();
+		Color getColor();
 		float getLifetime();
 		float getTimeSinceLifeBegan();
+		CollissionAlgo getCollissionResponse();
 
 	//setters
 		void setPos(Vector2 p);
 		void setVelocity(Vector2 v);
 		void setRadius(int r);
+		void setColor(Color c);
 		void setLifetime(int t);
+		void setCollissionResponse(CollissionAlgo c);
 
 	//misc
 		void update(float dt);
 		void draw();
 		void resetParticle();
 
-		Particle(int r, float t, Color c, Vector2 pos, Vector2 vel);
+		Particle(int r, float t, Color c, Vector2 pos, Vector2 vel, CollissionAlgo response);
 	};
 }
 
