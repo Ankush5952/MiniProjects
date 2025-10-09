@@ -12,7 +12,8 @@ namespace ParticleSystem
 
 	public:
 	//getters
-		std::vector<ParticleSystem::Particle*> getParticles();
+		std::vector<ParticleSystem::Particle*> getParticles() const;
+		bool getIsMeantForDeletion(Particle* p);
 
 	//setters
 		void addParticle(ParticleSystem::Particle* p);
@@ -28,6 +29,8 @@ namespace ParticleSystem
 		void convertParticle(Particle* from, Particle* to);
 		void absorbParticle(Particle* absorber, Particle* absorbed);
 		void BounceParticles(Particle* a, Particle* b, Vector2 normal, float bounce_factor);
+		void stickParticles(Particle* a, Particle* b);
+		void repelParticles(Particle* a, Particle* b, Vector2 normal);
 		bool checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 

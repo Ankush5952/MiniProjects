@@ -1,8 +1,13 @@
 #include "particle_manager.h"
 
-std::vector<ParticleSystem::Particle*> ParticleSystem::ParticleManager::getParticles()
+std::vector<ParticleSystem::Particle*> ParticleSystem::ParticleManager::getParticles() const
 {
 	return particles;
+}
+
+bool ParticleSystem::ParticleManager::getIsMeantForDeletion(Particle* p)
+{
+	return std::find(particlesToDelete.begin(), particlesToDelete.end(), p) != particlesToDelete.end();
 }
 
 void ParticleSystem::ParticleManager::addParticle(ParticleSystem::Particle* p)
@@ -35,9 +40,9 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	CollissionAlgo c2 = b->getCollissionResponse();
 	if (c1 == DESTROY || c2 == DESTROY) 
 	{
-		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), a) != particlesToDelete.end())
+		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), a) == particlesToDelete.end())
 			particlesToDelete.push_back(a);
-		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), b) != particlesToDelete.end()) 
+		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), b) == particlesToDelete.end()) 
 			particlesToDelete.push_back(b);
 		return;
 	}
@@ -76,10 +81,10 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 			absorbParticle(dominant, (dominant == a) ? b : a);
 			break;
 		case REPEL:
-			BounceParticles(a, b, normal, 0.1);
+			repelParticles(a, b, normal);
 			break;
 		case STICK:
-			return;
+			stickParticles(a, b);
 			break;
 		default:
 			BounceParticles(a, b, normal, bounceFactor);
@@ -115,6 +120,8 @@ void ParticleSystem::ParticleManager::update(float dt)
 	{
 		for (int j = i + 1; j < numPars; j++)
 		{
+			if (getIsMeantForDeletion(particles[j]) || getIsMeantForDeletion(particles[i])) continue;
+
 			if (checkParticleCollission(particles[i], particles[j]))
 			{
 				resolveParticleCollission(particles[i], particles[j]);
@@ -139,11 +146,25 @@ void ParticleSystem::ParticleManager::convertParticle(Particle* from, Particle* 
 	from->setColor(to->getColor());
 	from->setLifetime(to->getLifetime());
 	from->setRadius(to->getRadius());
+
+	from->resetParticle();
 }
 
 void ParticleSystem::ParticleManager::absorbParticle(Particle* absorber, Particle* absorbed)
 {
-	//TODO
+	int r1 = absorber->getRadius();
+	int r2 = absorbed->getRadius();
+	absorber->setRadius((int)sqrt(r1 * r1 + r2 * r2));
+
+	Vector2 v1 = absorber->getVelocity();
+	Vector2 v2 = absorbed->getVelocity();
+	absorber->setVelocity(Vector2Scale(Vector2Add(v1, v2), 0.5f));
+
+	float t1 = absorber->getLifetime();
+	float t2 = absorbed->getLifetime();
+	absorber->setLifetime(t1 + t2 * 0.5f);
+
+	if (!getIsMeantForDeletion(absorbed)) particlesToDelete.push_back(absorbed);
 }
 
 void ParticleSystem::ParticleManager::BounceParticles(Particle* a, Particle* b,Vector2 normal, float bounce_factor)
@@ -153,8 +174,32 @@ void ParticleSystem::ParticleManager::BounceParticles(Particle* a, Particle* b,V
 	Vector2 newV1, newV2;
 	newV1 = Vector2Subtract(v1, Vector2Scale(normal, 2 * Vector2DotProduct(normal, v1)));
 	newV2 = Vector2Subtract(v2, Vector2Scale(normal, 2 * Vector2DotProduct(normal, v2)));
-	Vector2Scale(newV1, bounceFactor);
-	Vector2Scale(newV2, bounceFactor);
+	newV1 = Vector2Scale(newV1, bounceFactor);
+	newV2 = Vector2Scale(newV2, bounceFactor);
 	a->setVelocity(newV1);
 	b->setVelocity(newV2);
+}
+
+void ParticleSystem::ParticleManager::stickParticles(Particle* a, Particle* b)
+{
+	Vector2 Vavg = Vector2Scale(Vector2Add(a->getVelocity(), b->getVelocity()), 0.5f);
+	a->setVelocity(Vavg);
+	b->setVelocity(Vavg);
+}
+
+void ParticleSystem::ParticleManager::repelParticles(Particle* a, Particle* b, Vector2 normal)
+{
+	Vector2 v1 = a->getVelocity();
+	Vector2 v2 = b->getVelocity();
+
+	float v1AlongNormal = Vector2DotProduct(v1, normal);
+	float v2AlongNormal = Vector2DotProduct(v2, normal);
+
+	// If moving toward each other, cancel that component
+	if (v1AlongNormal < 0) {
+		a->setVelocity(Vector2Subtract(v1, Vector2Scale(normal, v1AlongNormal)));
+	}
+	if (v2AlongNormal > 0) {
+		b->setVelocity(Vector2Subtract(v2, Vector2Scale(normal, v2AlongNormal)));
+	}
 }

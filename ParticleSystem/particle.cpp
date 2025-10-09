@@ -1,36 +1,36 @@
 #include "particle.h"
 
-Vector2 ParticleSystem::Particle::getPos()
+Vector2 ParticleSystem::Particle::getPos() const
 {
     return position;
 }
 
-Vector2 ParticleSystem::Particle::getVelocity()
+Vector2 ParticleSystem::Particle::getVelocity() const
 {
     return velocity;
 }
 
-int ParticleSystem::Particle::getRadius()
+int ParticleSystem::Particle::getRadius() const
 {
     return radius;
 }
 
-Color ParticleSystem::Particle::getColor()
+Color ParticleSystem::Particle::getColor() const
 {
     return color;
 }
 
-float ParticleSystem::Particle::getLifetime()
+float ParticleSystem::Particle::getLifetime() const
 {
     return lifetime;
 }
 
-float ParticleSystem::Particle::getTimeSinceLifeBegan()
+float ParticleSystem::Particle::getTimeSinceLifeBegan() const
 {
     return timeSinceLifeBegan;
 }
 
-ParticleSystem::CollissionAlgo ParticleSystem::Particle::getCollissionResponse()
+ParticleSystem::CollissionAlgo ParticleSystem::Particle::getCollissionResponse() const
 {
     return collissionResponse;
 }

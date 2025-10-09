@@ -26,13 +26,13 @@ namespace ParticleSystem
 	
 	public:
 	//getters
-		Vector2 getPos();
-		Vector2 getVelocity();
-		int getRadius();
-		Color getColor();
-		float getLifetime();
-		float getTimeSinceLifeBegan();
-		CollissionAlgo getCollissionResponse();
+		Vector2 getPos() const;
+		Vector2 getVelocity() const;
+		int getRadius() const;
+		Color getColor() const;
+		float getLifetime() const;
+		float getTimeSinceLifeBegan() const;
+		CollissionAlgo getCollissionResponse() const;
 
 	//setters
 		void setPos(Vector2 p);
