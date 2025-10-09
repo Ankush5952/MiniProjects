@@ -202,4 +202,8 @@ void ParticleSystem::ParticleManager::repelParticles(Particle* a, Particle* b, V
 	if (v2AlongNormal > 0) {
 		b->setVelocity(Vector2Subtract(v2, Vector2Scale(normal, v2AlongNormal)));
 	}
+
+	float separationForce = 15.0f;
+	a->setVelocity(Vector2Subtract(a->getVelocity(), Vector2Scale(normal, separationForce)));
+	b->setVelocity(Vector2Add(b->getVelocity(), Vector2Scale(normal, separationForce)));
 }
