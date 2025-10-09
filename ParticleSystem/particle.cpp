@@ -53,10 +53,7 @@ void ParticleSystem::Particle::update(float dt)
 
 void ParticleSystem::Particle::draw()
 {
-    //if (timeSinceLifeBegan < lifetime)
-    {
-        DrawCircleV(position, radius, color);
-    }
+    DrawCircleV(position, radius, color);
 }
 
 void ParticleSystem::Particle::resetParticle()

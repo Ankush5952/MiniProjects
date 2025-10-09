@@ -18,13 +18,16 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="includes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="particle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="particle_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="includes.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

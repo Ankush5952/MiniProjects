@@ -1,7 +1,6 @@
 #pragma once
-#ifndef PARTICLE_H
 
-#include"includes.cpp"
+#include"includes.h"
 namespace ParticleSystem
 {
 	class Particle
@@ -33,8 +32,7 @@ namespace ParticleSystem
 		void draw();
 		void resetParticle();
 
-		Particle(int r, float t,Color c, Vector2 pos, Vector2 vel);
+		Particle(int r, float t, Color c, Vector2 pos, Vector2 vel);
 	};
 }
-#endif // !PARTICLE_H
 

@@ -1,9 +1,7 @@
-#include"includes.cpp"
+#include"includes.h"
 #include"particle_manager.h"
 
-ParticleSystem::ParticleManager manager;
-
-static void onWindowResize(int pw, int ph)
+static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& manager)
 {
 	GRIDW = WIDTH / CELLSIZE;
 	GRIDH = HEIGHT / CELLSIZE;
@@ -48,17 +46,15 @@ static void HandleFullScreenToggle()
 	SetWindowSize(WIDTH, HEIGHT);
 
 	isFullscreen = !isFullscreen;
-
-	onWindowResize(prevW, prevH);
 }
 
-static void HandleResize()
+static void HandleResize(ParticleSystem::ParticleManager& manager)
 {
 	WIDTH = GetScreenWidth();
 	HEIGHT = GetScreenHeight();
 	if (prevW != WIDTH || prevH != HEIGHT)
 	{
-		onWindowResize(prevW, prevH);
+		onWindowResize(prevW, prevH, manager);
 		prevW = WIDTH;
 		prevH = HEIGHT;
 	}
@@ -73,6 +69,7 @@ int main()
 	InitializeRuntimeVariables();
 
 //VARIABLES
+	ParticleSystem::ParticleManager manager;
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -90,9 +87,9 @@ int main()
 				10,
 				5,
 				{
-					(unsigned char)(rand() % 255),
-					(unsigned char)(rand() % 255),
-					(unsigned char)(rand()%255),
+					(unsigned char)(rand() % 256),
+					(unsigned char)(rand() % 256),
+					(unsigned char)(rand()%256),
 					255
 				},
 				{
@@ -106,7 +103,7 @@ int main()
 	//RESIZE HANDLING
 		if (IsKeyPressed(KEY_F11)) HandleFullScreenToggle();
 
-		HandleResize();
+		HandleResize(manager);
 
 	//PHYSICS AND UPDATES
 		manager.update(dt);

@@ -19,7 +19,7 @@ namespace ParticleSystem
 
 	//misc
 		void createParticle(ParticleSystem::Particle* p);
-		void createParticle(int radius = 1.0f, float lifetime = 1.0f, Color c = WHITE, Vector2 pos = { 0,0 }, Vector2 vel = { 0,0 });
+		void createParticle(int radius = 1, float lifetime = 1.0f, Color c = WHITE, Vector2 pos = { 0,0 }, Vector2 vel = { 0,0 });
 		void update(float dt);
 		void draw();
 	};
