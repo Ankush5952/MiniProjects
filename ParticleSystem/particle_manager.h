@@ -1,5 +1,4 @@
 #pragma once
-#ifndef PARTICLEMANAGER_H
 
 #include"particle.h"
 namespace ParticleSystem
@@ -24,7 +23,6 @@ namespace ParticleSystem
 		void draw();
 	};
 }
-#endif // !PARTICLEMANAGER_H
 
 
 

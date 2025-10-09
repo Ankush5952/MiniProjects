@@ -81,7 +81,7 @@ int main()
 	//EVENT HANDLING
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 
-		if (IsKeyPressed(KEY_SPACE))
+		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
 				10,
@@ -96,7 +96,10 @@ int main()
 					float(rand() % (WIDTH)),
 					float(rand() % (HEIGHT))
 				},
-				{ 0,0 }
+				{
+					50 - float(rand()%100),
+					50 - float(rand()%100)
+				}
 			);
 		}
 

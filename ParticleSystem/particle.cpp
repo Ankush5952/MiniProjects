@@ -1,5 +1,4 @@
 #include "particle.h"
-#include "particle_manager.h"
 
 Vector2 ParticleSystem::Particle::getPos()
 {
@@ -48,7 +47,9 @@ void ParticleSystem::Particle::setLifetime(int t)
 
 void ParticleSystem::Particle::update(float dt)
 {
-    timeSinceLifeBegan = timeSinceLifeBegan + dt;
+    timeSinceLifeBegan += dt;
+
+    position += velocity * dt;
 }
 
 void ParticleSystem::Particle::draw()
