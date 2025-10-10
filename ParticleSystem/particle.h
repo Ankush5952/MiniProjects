@@ -32,8 +32,8 @@ namespace ParticleSystem
 		float lifetime = 1.0f;
 		float timeSinceLifeBegan = 0.0f;
 		CollissionAlgo collissionResponse = BOUNCE;
-		Vector2 v1, v2, v3;
-		Vector2 n1, n2, n3;
+		Vector2 v1 = { 0,0 }, v2 = { 0,0 }, v3 = { 0,0 };
+		Vector2 n1 = { 0,0 }, n2 = { 0,0 }, n3 = { 0,0 };
 	
 	public:
 	//getters
@@ -61,6 +61,7 @@ namespace ParticleSystem
 		void update(float dt);
 		void draw();
 		void resetParticle();
+		void updateTriangleGeometry();
 
 		//s = { CIRCLE, SQUARE, TRIANGLE }
 		//a = { RADIUS, SIDE,   SIDE }

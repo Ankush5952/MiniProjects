@@ -81,6 +81,9 @@ Vector2 ParticleSystem::Particle::getTriangleNormal(int num) const
 void ParticleSystem::Particle::setPos(Vector2 p)
 {
     position = p;
+
+    //update the vertices and normals
+    if (shape == TRIANGLE) updateTriangleGeometry();
 }
 
 void ParticleSystem::Particle::setVelocity(Vector2 v)
@@ -91,6 +94,8 @@ void ParticleSystem::Particle::setVelocity(Vector2 v)
 void ParticleSystem::Particle::setSide(int r)
 {
     side = r;
+
+    if (shape == TRIANGLE) updateTriangleGeometry();
 }
 
 void ParticleSystem::Particle::setShape(ParticleShape s)
@@ -128,7 +133,7 @@ void ParticleSystem::Particle::draw()
             DrawCircleV(position, side, color); 
             break;
         case SQUARE: 
-            DrawRectangle(position.x - side, position.y - side, side, side, color); 
+            DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, color); 
             break;
         case TRIANGLE:
             DrawTriangle(v1, v2, v3, color);
@@ -143,9 +148,24 @@ void ParticleSystem::Particle::resetParticle()
     timeSinceLifeBegan = 0.0f;
 }
 
+void ParticleSystem::Particle::updateTriangleGeometry()
+{
+    v1 = { position.x - side * 0.5f, position.y + float(side * 0.5f * oneOverRoot3) };
+    v2 = { position.x, position.y - float(side * oneOverRoot3) };
+    v3 = { position.x + side * 0.5f,position.y + float(side * 0.5f * oneOverRoot3) };
+
+    Vector2 side1 = Vector2Subtract(v2, v1);
+    Vector2 side2 = Vector2Subtract(v3, v2);
+    Vector2 side3 = Vector2Subtract(v1, v3);
+
+    n1 = Vector2Normalize({ -side1.y, side1.x });
+    n2 = Vector2Normalize({ -side2.y, side2.x });
+    n3 = Vector2Normalize({ -side3.y, side3.x });
+}
+
 ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vector2 pos, Vector2 vel, CollissionAlgo response)
 {
-
+    shape = s;
     side = r;
     lifetime = t;
     position = pos;
@@ -157,16 +177,6 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
 
     if (shape == TRIANGLE)
     {
-        v1 = { position.x - side * 0.5f, position.y + float(side * 0.5f * oneOverRoot3) };
-        v2 = { position.x, position.y - float(side * oneOverRoot3) };
-        v3 = { position.x + side * 0.5f,position.y + float(side * 0.5f * oneOverRoot3) };
-
-        Vector2 side1 = Vector2Subtract(v2, v1);
-        Vector2 side2 = Vector2Subtract(v3, v2);
-        Vector2 side3 = Vector2Subtract(v1, v3);
-
-        n1 = Vector2Normalize({ -side1.x, side1.y });
-        n2 = Vector2Normalize({ -side2.x, side2.y });
-        n3 = Vector2Normalize({ -side3.x, side3.y });
+        updateTriangleGeometry();
     }
 }
