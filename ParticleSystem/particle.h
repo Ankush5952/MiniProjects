@@ -13,31 +13,46 @@ namespace ParticleSystem
 		STICK,
 		FLOW
 	};
+
+	enum ParticleShape
+	{
+		CIRCLE,
+		SQUARE,
+		TRIANGLE
+	};
+
 	class Particle
 	{
 	private:
 		Vector2 position = { 0,0 };
 		Vector2 velocity = { 0,0 };
-		int radius = 1.0f;
+		ParticleShape shape = CIRCLE;
+		int side = 1.0f;
 		Color color = WHITE;
 		float lifetime = 1.0f;
 		float timeSinceLifeBegan = 0.0f;
 		CollissionAlgo collissionResponse = BOUNCE;
+		Vector2 v1, v2, v3;
+		Vector2 n1, n2, n3;
 	
 	public:
 	//getters
 		Vector2 getPos() const;
 		Vector2 getVelocity() const;
-		int getRadius() const;
+		int getSide() const;
+		ParticleShape getShape() const;
 		Color getColor() const;
 		float getLifetime() const;
 		float getTimeSinceLifeBegan() const;
 		CollissionAlgo getCollissionResponse() const;
+		Vector2 getTriangleVertex(int num) const;
+		Vector2 getTriangleNormal(int num) const;
 
 	//setters
 		void setPos(Vector2 p);
 		void setVelocity(Vector2 v);
-		void setRadius(int r);
+		void setSide(int r);
+		void setShape(ParticleShape s);
 		void setColor(Color c);
 		void setLifetime(int t);
 		void setCollissionResponse(CollissionAlgo c);
@@ -47,7 +62,11 @@ namespace ParticleSystem
 		void draw();
 		void resetParticle();
 
-		Particle(int r, float t, Color c, Vector2 pos, Vector2 vel, CollissionAlgo response);
+		//s = { CIRCLE, SQUARE, TRIANGLE }
+		//a = { RADIUS, SIDE,   SIDE }
+		// response = { DESTROY, CONVERT, ABSORB, BOUNCE, REPEL, STICK, FLOW }
+		//t = lifetime
+		Particle(ParticleShape s, int a, float t, Color c, Vector2 pos, Vector2 vel, CollissionAlgo response);
 	};
 }
 

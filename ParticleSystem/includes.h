@@ -24,6 +24,8 @@ extern int GRIDW;
 extern int GRIDH;
 extern bool isGridEnabled;
 
+extern const double oneOverRoot3;
+
 extern void DrawGrid();
 
 extern void InitializeRuntimeVariables();

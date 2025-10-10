@@ -84,6 +84,7 @@ int main()
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
+				ParticleSystem::CIRCLE,
 				int(rand()%10 + 5),
 				5,
 				{
