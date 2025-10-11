@@ -8,7 +8,7 @@ static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& mana
 
 	center = { WIDTH / 2.0F, HEIGHT / 2.0f };
 
-	std::vector<ParticleSystem::Particle*> pars = manager.getParticles();
+	const std::vector<ParticleSystem::Particle*>& pars = manager.getParticles();
 	double widthFactor = double(WIDTH) / double(pw);
 	double heightFactor = double(HEIGHT) / double(ph);
 	for (auto& i : pars)

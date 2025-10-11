@@ -7,19 +7,20 @@ namespace ParticleSystem
 	{
 	private:
 		std::vector<ParticleSystem::Particle*> particles;
-		std::vector<ParticleSystem::Particle*> particlesToDelete;
+		std::unordered_set<Particle*> particlesToDelete;
 		float bounceFactor = 0.8f;
 
 	public:
 	//getters
 
-		std::vector<ParticleSystem::Particle*> getParticles() const;
+		const std::vector<ParticleSystem::Particle*>& getParticles() const;
 		bool getIsMeantForDeletion(Particle* p);
 
 	//setters
 
 		void addParticle(ParticleSystem::Particle* p);
 		void removeParticle(ParticleSystem::Particle* p);
+		void batchRemoveParticles();
 
 	//misc
 
@@ -72,6 +73,9 @@ namespace ParticleSystem
 		bool checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticlePositions(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
+
+	//constructor
+		ParticleManager();
 	};
 }
 

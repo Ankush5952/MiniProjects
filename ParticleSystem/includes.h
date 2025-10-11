@@ -2,6 +2,7 @@
 #include<raylib.h>
 #include<raymath.h>
 #include<vector>
+#include<unordered_set>
 
 extern int WIDTH;
 extern int HEIGHT;
