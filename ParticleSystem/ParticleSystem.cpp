@@ -80,8 +80,11 @@ int main()
 		dt = fmin(dt, 0.016f);
 
 	//EVENT HANDLING
+		//toggles
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
+		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
 		
+		//particle properties
 		if (IsKeyPressed(KEY_A))
 		{
 			shapeIndex++;
@@ -129,6 +132,14 @@ int main()
 			ui.updateParticleLifetime(particleLifetime);
 		}
 
+		//external forces
+		if (IsKeyPressed(KEY_Q))
+		{
+			gravityEnabled = !gravityEnabled;
+			gravity.y = gravityEnabled ? 200 : 0;
+		}
+
+		//spawning
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
@@ -160,7 +171,7 @@ int main()
 		if (isGridEnabled) DrawGrid();
 
 		manager.draw();
-		ui.drawUI(&manager);
+		if(showControls) ui.drawUI(&manager);
 
 		EndDrawing();
 	}

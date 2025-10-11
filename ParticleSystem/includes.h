@@ -32,6 +32,11 @@ extern int GRIDW;
 extern int GRIDH;
 extern bool isGridEnabled;
 
+extern Vector2 gravity;
+extern bool gravityEnabled;
+
+extern bool showControls;
+
 extern const double oneOverRoot3;
 
 extern void DrawGrid();

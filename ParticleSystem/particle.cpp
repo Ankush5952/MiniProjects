@@ -121,6 +121,8 @@ void ParticleSystem::Particle::update(float dt)
 {
     timeSinceLifeBegan += dt;
 
+    velocity += gravity * dt;
+
     position += velocity * dt;
 
     if(shape == TRIANGLE) updateTriangleGeometry();

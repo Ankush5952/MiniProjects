@@ -29,6 +29,11 @@ Color colorPresets[] = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,  
 const char* colors[] = { "WHITE", "RED", "DARKBLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
 int colorIndex = 0;
 
+Vector2 gravity = { 0, 200.0f };
+bool gravityEnabled = false;
+
+bool showControls = true;
+
 const double oneOverRoot3 = 1.0 / sqrt(3.0);
 
 void DrawGrid()
