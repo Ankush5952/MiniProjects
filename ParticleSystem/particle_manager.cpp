@@ -64,6 +64,43 @@ bool ParticleSystem::ParticleManager::checkParticleCollission(ParticleSystem::Pa
 	return result;
 }
 
+void ParticleSystem::ParticleManager::resolveParticlePositions(ParticleSystem::Particle* a, ParticleSystem::Particle* b)
+{
+	ParticleShape s1 = a->getShape();
+	ParticleShape s2 = b->getShape();
+
+	if (s1 == CIRCLE && s2 == CIRCLE)
+	{
+		resolveCC(a, b);
+	}
+	else if ((s1 == CIRCLE && s2 == TRIANGLE) || (s1 == TRIANGLE && s2 == CIRCLE))
+	{
+		Particle* circle = (s1 == CIRCLE) ? a : b;
+		Particle* triangle = (s1 == CIRCLE) ? b : a;
+		resolveCT(circle, triangle);
+	}
+	else if ((s1 == CIRCLE && s2 == SQUARE) || (s1 == SQUARE && s2 == CIRCLE))
+	{
+		Particle* circle = (s1 == CIRCLE) ? a : b;
+		Particle* square = (s1 == CIRCLE) ? b : a;
+		resolveCS(circle, square);
+	}
+	else if (s1 == TRIANGLE && s2 == TRIANGLE)
+	{
+		resolveTT(a, b);
+	}
+	else if ((s1 == TRIANGLE && s2 == SQUARE) || (s1 == SQUARE && s2 == TRIANGLE))
+	{
+		Particle* triangle = (s1 == TRIANGLE) ? a : b;
+		Particle* square = (s1 == TRIANGLE) ? b : a;
+		resolveTS(triangle, square);
+	}
+	else if (s1 == SQUARE && s2 == SQUARE)
+	{
+		resolveSS(a, b);
+	}
+}
+
 void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b)
 {
 	//TODO : IMPLEMENT SHAPE-BASED SIMPLE COLLISSIONS
@@ -79,8 +116,13 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	}
 	if (c1 == FLOW || c2 == FLOW) return;
 
-	Vector2 normal = Vector2Normalize(b->getPos() - a->getPos());
-	//Relative velocity
+	//TODO - fix normal based on shape-specific calculations
+	Vector2 normal = Vector2Normalize(Vector2Subtract(b->getPos(), a->getPos()));
+
+//Position Correction
+	resolveParticlePositions(a, b);
+
+//Velocity correction
 	Vector2 newV1;
 	Vector2 newV2;
 	
@@ -238,26 +280,31 @@ void ParticleSystem::ParticleManager::BounceCC(Particle* c1, Particle* c2, Vecto
 void ParticleSystem::ParticleManager::BounceSS(Particle* s1, Particle* s2, Vector2 normal)
 {
 	//TODO
+	BounceCC(s1, s2, normal);
 }
 
 void ParticleSystem::ParticleManager::BounceTT(Particle* t1, Particle* t2, Vector2 normal)
 {
 	//TODO
+	BounceCC(t1, t2, normal);
 }
 
 void ParticleSystem::ParticleManager::BounceCT(Particle* c, Particle* t, Vector2 normal)
 {
 	//TODO
+	BounceCC(c, t, normal);
 }
 
 void ParticleSystem::ParticleManager::BounceCS(Particle* c, Particle* s, Vector2 normal)
 {
 	//TODO
+	BounceCC(c, s, normal);
 }
 
 void ParticleSystem::ParticleManager::BounceTS(Particle* t, Particle* s, Vector2 normal)
 {
 	//TODO
+	BounceCC(t, s, normal);
 }
 
 void ParticleSystem::ParticleManager::stickParticles(Particle* a, Particle* b)
@@ -307,26 +354,31 @@ void ParticleSystem::ParticleManager::StickCC(Particle* c1, Particle* c2)
 void ParticleSystem::ParticleManager::StickSS(Particle* s1, Particle* s2)
 {
 	//TODO
+	StickCC(s1, s2);
 }
 
 void ParticleSystem::ParticleManager::StickTT(Particle* t1, Particle* t2)
 {
 	//TODO
+	StickCC(t1, t2);
 }
 
 void ParticleSystem::ParticleManager::StickCT(Particle* c, Particle* t)
 {
 	//TODO
+	StickCC(c, t);
 }
 
 void ParticleSystem::ParticleManager::StickCS(Particle* c, Particle* s)
 {
 	//TODO
+	StickCC(c, s);
 }
 
 void ParticleSystem::ParticleManager::StickTS(Particle* t, Particle* s)
 {
 	//TODO
+	StickCC(t, s);
 }
 
 void ParticleSystem::ParticleManager::repelParticles(Particle* a, Particle* b, Vector2 normal)
@@ -371,12 +423,25 @@ void ParticleSystem::ParticleManager::resolveCC(ParticleSystem::Particle* c1, Pa
 	Vector2 v2 = c2->getVelocity();
 
 	float dist = Vector2Distance(p1, p2);
-	Vector2 normal = Vector2Normalize(p2 - p1);
+	Vector2 normal = Vector2Normalize(Vector2Subtract(p2,p1));
 	float overlap = (r1 + r2) - dist;
+	float extraSep = 1.00f;
+	overlap += extraSep;
+
+	//relative velocity
+	Vector2 Vr = Vector2Subtract(v2, v1);
+	float Vn = Vector2DotProduct(Vr, normal);
+
+	if (Vn >= 0) return;
 
 	//Update Pos
 	c1->setPos(Vector2Subtract(p1, Vector2Scale(normal, overlap / 2)));
 	c2->setPos(Vector2Add(p2, Vector2Scale(normal, overlap / 2)));
+
+	//Add a little push force
+	float pushF = 5.0f;
+	c1->setVelocity(Vector2Subtract(v1, Vector2Scale(normal, pushF)));
+	c2->setVelocity(Vector2Add(v2, Vector2Scale(normal, pushF)));
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionCS(ParticleSystem::Particle* c, ParticleSystem::Particle* s)
@@ -400,17 +465,19 @@ bool ParticleSystem::ParticleManager::checkCollissionCS(ParticleSystem::Particle
 void ParticleSystem::ParticleManager::resolveCS(ParticleSystem::Particle* c, ParticleSystem::Particle* s)
 {
 	//TODO
+	resolveCC(c, s);
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionCT(ParticleSystem::Particle* c, ParticleSystem::Particle* t)
 {
 	//TODO
-	return false;
+	return checkCollissionCC(c, t);
 }
 
 void ParticleSystem::ParticleManager::resolveCT(ParticleSystem::Particle* c, ParticleSystem::Particle* t)
 {
 	//TODO
+	resolveCC(c, t);
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionTT(ParticleSystem::Particle* t1, ParticleSystem::Particle* t2)
@@ -449,17 +516,19 @@ bool ParticleSystem::ParticleManager::checkCollissionTT(ParticleSystem::Particle
 void ParticleSystem::ParticleManager::resolveTT(ParticleSystem::Particle* t1, ParticleSystem::Particle* t2)
 {
 	//TODO
+	resolveCC(t1, t2);
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionTS(ParticleSystem::Particle* t, ParticleSystem::Particle* s)
 {
 	//TODO
-	return false;
+	return checkCollissionCC(s, t);
 }
 
 void ParticleSystem::ParticleManager::resolveTS(ParticleSystem::Particle* t, ParticleSystem::Particle* s)
 {
 	//TODO
+	resolveCC(t, s);
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionSS(ParticleSystem::Particle* s1, ParticleSystem::Particle* s2)
@@ -475,4 +544,5 @@ bool ParticleSystem::ParticleManager::checkCollissionSS(ParticleSystem::Particle
 void ParticleSystem::ParticleManager::resolveSS(ParticleSystem::Particle* s1, ParticleSystem::Particle* s2)
 {
 	//TODO
+	resolveCC(s1, s2);
 }

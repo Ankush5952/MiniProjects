@@ -21,7 +21,7 @@ int GRIDW = WIDTH / CELLSIZE;
 int GRIDH = HEIGHT / CELLSIZE;
 bool isGridEnabled = false;
 
-const double oneOverRoot3 = 1 / sqrt(3);
+const double oneOverRoot3 = 1.0 / sqrt(3.0);
 
 void DrawGrid()
 {

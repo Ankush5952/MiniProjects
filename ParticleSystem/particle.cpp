@@ -123,6 +123,8 @@ void ParticleSystem::Particle::update(float dt)
     timeSinceLifeBegan += dt;
 
     position += velocity * dt;
+
+    if(shape == TRIANGLE) updateTriangleGeometry();
 }
 
 void ParticleSystem::Particle::draw()
@@ -136,7 +138,7 @@ void ParticleSystem::Particle::draw()
             DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, color); 
             break;
         case TRIANGLE:
-            DrawTriangle(v1, v2, v3, color);
+            DrawTriangle(v2, v1, v3, color);
             break;
         default:
             DrawCircleV(position, side, color);
@@ -175,7 +177,7 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
 
     timeSinceLifeBegan = 0;
 
-    if (shape == TRIANGLE)
+    if (s == TRIANGLE)
     {
         updateTriangleGeometry();
     }

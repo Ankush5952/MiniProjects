@@ -69,6 +69,7 @@ namespace ParticleSystem
 		void resolveSS(ParticleSystem::Particle* s1, ParticleSystem::Particle* s2);
 
 		bool checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
+		void resolveParticlePositions(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 
 	};
