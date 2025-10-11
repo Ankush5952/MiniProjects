@@ -81,9 +81,6 @@ Vector2 ParticleSystem::Particle::getTriangleNormal(int num) const
 void ParticleSystem::Particle::setPos(Vector2 p)
 {
     position = p;
-
-    //update the vertices and normals
-    if (shape == TRIANGLE) updateTriangleGeometry();
 }
 
 void ParticleSystem::Particle::setVelocity(Vector2 v)
@@ -94,8 +91,6 @@ void ParticleSystem::Particle::setVelocity(Vector2 v)
 void ParticleSystem::Particle::setSide(int r)
 {
     side = r;
-
-    if (shape == TRIANGLE) updateTriangleGeometry();
 }
 
 void ParticleSystem::Particle::setShape(ParticleShape s)

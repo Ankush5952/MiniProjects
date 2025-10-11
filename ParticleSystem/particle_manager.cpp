@@ -432,16 +432,20 @@ void ParticleSystem::ParticleManager::resolveCC(ParticleSystem::Particle* c1, Pa
 	Vector2 Vr = Vector2Subtract(v2, v1);
 	float Vn = Vector2DotProduct(Vr, normal);
 
-	if (Vn >= 0) return;
+	if(overlap > 0)
+	{
+		//Update Pos
+		c1->setPos(Vector2Subtract(p1, Vector2Scale(normal, overlap / 2)));
+		c2->setPos(Vector2Add(p2, Vector2Scale(normal, overlap / 2)));
 
-	//Update Pos
-	c1->setPos(Vector2Subtract(p1, Vector2Scale(normal, overlap / 2)));
-	c2->setPos(Vector2Add(p2, Vector2Scale(normal, overlap / 2)));
-
-	//Add a little push force
-	float pushF = 5.0f;
-	c1->setVelocity(Vector2Subtract(v1, Vector2Scale(normal, pushF)));
-	c2->setVelocity(Vector2Add(v2, Vector2Scale(normal, pushF)));
+		//Add a little push force
+		if(Vn < 0)
+		{
+			float pushF = 5.0f;
+			c1->setVelocity(Vector2Subtract(v1, Vector2Scale(normal, pushF)));
+			c2->setVelocity(Vector2Add(v2, Vector2Scale(normal, pushF)));
+		}
+	}
 }
 
 bool ParticleSystem::ParticleManager::checkCollissionCS(ParticleSystem::Particle* c, ParticleSystem::Particle* s)
