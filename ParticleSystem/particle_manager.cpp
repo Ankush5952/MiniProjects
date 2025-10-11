@@ -200,6 +200,13 @@ void ParticleSystem::ParticleManager::draw()
 	}
 }
 
+void ParticleSystem::ParticleManager::clean()
+{
+	for (auto& i : particles) particlesToDelete.push_back(i);
+	for (auto& i : particlesToDelete) removeParticle(i);
+	particlesToDelete.clear();
+}
+
 void ParticleSystem::ParticleManager::convertParticle(Particle* from, Particle* to)
 {
 	from->setCollissionResponse(to->getCollissionResponse());

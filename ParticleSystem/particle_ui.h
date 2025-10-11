@@ -7,6 +7,9 @@ namespace ParticleSystem
 	{
 	private:
 		int particlesOnScreen = 0;
+		int drawParticleSize = 3;
+		int drawParticleLifetime = 5;
+		int drawColorIndex = 0;
 		ParticleSystem::ParticleShape drawShapeMode = CIRCLE;
 		ParticleSystem::CollissionAlgo drawCollissionMode = BOUNCE;
 
@@ -18,6 +21,9 @@ namespace ParticleSystem
 	//setters
 
 		void updateParticlesOnScreen(int n);
+		void updateParticleSize(int n);
+		void updateParticleLifetime(int n);
+		void updateParticleColor(int c);
 		void updateShapeMode(ParticleSystem::ParticleShape s);
 		void updateCollissionResponse(ParticleSystem::CollissionAlgo res);
 

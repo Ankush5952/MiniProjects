@@ -27,6 +27,7 @@ namespace ParticleSystem
 		void createParticle(ParticleShape s, int side = 1, float lifetime = 1.0f, Color c = WHITE, Vector2 pos = { 0,0 }, Vector2 vel = { 0,0 }, CollissionAlgo response = BOUNCE);
 		void update(float dt);
 		void draw();
+		void clean();
 
 	//collission responses
 

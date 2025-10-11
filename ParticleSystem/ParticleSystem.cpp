@@ -94,19 +94,48 @@ int main()
 			collissionIndex %= 7;
 			ui.updateCollissionResponse(ParticleSystem::CollissionAlgo(collissionIndex));
 		}
+		if (IsKeyPressed(KEY_UP))
+		{
+			particleSize++;
+			ui.updateParticleSize(particleSize);
+		}
+		if (IsKeyPressed(KEY_DOWN))
+		{
+			particleSize = fmax(3, particleSize - 1);
+			ui.updateParticleSize(particleSize);
+		}
+		if (IsKeyPressed(KEY_RIGHT))
+		{
+			colorIndex = fmin(9, colorIndex + 1);
+			ui.updateParticleColor(colorIndex);
+		}
+		if (IsKeyPressed(KEY_LEFT))
+		{
+			colorIndex = fmax(0, colorIndex - 1);
+			ui.updateParticleColor(colorIndex);
+		}
+		if (IsKeyPressed(KEY_C))
+		{
+			manager.clean();
+		}
+		if (IsKeyPressed(KEY_KP_ADD))
+		{
+			particleLifetime++;
+			ui.updateParticleLifetime(particleLifetime);
+		}
+		if (IsKeyPressed(KEY_KP_SUBTRACT))
+		{
+			particleLifetime = fmax(1, particleLifetime - 1);
+			ui.updateParticleLifetime(particleLifetime);
+		}
 
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
 				ui.getShapeMode(),
-				int(rand()%10 + 5),
-				5,
-				{
-					(unsigned char)(rand() % 256),
-					(unsigned char)(rand() % 256),
-					(unsigned char)(rand()%256),
-					255
-				},
+				particleSize,
+				particleLifetime,
+				colorPresets[colorIndex],
 				GetMousePosition(),
 				{
 					50 - float(rand()%100),
