@@ -56,9 +56,9 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"Color:         %s (L/R)\n\n"
 		"Life:           %i (+/-)\n\n"
 		"Gravity:       %s (Q)\n\n"
+		"GRID:          %s (G)\n\n"
+		"FADE:          %s (F)\n\n"
 		"SPAWN:        SPACE\n\n"
-		"GRID:           G\n\n"
-		"FADE:           F\n\n"
 		"UI:             TAB\n\n",
 		particlesOnScreen,
 		shapes[drawShapeMode],
@@ -66,7 +66,9 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		drawParticleSize,
 		colors[drawColorIndex],
 		drawParticleLifetime,
-		gravityState
+		gravityState,
+		(isGridEnabled)?"ON":"OFF",
+		(fadeEffect)?"ON":"OFF"
 	);
 
 	char fps[20];

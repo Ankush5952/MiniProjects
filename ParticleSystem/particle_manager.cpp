@@ -186,6 +186,7 @@ void ParticleSystem::ParticleManager::update(float dt)
 	for (auto& i : particles)
 	{
 		i->update(dt);
+		if (i->getLifetime() == -1) continue;
 		if (i->getTimeSinceLifeBegan() >= i->getLifetime()) particlesToDelete.insert(i);
 	}
 

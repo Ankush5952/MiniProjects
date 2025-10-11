@@ -105,7 +105,7 @@ int main()
 		}
 		if (IsKeyPressed(KEY_DOWN))
 		{
-			particleSize = fmax(3, particleSize - 1);
+			particleSize = fmax(1, particleSize - 1);
 			ui.updateParticleSize(particleSize);
 		}
 		if (IsKeyPressed(KEY_RIGHT))
@@ -129,7 +129,7 @@ int main()
 		}
 		if (IsKeyPressed(KEY_KP_SUBTRACT))
 		{
-			particleLifetime = fmax(1, particleLifetime - 1);
+			particleLifetime = fmax(-1, particleLifetime - 1);
 			ui.updateParticleLifetime(particleLifetime);
 		}
 

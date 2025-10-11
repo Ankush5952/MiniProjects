@@ -7,11 +7,11 @@ namespace ParticleSystem
 	{
 	private:
 		int particlesOnScreen = 0;
-		int drawParticleSize = 3;
+		int drawParticleSize = 1;
 		int drawParticleLifetime = 5;
 		int drawColorIndex = 0;
 		ParticleSystem::ParticleShape drawShapeMode = CIRCLE;
-		ParticleSystem::CollissionAlgo drawCollissionMode = BOUNCE;
+		ParticleSystem::CollissionAlgo drawCollissionMode = DESTROY;
 
 	public:
 	//getters
