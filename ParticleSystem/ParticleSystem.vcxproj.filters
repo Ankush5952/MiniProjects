@@ -30,12 +30,18 @@
     <ClCompile Include="globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="particle_ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="particle_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,6 +13,7 @@ namespace ParticleSystem
 		STICK,
 		FLOW
 	};
+	static const char* collissions[] = { "DESTROY", "CONVERT", "ABSORB", "BOUNCE", "REPEL", "STICK", "FLOW" };
 
 	enum ParticleShape
 	{
@@ -20,6 +21,7 @@ namespace ParticleSystem
 		SQUARE,
 		TRIANGLE
 	};
+	static const char* shapes[] = { "CIRCLE", "SQUARE", "TRIANGLE" };
 
 	class Particle
 	{

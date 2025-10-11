@@ -106,11 +106,11 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	//TODO : IMPLEMENT SHAPE-BASED SIMPLE COLLISSIONS
 	CollissionAlgo c1 = a->getCollissionResponse();
 	CollissionAlgo c2 = b->getCollissionResponse();
-	if (c1 == DESTROY || c2 == DESTROY) 
+	if (c1 == DESTROY || c2 == DESTROY)
 	{
 		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), a) == particlesToDelete.end())
 			particlesToDelete.push_back(a);
-		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), b) == particlesToDelete.end()) 
+		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), b) == particlesToDelete.end())
 			particlesToDelete.push_back(b);
 		return;
 	}
@@ -119,13 +119,13 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	//TODO - fix normal based on shape-specific calculations
 	Vector2 normal = Vector2Normalize(Vector2Subtract(b->getPos(), a->getPos()));
 
-//Position Correction
+	//Position Correction
 	resolveParticlePositions(a, b);
 
-//Velocity correction
+	//Velocity correction
 	Vector2 newV1;
 	Vector2 newV2;
-	
+
 	CollissionAlgo resolver = (c1 > c2) ? c2 : c1;
 	Particle* dominant = (c1 > c2) ? b : a;
 	switch (resolver)
@@ -189,6 +189,7 @@ void ParticleSystem::ParticleManager::update(float dt)
 	}
 	for (auto& i : particlesToDelete) removeParticle(i);
 	particlesToDelete.clear();
+
 }
 
 void ParticleSystem::ParticleManager::draw()

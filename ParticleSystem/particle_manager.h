@@ -71,7 +71,6 @@ namespace ParticleSystem
 		bool checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticlePositions(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
 		void resolveParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b);
-
 	};
 }
 

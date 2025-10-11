@@ -1,5 +1,5 @@
 #include"includes.h"
-#include"particle_manager.h"
+#include"particle_ui.h"
 
 static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& manager)
 {
@@ -70,6 +70,7 @@ int main()
 
 //VARIABLES
 	ParticleSystem::ParticleManager manager;
+	ParticleSystem::ParticleUI ui;
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -80,11 +81,24 @@ int main()
 
 	//EVENT HANDLING
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
+		
+		if (IsKeyPressed(KEY_A))
+		{
+			shapeIndex++;
+			shapeIndex %= 3;
+			ui.updateShapeMode(ParticleSystem::ParticleShape(shapeIndex));
+		}
+		if (IsKeyPressed(KEY_D))
+		{
+			collissionIndex++;
+			collissionIndex %= 7;
+			ui.updateCollissionResponse(ParticleSystem::CollissionAlgo(collissionIndex));
+		}
 
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
-				ParticleSystem::ParticleShape(rand()%3),
+				ui.getShapeMode(),
 				int(rand()%10 + 5),
 				5,
 				{
@@ -93,15 +107,12 @@ int main()
 					(unsigned char)(rand()%256),
 					255
 				},
-				{
-					float(rand() % (WIDTH)),
-					float(rand() % (HEIGHT))
-				},
+				GetMousePosition(),
 				{
 					50 - float(rand()%100),
 					50 - float(rand()%100)
 				},
-				ParticleSystem::CollissionAlgo(rand()%7)
+				ui.getCollissionResponse()
 			);
 		}
 
@@ -120,6 +131,7 @@ int main()
 		if (isGridEnabled) DrawGrid();
 
 		manager.draw();
+		ui.drawUI(&manager);
 
 		EndDrawing();
 	}

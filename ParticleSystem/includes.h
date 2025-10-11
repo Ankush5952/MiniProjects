@@ -19,6 +19,9 @@ extern int heightBeforeFS;
 extern int prevW;
 extern int prevH;
 
+extern int shapeIndex;
+extern int collissionIndex;
+
 extern const int CELLSIZE;
 extern int GRIDW;
 extern int GRIDH;
