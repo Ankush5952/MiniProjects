@@ -130,19 +130,21 @@ void ParticleSystem::Particle::update(float dt)
 
 void ParticleSystem::Particle::draw()
 {
+    float lifePercent = timeSinceLifeBegan / lifetime;
+    float fadeVal = (fadeEffect)? 1.0 - lifePercent : color.a;
     switch (shape)
     {
         case CIRCLE:
-            DrawCircleV(position, side, color); 
+            DrawCircleV(position, side, Fade(color, fadeVal)); 
             break;
         case SQUARE: 
-            DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, color); 
+            DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, Fade(color,fadeVal));
             break;
         case TRIANGLE:
-            DrawTriangle(v2, v1, v3, color);
+            DrawTriangle(v2, v1, v3, Fade(color,fadeVal));
             break;
         default:
-            DrawCircleV(position, side, color);
+            DrawCircleV(position, side, Fade(color,fadeVal));
     }
 }
 

@@ -49,25 +49,30 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 	char text[512];
 	sprintf_s(
 		text,
-		"Particles:     %i\n"
-		"Shape:         %s (A)\n"
-		"Collission     %s (D)\n"
-		"Size:           %i (UP/DOWN)\n"
-		"Color:         %s (L/R)\n"
-		"Life:           %i (+/-)\n"
-		"Gravity:       %s (Q)\n"
-		"SPAWN:        SPACE\n"
-		"GRID:           G\n"
-		"UI:             TAB\n",
+		"Particles:     %i\n\n"
+		"Shape:         %s (A)\n\n"
+		"Collission     %s (D)\n\n"
+		"Size:           %i (UP/DOWN)\n\n"
+		"Color:         %s (L/R)\n\n"
+		"Life:           %i (+/-)\n\n"
+		"Gravity:       %s (Q)\n\n"
+		"SPAWN:        SPACE\n\n"
+		"GRID:           G\n\n"
+		"FADE:           F\n\n"
+		"UI:             TAB\n\n",
 		particlesOnScreen,
-		shapes[drawShapeMode], 
-		collissions[drawCollissionMode], 
-		drawParticleSize, 
+		shapes[drawShapeMode],
+		collissions[drawCollissionMode],
+		drawParticleSize,
 		colors[drawColorIndex],
 		drawParticleLifetime,
 		gravityState
 	);
 
+	char fps[20];
+	sprintf_s(fps, "FPS: %i", GetFPS());
+
 	DrawRectangle(0, 0, 215, HEIGHT, Fade(BLACK, 0.7));
 	DrawText(text, WIDTH*0.009f, HEIGHT * 0.05, 15, GOLD);
+	DrawText(fps, WIDTH - 100, 10, 20, GREEN);
 }

@@ -28,8 +28,9 @@ int particleSize = 3;
 Color colorPresets[] = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
 const char* colors[] = { "WHITE", "RED", "DARKBLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
 int colorIndex = 0;
+bool fadeEffect = true;
 
-Vector2 gravity = { 0, 200.0f };
+Vector2 gravity = { 0, 0 };
 bool gravityEnabled = false;
 
 bool showControls = true;

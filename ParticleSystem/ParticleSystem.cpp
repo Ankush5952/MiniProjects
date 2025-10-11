@@ -65,7 +65,7 @@ int main()
 //WINDOW
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(WIDTH, HEIGHT, TITLE);
-	SetTargetFPS(60);
+	//SetTargetFPS(60);
 	InitializeRuntimeVariables();
 
 //VARIABLES
@@ -83,6 +83,7 @@ int main()
 		//toggles
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
+		if (IsKeyPressed(KEY_F)) fadeEffect = !fadeEffect;
 		
 		//particle properties
 		if (IsKeyPressed(KEY_A))

@@ -26,6 +26,7 @@ extern int particleSize;
 extern Color colorPresets[];
 extern const char* colors[];
 extern int colorIndex;
+extern bool fadeEffect;
 
 extern const int CELLSIZE;
 extern int GRIDW;
