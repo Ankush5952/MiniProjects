@@ -452,7 +452,7 @@ void ParticleSystem::ParticleManager::resolveCC(ParticleSystem::Particle* c1, Pa
 	Vector2 v2 = c2->getVelocity();
 
 	Vector2 delta = Vector2Subtract(p2, p1);
-	float sqdist = delta.x * delta.x + delta.y + delta.y;
+	float sqdist = delta.x * delta.x + delta.y * delta.y;
 	float dist = sqrtf(sqdist);
 	dist = fmax(dist, 0.0001f);
 	

@@ -149,9 +149,9 @@ void ParticleSystem::Particle::update(float dt)
             position.y = halfside;
             velocity.y = -velocity.y;
         }
-        if (l >= HEIGHT)
+        if (d >= HEIGHT)
         {
-            position.y = HEIGHT + halfside;
+            position.y = HEIGHT - halfside;
             velocity.y = -velocity.y;
         }
     }
