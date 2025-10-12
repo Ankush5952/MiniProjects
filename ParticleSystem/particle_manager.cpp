@@ -31,7 +31,7 @@ void ParticleSystem::ParticleManager::batchRemoveParticles()
 	if (particles.empty() || particlesToDelete.empty()) return;
 	for (auto* i : particlesToDelete)
 	{
-		if (!getIsMeantForDeletion(i)) return;
+		if (!getIsMeantForDeletion(i)) continue;
 
 		particles.erase(std::remove(particles.begin(), particles.end(), i), particles.end());
 
@@ -126,10 +126,8 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	CollissionAlgo c2 = b->getCollissionResponse();
 	if (c1 == DESTROY || c2 == DESTROY)
 	{
-		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), a) == particlesToDelete.end())
-			particlesToDelete.insert(a);
-		if (std::find(particlesToDelete.begin(), particlesToDelete.end(), b) == particlesToDelete.end())
-			particlesToDelete.insert(b);
+		particlesToDelete.insert(a);
+		particlesToDelete.insert(b);
 		return;
 	}
 	if (c1 == FLOW || c2 == FLOW) return;
@@ -197,11 +195,14 @@ void ParticleSystem::ParticleManager::update(float dt)
 		if (getIsMeantForDeletion(particles[i])) continue;
 		for (int j = i + 1; j < numPars; j++)
 		{
-			if (getIsMeantForDeletion(particles[j]) || getIsMeantForDeletion(particles[i])) continue;
+			if (getIsMeantForDeletion(particles[j])) continue;
+			if (getIsMeantForDeletion(particles[i])) break;
 
 			if (checkParticleCollission(particles[i], particles[j]))
 			{
 				resolveParticleCollission(particles[i], particles[j]);
+
+				if (getIsMeantForDeletion(particles[i])) break; //early exit if marked for deletion
 			}
 		}
 	}
@@ -250,7 +251,7 @@ void ParticleSystem::ParticleManager::absorbParticle(Particle* absorber, Particl
 	float t2 = absorbed->getLifetime();
 	absorber->setLifetime(t1 + t2 * 0.5f);
 
-	if (!getIsMeantForDeletion(absorbed)) particlesToDelete.insert(absorbed);
+	particlesToDelete.insert(absorbed);
 }
 
 void ParticleSystem::ParticleManager::BounceParticles(Particle* a, Particle* b,Vector2 normal)
@@ -450,7 +451,10 @@ void ParticleSystem::ParticleManager::resolveCC(ParticleSystem::Particle* c1, Pa
 	Vector2 v1 = c1->getVelocity();
 	Vector2 v2 = c2->getVelocity();
 
-	float dist = Vector2Distance(p1, p2);
+	Vector2 delta = Vector2Subtract(p2, p1);
+	float sqdist = delta.x * delta.x + delta.y + delta.y;
+	float dist = sqrtf(sqdist);
+	dist = fmax(dist, 0.0001f);
 	
 	float overlap = (r1 + r2) - dist;
 	float extraSep = 1.00f;
@@ -458,7 +462,7 @@ void ParticleSystem::ParticleManager::resolveCC(ParticleSystem::Particle* c1, Pa
 
 	if(overlap > 0)
 	{
-		Vector2 normal = Vector2Normalize(Vector2Subtract(p2, p1));
+		Vector2 normal = { delta.x / dist, delta.y / dist };
 
 		//relative velocity
 		Vector2 Vr = Vector2Subtract(v2, v1);
