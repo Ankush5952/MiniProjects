@@ -32,8 +32,7 @@ Vector2 velocityRangeY = {-50.0f, 50.0f};
 int colorIndex = 0;
 bool fadeEffect = true;
 bool boundary = true;
-int presetIndex = 0;
-std::vector<std::string> presetNames = {};
+std::string currentPresetName = "NONE";
 
 Vector2 gravity = { 0, 0 };
 bool gravityEnabled = false;

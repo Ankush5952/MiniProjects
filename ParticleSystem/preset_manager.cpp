@@ -170,7 +170,7 @@ void ParticleSystem::PresetManager::removePreset(int index)
 {
     if (index < 0 || index >= presets.size()) throw std::exception("Invalid index to delete preset");
 
-    presets.erase(remove(presets.begin(), presets.end(), presets[index]), presets.end());
+    presets.erase(presets.begin() + index);
 
     if (currentPresetIndex >= index) currentPresetIndex = std::max(0, std::min(currentPresetIndex - 1, (int)presets.size()));
 }

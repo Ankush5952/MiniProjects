@@ -13,7 +13,6 @@ namespace ParticleSystem
 		int drawColorIndex = 0;
 		ParticleSystem::ParticleShape drawShapeMode = CIRCLE;
 		ParticleSystem::CollissionAlgo drawCollissionMode = DESTROY;
-		std::string currentPreset = "NONE";
 
 	public:
 	//getters

@@ -35,8 +35,7 @@ extern Vector2 velocityRangeY;
 extern int colorIndex;
 extern bool fadeEffect;
 extern bool boundary;
-extern int presetIndex;
-extern std::vector<std::string> presetNames;
+extern std::string currentPresetName;
 
 extern const int CELLSIZE;
 extern int GRIDW;

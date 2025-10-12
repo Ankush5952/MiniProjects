@@ -93,7 +93,7 @@ int main()
 	ParticleSystem::ParticleManager manager;
 	ParticleSystem::ParticleUI ui;
 	ParticleSystem::PresetManager prema;
-	presetNames = prema.getPresetNames();
+	currentPresetName = prema.getCurrentPreset().name;
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -157,12 +157,12 @@ int main()
 		if (IsKeyPressed(KEY_P))
 		{
 			prema.nextPreset();
-			presetIndex = prema.getCurrentPresetIndex();
+			currentPresetName = prema.getCurrentPreset().name;
 		}
 		if (IsKeyPressed(KEY_O))
 		{
 			prema.prevPreset();
-			presetIndex = prema.getCurrentPresetIndex();
+			currentPresetName = prema.getCurrentPreset().name;
 		}
 		if (IsKeyPressed(KEY_ENTER))
 		{

@@ -54,7 +54,6 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 	drawParticleLifetime = particleLifetime;
 	drawColorIndex = colorIndex;
 	const char* gravityState = (gravityEnabled) ? "TRUE" : "FALSE";
-	currentPreset = (presetIndex >= 0) ? presetNames[presetIndex] : "NONE";
 
 	char text[512];
 	sprintf_s(
@@ -70,8 +69,8 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"FADE:          %s (F)\n\n"
 		"BOUNDARY:      %s (B)\n\n"
 		"PRESET :       %s (O/P)\n\n"
-		"VelX:          [%i , %i]\n\n"
-		"VelY:          [%i , %i]\n\n"
+		"VelX:          [%.2f, %.2f]\n\n"
+		"VelY:          [%.2f, %.2f]\n\n"
 		"SPAWN:        SPACE\n\n"
 		"UI:             TAB\n\n",
 		particlesOnScreen,
@@ -84,7 +83,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		(isGridEnabled)?"ON":"OFF",
 		(fadeEffect)?"ON":"OFF",
 		(boundary)?"ON":"OFF",
-		currentPreset,
+		currentPresetName,
 		velocityRangeX.x, velocityRangeX.y,
 		velocityRangeY.x, velocityRangeY.y
 	);

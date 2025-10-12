@@ -1,0 +1,158 @@
+{
+    "presets": [
+        {
+            "CollissionResponse": "FLOW",
+            "color": {
+                "a": 255,
+                "b": 0,
+                "g": 161,
+                "r": 255
+            },
+            "lifetime": 2.0,
+            "name": "Fire",
+            "shape": "CIRCLE",
+            "size": 5,
+            "velocity": {
+                "x": 50.0,
+                "y": 100.0
+            }
+        },
+        {
+            "CollissionResponse": "FLOW",
+            "color": {
+                "a": 255,
+                "b": 130,
+                "g": 130,
+                "r": 130
+            },
+            "lifetime": 4.0,
+            "name": "Smoke",
+            "shape": "CIRCLE",
+            "size": 8,
+            "velocity": {
+                "x": 30.0,
+                "y": 60.0
+            }
+        },
+        {
+            "CollissionResponse": "BOUNCE",
+            "color": {
+                "a": 255,
+                "b": 55,
+                "g": 41,
+                "r": 230
+            },
+            "lifetime": -1.0,
+            "name": "Bouncy",
+            "shape": "CIRCLE",
+            "size": 10,
+            "velocity": {
+                "x": 100.0,
+                "y": 100.0
+            }
+        },
+        {
+            "CollissionResponse": "FLOW",
+            "color": {
+                "a": 255,
+                "b": 172,
+                "g": 82,
+                "r": 0
+            },
+            "lifetime": -1.0,
+            "name": "Water",
+            "shape": "CIRCLE",
+            "size": 2,
+            "velocity": {
+                "x": 50.0,
+                "y": 50.0
+            }
+        },
+        {
+            "CollissionResponse": "STICK",
+            "color": {
+                "a": 255,
+                "b": 194,
+                "g": 109,
+                "r": 255
+            },
+            "lifetime": 3.0,
+            "name": "Sticky",
+            "shape": "SQUARE",
+            "size": 3,
+            "velocity": {
+                "x": 80.0,
+                "y": 80.0
+            }
+        },
+        {
+            "CollissionResponse": "REPEL",
+            "color": {
+                "a": 255,
+                "b": 0,
+                "g": 249,
+                "r": 253
+            },
+            "lifetime": 1.5,
+            "name": "Explosive",
+            "shape": "CIRCLE",
+            "size": 4,
+            "velocity": {
+                "x": 150.0,
+                "y": 150.0
+            }
+        },
+        {
+            "CollissionResponse": "CONVERT",
+            "color": {
+                "a": 255,
+                "b": 48,
+                "g": 228,
+                "r": 0
+            },
+            "lifetime": 2.0,
+            "name": "Converter",
+            "shape": "TRIANGLE",
+            "size": 3,
+            "velocity": {
+                "x": 80.0,
+                "y": 70.0
+            }
+        },
+        {
+            "CollissionResponse": "ABSORB",
+            "color": {
+                "a": 255,
+                "b": 79,
+                "g": 106,
+                "r": 127
+            },
+            "lifetime": 2.0,
+            "name": "Absorber",
+            "shape": "TRIANGLE",
+            "size": 8,
+            "velocity": {
+                "x": 50.0,
+                "y": 50.0
+            }
+        },
+        {
+            "CollissionResponse": "DESTROY",
+            "color": {
+                "a": 255,
+                "b": 255,
+                "g": 122,
+                "r": 200
+            },
+            "lifetime": 5.0,
+            "name": "Destroyer",
+            "shape": "SQUARE",
+            "size": 12,
+            "velocity": {
+                "x": 200.0,
+                "y": 200.0
+            }
+        }
+    ],
+    "version": "1.0"
+}
