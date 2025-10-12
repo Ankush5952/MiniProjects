@@ -8,7 +8,7 @@ namespace ParticleSystem
 	private:
 		int particlesOnScreen = 0;
 		int drawParticleSize = 1;
-		int drawParticleLifetime = 5;
+		float drawParticleLifetime = 5.0f;
 		int drawColorIndex = 0;
 		ParticleSystem::ParticleShape drawShapeMode = CIRCLE;
 		ParticleSystem::CollissionAlgo drawCollissionMode = DESTROY;

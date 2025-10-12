@@ -1,4 +1,4 @@
-#include"particle_manager.h"
+#include"particle_ui.h"
 
 int WIDTH = 900;
 int HEIGHT = 900;
@@ -23,12 +23,13 @@ bool isGridEnabled = false;
 
 int shapeIndex = 0;
 int collissionIndex = 0;
-int particleLifetime = 5;
+float particleLifetime = 5.0f;
 int particleSize = 3;
 Color colorPresets[] = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
-const char* colors[] = { "WHITE", "RED", "DARKBLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
+const char* colors[] = { "WHITE", "RED", "D.BLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
 int colorIndex = 0;
 bool fadeEffect = true;
+bool boundary = true;
 
 Vector2 gravity = { 0, 0 };
 bool gravityEnabled = false;

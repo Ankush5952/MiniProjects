@@ -84,6 +84,7 @@ int main()
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
 		if (IsKeyPressed(KEY_F)) fadeEffect = !fadeEffect;
+		if (IsKeyPressed(KEY_B)) boundary = !boundary;
 		
 		//particle properties
 		if (IsKeyPressed(KEY_A))
@@ -132,7 +133,7 @@ int main()
 			particleLifetime = fmax(-1, particleLifetime - 1);
 			ui.updateParticleLifetime(particleLifetime);
 		}
-
+		
 		//external forces
 		if (IsKeyPressed(KEY_Q))
 		{

@@ -125,6 +125,37 @@ void ParticleSystem::Particle::update(float dt)
 
     position += velocity * dt;
 
+    if (boundary)
+    {
+        float extraSep = 0.01f;
+        float halfside = side * 0.5f + 0.01f;
+        float l = position.x + halfside;
+        float r = position.x - halfside;
+        float u = position.y - halfside;
+        float d = position.y + halfside;
+
+        if (l >= WIDTH)
+        {
+            position.x = WIDTH - halfside;
+            velocity.x = -velocity.x;
+        }
+        if (r <= 0)
+        {
+            position.x = halfside;
+            velocity.x = -velocity.x;
+        }
+        if (u <= 0)
+        {
+            position.y = halfside;
+            velocity.y = -velocity.y;
+        }
+        if (l >= HEIGHT)
+        {
+            position.y = HEIGHT + halfside;
+            velocity.y = -velocity.y;
+        }
+    }
+
     if(shape == TRIANGLE) updateTriangleGeometry();
 }
 

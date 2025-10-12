@@ -43,7 +43,8 @@ void ParticleSystem::ParticleUI::updateCollissionResponse(ParticleSystem::Collis
 void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager)
 {
 	particlesOnScreen = manager->getParticles().size();
-
+	drawParticleLifetime = particleLifetime;
+	
 	const char* gravityState = (gravityEnabled) ? "TRUE" : "FALSE";
 
 	char text[512];
@@ -54,10 +55,11 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"Collission     %s (D)\n\n"
 		"Size:           %i (UP/DOWN)\n\n"
 		"Color:         %s (L/R)\n\n"
-		"Life:           %i (+/-)\n\n"
+		"Life:           %.2f (+/-)\n\n"
 		"Gravity:       %s (Q)\n\n"
 		"GRID:          %s (G)\n\n"
 		"FADE:          %s (F)\n\n"
+		"BOUNDARY:      %s (B)\n\n"
 		"SPAWN:        SPACE\n\n"
 		"UI:             TAB\n\n",
 		particlesOnScreen,
@@ -68,7 +70,8 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		drawParticleLifetime,
 		gravityState,
 		(isGridEnabled)?"ON":"OFF",
-		(fadeEffect)?"ON":"OFF"
+		(fadeEffect)?"ON":"OFF",
+		(boundary)?"ON":"OFF"
 	);
 
 	char fps[20];

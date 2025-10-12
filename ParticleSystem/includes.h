@@ -22,12 +22,13 @@ extern int prevH;
 
 extern int shapeIndex;
 extern int collissionIndex;
-extern int particleLifetime;
+extern float particleLifetime;
 extern int particleSize;
 extern Color colorPresets[];
 extern const char* colors[];
 extern int colorIndex;
 extern bool fadeEffect;
+extern bool boundary;
 
 extern const int CELLSIZE;
 extern int GRIDW;
