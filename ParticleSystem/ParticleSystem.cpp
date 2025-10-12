@@ -114,23 +114,19 @@ int main()
 		{
 			shapeIndex++;
 			shapeIndex %= 3;
-			ui.updateShapeMode(ParticleSystem::ParticleShape(shapeIndex));
 		}
 		if (IsKeyPressed(KEY_D))
 		{
 			collissionIndex++;
 			collissionIndex %= 7;
-			ui.updateCollissionResponse(ParticleSystem::CollissionAlgo(collissionIndex));
 		}
 		if (IsKeyPressed(KEY_UP))
 		{
 			particleSize++;
-			ui.updateParticleSize(particleSize);
 		}
 		if (IsKeyPressed(KEY_DOWN))
 		{
 			particleSize = fmax(1, particleSize - 1);
-			ui.updateParticleSize(particleSize);
 		}
 		if (IsKeyPressed(KEY_RIGHT))
 		{
@@ -147,12 +143,10 @@ int main()
 		if (IsKeyPressed(KEY_KP_ADD))
 		{
 			particleLifetime++;
-			ui.updateParticleLifetime(particleLifetime);
 		}
 		if (IsKeyPressed(KEY_KP_SUBTRACT))
 		{
 			particleLifetime = fmax(-1, particleLifetime - 1);
-			ui.updateParticleLifetime(particleLifetime);
 		}
 		if (IsKeyPressed(KEY_P))
 		{
@@ -167,7 +161,6 @@ int main()
 		if (IsKeyPressed(KEY_ENTER))
 		{
 			applyPreset(prema.getCurrentPreset());
-			ui.applyPreset(prema.getCurrentPreset());
 		}
 
 		//external forces
