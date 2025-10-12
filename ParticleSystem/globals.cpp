@@ -1,4 +1,4 @@
-#include"particle_ui.h"
+#include"includes.h"
 
 int WIDTH = 900;
 int HEIGHT = 900;
@@ -25,11 +25,15 @@ int shapeIndex = 0;
 int collissionIndex = 0;
 float particleLifetime = 5.0f;
 int particleSize = 3;
-Color colorPresets[] = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
+std::vector<Color> colorPresets = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
 const char* colors[] = { "WHITE", "RED", "D.BLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
+Vector2 velocityRangeX = {-50.0f, 50.0f};
+Vector2 velocityRangeY = {-50.0f, 50.0f};
 int colorIndex = 0;
 bool fadeEffect = true;
 bool boundary = true;
+int presetIndex = 0;
+std::vector<std::string> presetNames = {};
 
 Vector2 gravity = { 0, 0 };
 bool gravityEnabled = false;

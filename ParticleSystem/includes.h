@@ -3,6 +3,10 @@
 #include<raymath.h>
 #include<vector>
 #include<unordered_set>
+#include"json.hpp"
+#include<fstream>
+#include<string>
+
 
 extern int WIDTH;
 extern int HEIGHT;
@@ -24,11 +28,15 @@ extern int shapeIndex;
 extern int collissionIndex;
 extern float particleLifetime;
 extern int particleSize;
-extern Color colorPresets[];
+extern std::vector<Color> colorPresets;
 extern const char* colors[];
+extern Vector2 velocityRangeX;
+extern Vector2 velocityRangeY;
 extern int colorIndex;
 extern bool fadeEffect;
 extern bool boundary;
+extern int presetIndex;
+extern std::vector<std::string> presetNames;
 
 extern const int CELLSIZE;
 extern int GRIDW;

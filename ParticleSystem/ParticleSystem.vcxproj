@@ -129,11 +129,13 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="particle_manager.cpp" />
     <ClCompile Include="particle_ui.cpp" />
+    <ClCompile Include="preset_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="particle_ui.h" />
+    <ClInclude Include="preset_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

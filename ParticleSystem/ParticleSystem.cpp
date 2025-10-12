@@ -1,5 +1,6 @@
 #include"includes.h"
 #include"particle_ui.h"
+#include"preset_manager.h"
 
 static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& manager)
 {
@@ -60,6 +61,26 @@ static void HandleResize(ParticleSystem::ParticleManager& manager)
 	}
 }
 
+static void applyPreset(const ParticleSystem::Preset& preset)
+{
+	particleLifetime = preset.lifetime;
+	particleSize = preset.size;
+	shapeIndex = preset.shape;
+	collissionIndex = preset.algo;
+	Color drawParticleColor = preset.color;
+	velocityRangeX = { -preset.velocity.x, preset.velocity.x };
+	velocityRangeY = { -preset.velocity.y, preset.velocity.y };
+	colorIndex = 0;
+	for (auto& i : colorPresets)
+	{
+		if (i.r == drawParticleColor.r && i.b == drawParticleColor.b && i.g == drawParticleColor.g)
+		{
+			break;
+		}
+		colorIndex++;
+	}
+}
+
 int main()
 {
 //WINDOW
@@ -71,6 +92,8 @@ int main()
 //VARIABLES
 	ParticleSystem::ParticleManager manager;
 	ParticleSystem::ParticleUI ui;
+	ParticleSystem::PresetManager prema;
+	presetNames = prema.getPresetNames();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -112,12 +135,10 @@ int main()
 		if (IsKeyPressed(KEY_RIGHT))
 		{
 			colorIndex = fmin(9, colorIndex + 1);
-			ui.updateParticleColor(colorIndex);
 		}
 		if (IsKeyPressed(KEY_LEFT))
 		{
 			colorIndex = fmax(0, colorIndex - 1);
-			ui.updateParticleColor(colorIndex);
 		}
 		if (IsKeyPressed(KEY_C))
 		{
@@ -133,7 +154,22 @@ int main()
 			particleLifetime = fmax(-1, particleLifetime - 1);
 			ui.updateParticleLifetime(particleLifetime);
 		}
-		
+		if (IsKeyPressed(KEY_P))
+		{
+			prema.nextPreset();
+			presetIndex = prema.getCurrentPresetIndex();
+		}
+		if (IsKeyPressed(KEY_O))
+		{
+			prema.prevPreset();
+			presetIndex = prema.getCurrentPresetIndex();
+		}
+		if (IsKeyPressed(KEY_ENTER))
+		{
+			applyPreset(prema.getCurrentPreset());
+			ui.applyPreset(prema.getCurrentPreset());
+		}
+
 		//external forces
 		if (IsKeyPressed(KEY_Q))
 		{
@@ -145,16 +181,16 @@ int main()
 		if (IsKeyDown(KEY_SPACE))
 		{
 			manager.createParticle(
-				ui.getShapeMode(),
+				ParticleSystem::ParticleShape(shapeIndex),
 				particleSize,
 				particleLifetime,
 				colorPresets[colorIndex],
 				GetMousePosition(),
 				{
-					50 - float(rand()%100),
-					50 - float(rand()%100)
+					velocityRangeX.y - rand()%int(velocityRangeX.y * 2),
+					velocityRangeY.y - rand() % int(velocityRangeY.y * 2)
 				},
-				ui.getCollissionResponse()
+				ParticleSystem::CollissionAlgo(collissionIndex)
 			);
 		}
 
