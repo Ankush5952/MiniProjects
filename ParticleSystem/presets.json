@@ -25,7 +25,7 @@
                 "g": 130,
                 "r": 130
             },
-            "lifetime": 4.0,
+            "lifetime": 2.0,
             "name": "Smoke",
             "shape": "CIRCLE",
             "size": 8,
