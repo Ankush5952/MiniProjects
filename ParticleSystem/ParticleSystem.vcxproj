@@ -140,6 +140,9 @@
     <ClInclude Include="particle_ui.h" />
     <ClInclude Include="preset_manager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="presets.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

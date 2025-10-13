@@ -278,6 +278,17 @@ void ParticleSystem::PresetManager::createDefaultPresets()
         { 30.0f,60.0f }
     ));
 
+    //Snow
+    presets.push_back(Preset(
+        "Snow",
+        CIRCLE,
+        5,
+        5.0f,
+        WHITE,
+        FLOW,
+        { 2.0f, 1.0f }
+    ));
+
     //Bouncy Balls
     presets.push_back(Preset(
         "Bouncy",
