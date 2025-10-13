@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="event.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="includes.h" />
     <ClCompile Include="particle.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="preset_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="event.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="particle_ui.h" />

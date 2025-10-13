@@ -1,6 +1,7 @@
 #include"includes.h"
 #include"particle_ui.h"
 #include"preset_manager.h"
+#include"event.h"
 
 static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& manager)
 {
@@ -103,6 +104,11 @@ int main()
 		dt = fmin(dt, 0.016f);
 
 	//EVENT HANDLING
+		Event<float> testEvent;
+		testEvent += [](float t) {
+			printf("dt = %.5f\n", t);
+		};
+		testEvent(dt);
 		//toggles
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
