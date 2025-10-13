@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="event.h" />
+    <ClInclude Include="game_events.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="particle_ui.h" />

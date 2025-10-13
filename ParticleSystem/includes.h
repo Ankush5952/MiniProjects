@@ -6,7 +6,7 @@
 #include<fstream>
 #include"json.hpp"
 #include<string>
-#include"event.h"
+#include"game_events.h"
 
 
 extern int WIDTH;
