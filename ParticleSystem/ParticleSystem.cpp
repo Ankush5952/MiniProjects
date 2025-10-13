@@ -1,9 +1,8 @@
 #include"includes.h"
 #include"particle_ui.h"
 #include"preset_manager.h"
-#include"event.h"
 
-static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& manager)
+static void onWindowResize(ParticleSystem::ParticleManager& manager)
 {
 	GRIDW = WIDTH / CELLSIZE;
 	GRIDH = HEIGHT / CELLSIZE;
@@ -11,8 +10,8 @@ static void onWindowResize(int pw, int ph, ParticleSystem::ParticleManager& mana
 	center = { WIDTH / 2.0F, HEIGHT / 2.0f };
 
 	const std::vector<ParticleSystem::Particle*>& pars = manager.getParticles();
-	double widthFactor = double(WIDTH) / double(pw);
-	double heightFactor = double(HEIGHT) / double(ph);
+	double widthFactor = double(WIDTH) / double(prevW);
+	double heightFactor = double(HEIGHT) / double(prevH);
 	for (auto& i : pars)
 	{
 		Vector2 currPos = i->getPos();
@@ -56,7 +55,7 @@ static void HandleResize(ParticleSystem::ParticleManager& manager)
 	HEIGHT = GetScreenHeight();
 	if (prevW != WIDTH || prevH != HEIGHT)
 	{
-		onWindowResize(prevW, prevH, manager);
+		onWindowResize(manager);
 		prevW = WIDTH;
 		prevH = HEIGHT;
 	}
