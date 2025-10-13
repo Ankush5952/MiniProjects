@@ -10,18 +10,41 @@ private:
 
 public:
 	//Subscribe to event - operator
-	void operator +=(std::function<void(Args...)> listener);
+	void operator +=(std::function<void(Args...)> listener)
+	{
+		listeners.push_back(listener);
+	}
 
 	//Subscribe to event - function
-	void subscribe(std::function<void(Args...)> listener);
+	void subscribe(std::function<void(Args...)> listener)
+	{
+		listeners.push_back(listener);
+	}
 
 	//Trigger event - operator
-	void operator()(Args... args);
+	void operator()(Args... args)
+	{
+		for (auto& i : listeners)
+		{
+			i(args...);
+		}
+	}
 
 	//Trigger event - function
-	void trigger(Args... args);
+	void trigger(Args... args)
+	{
+		(*this)(args...);
+	}
 
-	bool hasLiteners();
 
-	void clean();
+	bool hasLiteners()
+	{
+		return !listeners.empty();
+	}
+
+	void clean()
+	{
+		listeners.clear();
+	}
+
 };
