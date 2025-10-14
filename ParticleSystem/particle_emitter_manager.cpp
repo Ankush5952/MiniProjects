@@ -7,6 +7,7 @@ const std::vector<ParticleSystem::ParticleEmitter*>& ParticleSystem::ParticleEmi
 
 void ParticleSystem::ParticleEmitterManager::update(ParticleSystem::ParticleManager* manager)
 {
+	if (!manager) return;
 	for (auto i : emitters)
 	{
 		if(i->enabled) i->update(manager);
@@ -32,11 +33,19 @@ void ParticleSystem::ParticleEmitterManager::createEmitter(const ParticleSystem:
 
 void ParticleSystem::ParticleEmitterManager::removeEmitter(ParticleSystem::ParticleEmitter* emitter)
 {
-	if (emitters.empty()) return;
+	if (emitters.empty() || !emitter) return;
+	delete(emitter);
 	emitters.erase(remove(emitters.begin(), emitters.end(), emitter), emitters.end());
+
 }
 
 void ParticleSystem::ParticleEmitterManager::clean()
 {
+	for (auto& i : emitters) delete i;
 	emitters.clear();
+}
+
+ParticleSystem::ParticleEmitterManager::~ParticleEmitterManager()
+{
+	clean();
 }

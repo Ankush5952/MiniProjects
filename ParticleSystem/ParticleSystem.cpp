@@ -95,6 +95,7 @@ int main()
 	ParticleSystem::PresetManager& prema = ParticleSystem::PresetManager::get();
 	currentPresetName = prema.getCurrentPreset().name;
 	ParticleSystem::ParticleEmitterManager emitterManager;
+	const std::vector<ParticleSystem::ParticleEmitter*>& emitters = emitterManager.getEmitters();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -166,16 +167,14 @@ int main()
 		if (IsKeyPressed(KEY_K))
 		{
 			currentEmitterIndex = fmax(-1, currentEmitterIndex - 1);
-			std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
-			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : temp[currentEmitterIndex]->name;
+			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
 		}
 		if (IsKeyPressed(KEY_L))
 		{
-			std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
-			if(temp.size() > 0)
+			if(emitters.size() > 0)
 			{
-				currentEmitterIndex = fmin(currentEmitterIndex + 1, temp.size()-1);
-				currentEmitter = temp[currentEmitterIndex]->name;
+				currentEmitterIndex = fmin(currentEmitterIndex + 1, emitters.size()-1);
+				currentEmitter = emitters[currentEmitterIndex]->name;
 			}
 		}
 		if (IsKeyPressed(KEY_E))
@@ -206,9 +205,8 @@ int main()
 		{
 			if (currentEmitterIndex != -1) 
 			{
-				std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
-				temp[currentEmitterIndex]->setPos(GetMousePosition());
-				temp[currentEmitterIndex]->enabled = true;
+				emitters[currentEmitterIndex]->setPos(GetMousePosition());
+				emitters[currentEmitterIndex]->enabled = true;
 			}
 		}
 		if (IsKeyDown(KEY_Z))
@@ -218,6 +216,22 @@ int main()
 		if (IsKeyDown(KEY_X))
 		{
 			frequency += 0.1f;
+		}
+		if (IsKeyPressed(KEY_T))
+		{
+			if(currentEmitterIndex != -1) emitters[currentEmitterIndex]->enabled = !emitters[currentEmitterIndex]->enabled;
+		}
+		if (IsKeyPressed(KEY_DELETE)) 
+		{
+			emitterManager.removeEmitter(emitters[currentEmitterIndex]);
+			currentEmitterIndex = Clamp(currentEmitterIndex, -1, emitters.size() - 1);
+			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
+		}
+		if (IsKeyPressed(KEY_BACKSPACE)) 
+		{
+			emitterManager.clean();
+			currentEmitterIndex = -1;
+			currentEmitter = "NONE";
 		}
 
 		//external forces

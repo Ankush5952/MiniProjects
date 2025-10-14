@@ -22,6 +22,9 @@ namespace ParticleSystem
 
 		void removeEmitter(ParticleEmitter* emitter);
 		void clean();
+
+		//deconstructor
+		~ParticleEmitterManager();
 	};
 }
 

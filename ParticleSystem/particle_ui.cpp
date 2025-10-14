@@ -24,7 +24,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"EMITTER :     %s (K/L)\n\n"
 		"Create Emitter:  R\n\n"
 		"Create Emitter(Preset): E\n\n"
-		"Place Emitter:  RMB \n\n"
+		"Place Emitter:  LMB \n\n"
 		"VelX:          [%.2f, %.2f]\n\n"
 		"VelY:          [%.2f, %.2f]\n\n"
 		"SPAWN:        SPACE\n\n"
