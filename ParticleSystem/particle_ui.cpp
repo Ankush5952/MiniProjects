@@ -50,6 +50,6 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 	sprintf_s(fps, "FPS: %i", GetFPS());
 
 	DrawRectangle(0, 0, 215, HEIGHT, Fade(BLACK, 0.7));
-	DrawText(text, WIDTH*0.009f, HEIGHT * 0.05, 15, GOLD);
+	DrawText(text, WIDTH*0.007f, HEIGHT * 0.05, 15, GOLD);
 	DrawText(fps, WIDTH - 100, 10, 20, GREEN);
 }

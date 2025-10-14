@@ -3,7 +3,7 @@
 #include"preset_manager.h"
 #include"particle_emitter_manager.h"
 
-static void onWindowResize(ParticleSystem::ParticleManager& manager)
+static void onWindowResize(ParticleSystem::ParticleManager& manager, ParticleSystem::ParticleEmitterManager& emitterManager)
 {
 	GRIDW = WIDTH / CELLSIZE;
 	GRIDH = HEIGHT / CELLSIZE;
@@ -14,6 +14,17 @@ static void onWindowResize(ParticleSystem::ParticleManager& manager)
 	double widthFactor = double(WIDTH) / double(prevW);
 	double heightFactor = double(HEIGHT) / double(prevH);
 	for (auto& i : pars)
+	{
+		Vector2 currPos = i->getPos();
+		Vector2 newPos = {
+			currPos.x * widthFactor,
+			currPos.y * heightFactor
+		};
+		i->setPos(newPos);
+	}
+
+	const std::vector<ParticleSystem::ParticleEmitter*>& ems = emitterManager.getEmitters();
+	for (auto& i : ems)
 	{
 		Vector2 currPos = i->getPos();
 		Vector2 newPos = {
@@ -50,13 +61,13 @@ static void HandleFullScreenToggle()
 	isFullscreen = !isFullscreen;
 }
 
-static void HandleResize(ParticleSystem::ParticleManager& manager)
+static void HandleResize(ParticleSystem::ParticleManager& manager, ParticleSystem::ParticleEmitterManager& emitterManager)
 {
 	WIDTH = GetScreenWidth();
 	HEIGHT = GetScreenHeight();
 	if (prevW != WIDTH || prevH != HEIGHT)
 	{
-		onWindowResize(manager);
+		onWindowResize(manager, emitterManager);
 		prevW = WIDTH;
 		prevH = HEIGHT;
 	}
@@ -223,9 +234,12 @@ int main()
 		}
 		if (IsKeyPressed(KEY_DELETE)) 
 		{
-			emitterManager.removeEmitter(emitters[currentEmitterIndex]);
-			currentEmitterIndex = Clamp(currentEmitterIndex, -1, emitters.size() - 1);
-			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
+			if(currentEmitterIndex != -1)
+			{
+				emitterManager.removeEmitter(emitters[currentEmitterIndex]);
+				currentEmitterIndex = Clamp(currentEmitterIndex, -1, emitters.size() - 1);
+				currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
+			}
 		}
 		if (IsKeyPressed(KEY_BACKSPACE)) 
 		{
@@ -261,7 +275,7 @@ int main()
 	//RESIZE HANDLING
 		if (IsKeyPressed(KEY_F11)) HandleFullScreenToggle();
 
-		HandleResize(manager);
+		HandleResize(manager, emitterManager);
 
 	//PHYSICS AND UPDATES
 		emitterManager.update(&manager);

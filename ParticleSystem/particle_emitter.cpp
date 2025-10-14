@@ -66,6 +66,7 @@ void ParticleSystem::ParticleEmitter::update(ParticleManager* manager)
 		lastSpawnTime = GetTime();
 		spawnParticle(manager);
 	}
+	DrawCircleLinesV(position, 3, type.getColor());
 }
 
 ParticleSystem::ParticleEmitter::ParticleEmitter(Particle p, Vector2 pos, Vector2 velMin, Vector2 velMax, float freq)
