@@ -5,7 +5,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 	int particlesOnScreen = manager->getParticles().size();
 	const char* gravityState = (gravityEnabled) ? "TRUE" : "FALSE";
 
-	char text[512];
+	char text[1024];
 	sprintf_s(
 		text,
 		"Particles:     %i\n\n"
@@ -20,6 +20,11 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"BOUNDARY:      %s (B)\n\n"
 		"PRESET :     %s (O/P)\n\n"
 		"Apply Preset       ENTER\n\n"
+		"FREQUENCY:    %.2f (Z/X)\n\n"
+		"EMITTER :     %s (K/L)\n\n"
+		"Create Emitter:  R\n\n"
+		"Create Emitter(Preset): E\n\n"
+		"Place Emitter:  RMB \n\n"
 		"VelX:          [%.2f, %.2f]\n\n"
 		"VelY:          [%.2f, %.2f]\n\n"
 		"SPAWN:        SPACE\n\n"
@@ -35,6 +40,8 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		(fadeEffect)?"ON":"OFF",
 		(boundary)?"ON":"OFF",
 		currentPresetName.c_str(),
+		frequency,
+		currentEmitter.c_str(),
 		velocityRangeX.x, velocityRangeX.y,
 		velocityRangeY.x, velocityRangeY.y
 	);

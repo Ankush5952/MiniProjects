@@ -30,8 +30,21 @@ namespace ParticleSystem
 		int currentPresetIndex;
 		std::string filePath;
 
+		//constructor
+		PresetManager(const std::string& pathToFile = "presets.json");
+		PresetManager(const PresetManager& p) = delete;
+		PresetManager operator= (const PresetManager&) = delete;
+		PresetManager(PresetManager&&) = delete;
+		PresetManager& operator= (PresetManager&&) = delete;
+
 	public:
 		//getters
+		static PresetManager& get()
+		{
+			static PresetManager instance;
+			return instance;
+		}
+		const std::vector<Preset>& getPresets() const;
 		const Preset& getCurrentPreset() const;
 		const Preset& getPreset(int index) const;
 		int getCurrentPresetIndex() const;
@@ -49,9 +62,6 @@ namespace ParticleSystem
 		bool loadFromFile();
 		bool saveToFile();
 		void createDefaultPresets();
-
-		//constructor
-		PresetManager(const std::string& pathToFile = "presets.json");
 	};
 }
 

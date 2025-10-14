@@ -33,6 +33,9 @@ int colorIndex = 0;
 bool fadeEffect = true;
 bool boundary = true;
 std::string currentPresetName = "NONE";
+int currentEmitterIndex = -1;
+std::string currentEmitter = "NONE";
+float frequency = 1.0;
 
 Vector2 gravity = { 0, 0 };
 bool gravityEnabled = false;

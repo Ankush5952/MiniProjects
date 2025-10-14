@@ -122,6 +122,11 @@ ParticleSystem::Preset ParticleSystem::Preset::fromJson(const json& j)
     return preset;
 }
 
+const std::vector<ParticleSystem::Preset>& ParticleSystem::PresetManager::getPresets() const
+{
+    return presets;
+}
+
 const ParticleSystem::Preset& ParticleSystem::PresetManager::getCurrentPreset() const
 {
     if (presets.empty())

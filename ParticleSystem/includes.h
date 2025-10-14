@@ -37,6 +37,9 @@ extern int colorIndex;
 extern bool fadeEffect;
 extern bool boundary;
 extern std::string currentPresetName;
+extern int currentEmitterIndex;
+extern std::string currentEmitter;
+extern float frequency;
 
 extern const int CELLSIZE;
 extern int GRIDW;

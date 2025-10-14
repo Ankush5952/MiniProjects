@@ -1,0 +1,42 @@
+#include "particle_emitter_manager.h"
+
+const std::vector<ParticleSystem::ParticleEmitter*>& ParticleSystem::ParticleEmitterManager::getEmitters() const
+{
+	return emitters;
+}
+
+void ParticleSystem::ParticleEmitterManager::update(ParticleSystem::ParticleManager* manager)
+{
+	for (auto i : emitters)
+	{
+		if(i->enabled) i->update(manager);
+	}
+}
+
+void ParticleSystem::ParticleEmitterManager::createEmitter(ParticleSystem::ParticleEmitter* emitter)
+{
+	emitters.push_back(emitter);
+}
+
+void ParticleSystem::ParticleEmitterManager::createEmitter(const ParticleSystem::ParticleEmitter emitter)
+{
+	ParticleSystem::ParticleEmitter* temp = new ParticleSystem::ParticleEmitter(emitter);
+	emitters.push_back(temp);
+}
+
+void ParticleSystem::ParticleEmitterManager::createEmitter(const ParticleSystem::Preset& preset, Vector2 pos, float freq)
+{
+	ParticleSystem::ParticleEmitter* temp = new ParticleSystem::ParticleEmitter(preset, pos, freq);
+	emitters.push_back(temp);
+}
+
+void ParticleSystem::ParticleEmitterManager::removeEmitter(ParticleSystem::ParticleEmitter* emitter)
+{
+	if (emitters.empty()) return;
+	emitters.erase(remove(emitters.begin(), emitters.end(), emitter), emitters.end());
+}
+
+void ParticleSystem::ParticleEmitterManager::clean()
+{
+	emitters.clear();
+}

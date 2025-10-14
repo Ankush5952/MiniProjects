@@ -1,7 +1,7 @@
 #include"includes.h"
 #include"particle_ui.h"
 #include"preset_manager.h"
-#include"particle_emitter.h"
+#include"particle_emitter_manager.h"
 
 static void onWindowResize(ParticleSystem::ParticleManager& manager)
 {
@@ -87,28 +87,14 @@ int main()
 //WINDOW
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(WIDTH, HEIGHT, TITLE);
-	//SetTargetFPS(60);
 	InitializeRuntimeVariables();
 
 //VARIABLES
 	ParticleSystem::ParticleManager manager;
 	ParticleSystem::ParticleUI ui;
-	ParticleSystem::PresetManager prema;
+	ParticleSystem::PresetManager& prema = ParticleSystem::PresetManager::get();
 	currentPresetName = prema.getCurrentPreset().name;
-	ParticleSystem::ParticleEmitter emitter1(
-		{
-			ParticleSystem::CIRCLE,
-			5,
-			2.0f,
-			ORANGE,
-			{0, 0},
-			{0,0},
-			ParticleSystem::FLOW
-		},
-		{400,400},
-		{50, 100},
-		30
-	);
+	ParticleSystem::ParticleEmitterManager emitterManager;
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -177,6 +163,62 @@ int main()
 		{
 			applyPreset(prema.getCurrentPreset());
 		}
+		if (IsKeyPressed(KEY_K))
+		{
+			currentEmitterIndex = fmax(-1, currentEmitterIndex - 1);
+			std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
+			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : temp[currentEmitterIndex]->name;
+		}
+		if (IsKeyPressed(KEY_L))
+		{
+			std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
+			if(temp.size() > 0)
+			{
+				currentEmitterIndex = fmin(currentEmitterIndex + 1, temp.size()-1);
+				currentEmitter = temp[currentEmitterIndex]->name;
+			}
+		}
+		if (IsKeyPressed(KEY_E))
+		{
+			emitterManager.createEmitter(prema.getCurrentPreset(), GetMousePosition(), frequency);
+		}
+		if (IsKeyPressed(KEY_R))
+		{
+			emitterManager.createEmitter(
+				{
+					{
+						ParticleSystem::ParticleShape(shapeIndex),
+						particleSize,
+						particleLifetime,
+						colorPresets[colorIndex],
+						GetMousePosition(),
+						{0,0},
+						ParticleSystem::CollissionAlgo(collissionIndex)
+					},
+					GetMousePosition(),
+					{ -100,-100 },
+					{ 100,100 },
+					frequency
+				}
+			);
+		}
+		if (IsMouseButtonPressed(0))
+		{
+			if (currentEmitterIndex != -1) 
+			{
+				std::vector<ParticleSystem::ParticleEmitter*> temp = emitterManager.getEmitters();
+				temp[currentEmitterIndex]->setPos(GetMousePosition());
+				temp[currentEmitterIndex]->enabled = true;
+			}
+		}
+		if (IsKeyDown(KEY_Z))
+		{
+			frequency = fmax(0.1f, frequency - 0.1f);
+		}
+		if (IsKeyDown(KEY_X))
+		{
+			frequency += 0.1f;
+		}
 
 		//external forces
 		if (IsKeyPressed(KEY_Q))
@@ -208,7 +250,7 @@ int main()
 		HandleResize(manager);
 
 	//PHYSICS AND UPDATES
-		emitter1.update(&manager);
+		emitterManager.update(&manager);
 		manager.update(dt);
 
 	//RENDER
