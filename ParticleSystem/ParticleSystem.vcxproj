@@ -128,6 +128,7 @@
     <ClCompile Include="includes.h" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="particle_emitter.cpp" />
     <ClCompile Include="particle_manager.cpp" />
     <ClCompile Include="particle_ui.cpp" />
     <ClCompile Include="preset_manager.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="event.h" />
     <ClInclude Include="game_events.h" />
     <ClInclude Include="particle.h" />
+    <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="particle_ui.h" />
     <ClInclude Include="preset_manager.h" />

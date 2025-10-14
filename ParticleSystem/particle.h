@@ -70,6 +70,7 @@ namespace ParticleSystem
 		// response = { DESTROY, CONVERT, ABSORB, BOUNCE, REPEL, STICK, FLOW }
 		//t = lifetime
 		Particle(ParticleShape s, int a, float t, Color c, Vector2 pos, Vector2 vel, CollissionAlgo response);
+		Particle() = default;
 	};
 }
 

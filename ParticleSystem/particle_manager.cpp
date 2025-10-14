@@ -167,6 +167,11 @@ void ParticleSystem::ParticleManager::resolveParticleCollission(ParticleSystem::
 	}
 }
 
+void ParticleSystem::ParticleManager::createParticle(ParticleSystem::Particle p)
+{
+	particles.push_back(new Particle(p));
+}
+
 void ParticleSystem::ParticleManager::createParticle(ParticleSystem::Particle* p)
 {
 	particles.push_back(p);

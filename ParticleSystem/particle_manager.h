@@ -24,6 +24,7 @@ namespace ParticleSystem
 
 	//misc
 
+		void createParticle(ParticleSystem::Particle p);
 		void createParticle(ParticleSystem::Particle* p);
 		void createParticle(ParticleShape s, int side = 1, float lifetime = 1.0f, Color c = WHITE, Vector2 pos = { 0,0 }, Vector2 vel = { 0,0 }, CollissionAlgo response = BOUNCE);
 		void update(float dt);

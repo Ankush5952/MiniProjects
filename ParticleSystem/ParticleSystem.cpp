@@ -1,6 +1,7 @@
 #include"includes.h"
 #include"particle_ui.h"
 #include"preset_manager.h"
+#include"particle_emitter.h"
 
 static void onWindowResize(ParticleSystem::ParticleManager& manager)
 {
@@ -94,6 +95,20 @@ int main()
 	ParticleSystem::ParticleUI ui;
 	ParticleSystem::PresetManager prema;
 	currentPresetName = prema.getCurrentPreset().name;
+	ParticleSystem::ParticleEmitter emitter1(
+		{
+			ParticleSystem::CIRCLE,
+			5,
+			2.0f,
+			ORANGE,
+			{0, 0},
+			{0,0},
+			ParticleSystem::FLOW
+		},
+		{400,400},
+		{50, 100},
+		30
+	);
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -193,6 +208,7 @@ int main()
 		HandleResize(manager);
 
 	//PHYSICS AND UPDATES
+		emitter1.update(&manager);
 		manager.update(dt);
 
 	//RENDER
