@@ -119,23 +119,29 @@ void ParticleSystem::Particle::setCollissionResponse(CollissionAlgo c)
 
 void ParticleSystem::Particle::updateTrail()
 {
-    trail.push_front(position);
-
-    if(trail.size() > maxTrail)
+    if(trail.empty() || (position.x - trail.front().x)* (position.x - trail.front().x) + (position.y - trail.front().y)* (position.y - trail.front().y) > 4.0f)
     {
-        trail.pop_back();
+        trail.push_front(position);
+
+        if (trail.size() > maxTrail)
+        {
+            trail.pop_back();
+        }
     }
 }
 
 void ParticleSystem::Particle::update(float dt)
 {
+    frameCount++;
+
     timeSinceLifeBegan += dt;
 
     velocity += gravity * dt;
 
-    if (trailEffect)
+    if (trailEffect && frameCount % 10 == 0)
     {
         updateTrail();
+        frameCount = 1;
     }
 
     position += velocity * dt;
@@ -186,8 +192,8 @@ void ParticleSystem::Particle::draw()
             {
                 for (int i = 1; i < trail.size(); i++)
                 {
-                    float trailAlpha = fadeVal * (1.0f - float(i*0.15f)/(trail.size()));
-                    DrawCircleV(trail[i], side, Fade(color, trailAlpha));
+                    float trailAlpha = fadeVal * (1.0f - float(i)/(trail.size()));
+                    DrawLineEx(trail[i - 1], trail[i], side*1.5f, Fade(color, trailAlpha));
                 }
             }
             break;
@@ -233,6 +239,7 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
     collissionResponse = response;
 
     timeSinceLifeBegan = 0;
+    frameCount = 0;
 
     trail = {};
 
