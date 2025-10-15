@@ -4,8 +4,9 @@
 #include<vector>
 #include<unordered_set>
 #include<fstream>
-#include"json.hpp"
+#include<deque>
 #include<string>
+#include"json.hpp"
 #include"game_events.h"
 
 
@@ -35,6 +36,8 @@ extern Vector2 velocityRangeX;
 extern Vector2 velocityRangeY;
 extern int colorIndex;
 extern bool fadeEffect;
+extern bool trailEffect;
+extern int maxTrail;
 extern bool boundary;
 extern std::string currentPresetName;
 extern int currentEmitterIndex;

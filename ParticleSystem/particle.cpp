@@ -117,11 +117,29 @@ void ParticleSystem::Particle::setCollissionResponse(CollissionAlgo c)
     collissionResponse = c;
 }
 
+void ParticleSystem::Particle::updateTrail()
+{
+    if (trail.size() < maxTrail)
+    {
+        trail.push_front(position);
+    }
+    else
+    {
+        trail.pop_back();
+        trail.push_front(position);
+    }
+}
+
 void ParticleSystem::Particle::update(float dt)
 {
     timeSinceLifeBegan += dt;
 
     velocity += gravity * dt;
+
+    if (trailEffect)
+    {
+        updateTrail();
+    }
 
     position += velocity * dt;
 
@@ -167,6 +185,13 @@ void ParticleSystem::Particle::draw()
     {
         case CIRCLE:
             DrawCircleV(position, side, Fade(color, fadeVal)); 
+            if (trailEffect && !trail.empty())
+            {
+                for (int i = 0; i < trail.size(); i++)
+                {
+                    DrawCircleV(trail[i], side, Fade(color, 1 - i*0.15f));
+                }
+            }
             break;
         case SQUARE: 
             DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, Fade(color,fadeVal));
@@ -210,6 +235,8 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
     collissionResponse = response;
 
     timeSinceLifeBegan = 0;
+
+    trail = {};
 
     if (s == TRIANGLE)
     {

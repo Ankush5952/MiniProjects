@@ -36,6 +36,8 @@ namespace ParticleSystem
 		CollissionAlgo collissionResponse = BOUNCE;
 		Vector2 v1 = { 0,0 }, v2 = { 0,0 }, v3 = { 0,0 };
 		Vector2 n1 = { 0,0 }, n2 = { 0,0 }, n3 = { 0,0 };
+
+		std::deque<Vector2> trail;
 	
 	public:
 	//getters
@@ -60,6 +62,7 @@ namespace ParticleSystem
 		void setCollissionResponse(CollissionAlgo c);
 
 	//misc
+		void updateTrail();
 		void update(float dt);
 		void draw();
 		void resetParticle();
