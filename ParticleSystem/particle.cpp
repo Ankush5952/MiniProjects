@@ -119,7 +119,7 @@ void ParticleSystem::Particle::setCollissionResponse(CollissionAlgo c)
 
 void ParticleSystem::Particle::updateTrail()
 {
-    if (trail.size() < maxTrail)
+    if (trail.size() <= maxTrail)
     {
         trail.push_front(position);
     }
@@ -180,16 +180,17 @@ void ParticleSystem::Particle::update(float dt)
 void ParticleSystem::Particle::draw()
 {
     float lifePercent = timeSinceLifeBegan / lifetime;
-    float fadeVal = (fadeEffect)? 1.0 - lifePercent : color.a;
+    float fadeVal = (fadeEffect)? 1.0 - lifePercent : 1.0f;
     switch (shape)
     {
         case CIRCLE:
             DrawCircleV(position, side, Fade(color, fadeVal)); 
             if (trailEffect && !trail.empty())
             {
-                for (int i = 0; i < trail.size(); i++)
+                for (int i = 1; i < trail.size(); i++)
                 {
-                    DrawCircleV(trail[i], side, Fade(color, 1 - i*0.15f));
+                    float trailAlpha = fadeEffect * (1.0f - float(i + 1) / trail.size());
+                    DrawCircleV(trail[i], side, Fade(color, trailAlpha));
                 }
             }
             break;
@@ -236,7 +237,7 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
 
     timeSinceLifeBegan = 0;
 
-    trail = {};
+    trail = {pos};
 
     if (s == TRIANGLE)
     {
