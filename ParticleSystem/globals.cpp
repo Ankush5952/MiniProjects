@@ -23,7 +23,7 @@ bool isGridEnabled = false;
 
 int shapeIndex = 0;
 int collissionIndex = 0;
-float particleLifetime = 5.0f;
+float particleLifetime = 0.1f;
 int particleSize = 3;
 std::vector<Color> colorPresets = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
 const char* colors[] = { "WHITE", "RED", "D.BLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };
@@ -32,7 +32,7 @@ Vector2 velocityRangeY = {-50.0f, 50.0f};
 int colorIndex = 0;
 bool fadeEffect = true;
 bool trailEffect = true;
-int maxTrail = 5;
+int maxTrail = 30;
 bool boundary = true;
 std::string currentPresetName = "NONE";
 int currentEmitterIndex = -1;
