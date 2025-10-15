@@ -38,7 +38,7 @@ namespace ParticleSystem
 		Vector2 n1 = { 0,0 }, n2 = { 0,0 }, n3 = { 0,0 };
 
 		std::deque<Vector2> trail;
-		int frameCount = 0;
+		//int frameCount = 0;
 	
 	public:
 	//getters

@@ -106,7 +106,7 @@ int main()
 	ParticleSystem::PresetManager& prema = ParticleSystem::PresetManager::get();
 	currentPresetName = prema.getCurrentPreset().name;
 	ParticleSystem::ParticleEmitterManager emitterManager;
-	const std::vector<ParticleSystem::ParticleEmitter*>& emitters = emitterManager.getEmitters();
+	const auto& emitters = emitterManager.getEmitters();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())

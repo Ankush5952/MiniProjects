@@ -119,29 +119,42 @@ void ParticleSystem::Particle::setCollissionResponse(CollissionAlgo c)
 
 void ParticleSystem::Particle::updateTrail()
 {
-    if(trail.empty() || (position.x - trail.front().x)* (position.x - trail.front().x) + (position.y - trail.front().y)* (position.y - trail.front().y) > 4.0f)
+    if (trail.empty())
     {
         trail.push_front(position);
+    }
+    else
+    {
+        const float MIN_DIST_TRAIL = 16.0f;
 
-        if (trail.size() > maxTrail)
+        float dx = position.x - trail.front().x;
+        float dy = position.y - trail.front().y;
+        float dist = dx * dx + dy * dy;
+
+        if(dist > MIN_DIST_TRAIL)
         {
-            trail.pop_back();
+            trail.push_front(position);
+
+            if (trail.size() > maxTrail)
+            {
+                trail.pop_back();
+            }
         }
     }
 }
 
 void ParticleSystem::Particle::update(float dt)
 {
-    frameCount++;
+    //frameCount++;
 
     timeSinceLifeBegan += dt;
 
     velocity += gravity * dt;
 
-    if (trailEffect && frameCount % 10 == 0)
+    if (trailEffect )
     {
         updateTrail();
-        frameCount = 1;
+        //frameCount = 1;
     }
 
     position += velocity * dt;
@@ -239,7 +252,7 @@ ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vect
     collissionResponse = response;
 
     timeSinceLifeBegan = 0;
-    frameCount = 0;
+    //frameCount = 0;
 
     trail = {};
 
