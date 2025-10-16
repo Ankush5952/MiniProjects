@@ -60,11 +60,14 @@ void ParticleSystem::ParticleEmitter::spawnParticle(ParticleManager* manager)
 
 void ParticleSystem::ParticleEmitter::update(ParticleManager* manager)
 {
-	double timeSinceLastSpawn = GetTime() - lastSpawnTime;
-	if(timeSinceLastSpawn >= secondsPerParticle)
+	if(enabled)
 	{
-		lastSpawnTime = GetTime();
-		spawnParticle(manager);
+		double timeSinceLastSpawn = GetTime() - lastSpawnTime;
+		if (timeSinceLastSpawn >= secondsPerParticle)
+		{
+			lastSpawnTime = GetTime();
+			spawnParticle(manager);
+		}
 	}
 	DrawCircleLinesV(position, 3, type.getColor());
 }

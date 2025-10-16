@@ -39,6 +39,8 @@ namespace ParticleSystem
 
 		std::deque<Vector2> trail;
 		//int frameCount = 0;
+		
+		static constexpr float MIN_DIST_TRAIL = 16.0f;
 	
 	public:
 	//getters

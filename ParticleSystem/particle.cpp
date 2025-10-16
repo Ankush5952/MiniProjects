@@ -125,8 +125,6 @@ void ParticleSystem::Particle::updateTrail()
     }
     else
     {
-        const float MIN_DIST_TRAIL = 16.0f;
-
         float dx = position.x - trail.front().x;
         float dy = position.y - trail.front().y;
         float dist = dx * dx + dy * dy;
@@ -206,8 +204,10 @@ void ParticleSystem::Particle::draw()
     {
         for (int i = 1; i < trail.size(); i++)
         {
-            float trailAlpha = fadeVal * (1.0f - float(i) / (trail.size()));
-            DrawLineEx(trail[i - 1], trail[i], side * 1.5f, Fade(color, trailAlpha));
+            float t = float(i) / (trail.size());
+            thick = thick * (1 - t * 0.5f);
+            float trailAlpha = fadeVal * (1.0f - t);
+            DrawLineEx(trail[i - 1], trail[i], thick, Fade(color, trailAlpha));
         }
     }
 

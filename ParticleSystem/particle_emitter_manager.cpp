@@ -10,7 +10,7 @@ void ParticleSystem::ParticleEmitterManager::update(ParticleSystem::ParticleMana
 	if (!manager) return;
 	for (auto i : emitters)
 	{
-		if(i->enabled) i->update(manager);
+		i->update(manager);
 	}
 }
 

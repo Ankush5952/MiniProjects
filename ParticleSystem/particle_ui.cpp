@@ -54,17 +54,17 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"     ENTER\n\n"
 		"       %.2f <Z/X>\n\n"
 		"     %s <K/L>\n\n"
-		"                 R \n\n"
-		"                 E \n\n"
-		"             LMB \n\n"
-		"             DEL \n\n"
-		"          BKSPC \n\n"
-		"          LSHIFT\n\n"
+		"              <R> \n\n"
+		"              <E> \n\n"
+		"           <LMB> \n\n"
+		"           <DEL> \n\n"
+		"        <BKSPC> \n\n"
+		"        <LSHIFT>\n\n"
 		"[%.2f, %.2f]\n\n"
 		"[%.2f, %.2f]\n\n"
-		"          SPACE \n\n"
-		"               C \n\n"
-		"            TAB \n\n",
+		"         <SPACE> \n\n"
+		"             <C> \n\n"
+		"           <TAB> \n\n",
 		particlesOnScreen,
 		shapes[shapeIndex],
 		collissions[collissionIndex],
