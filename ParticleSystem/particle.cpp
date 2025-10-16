@@ -197,18 +197,24 @@ void ParticleSystem::Particle::draw()
 {
     float lifePercent = timeSinceLifeBegan / lifetime;
     float fadeVal = (fadeEffect)? 1.0 - lifePercent : 1.0f;
+
+    float thick = 1.0f;
+    if (shape == CIRCLE) thick = side * 1.5f;
+    if (shape == SQUARE) thick = side * .5f;
+    if (shape == TRIANGLE) thick = side * oneOverRoot3;
+    if (trailEffect && !trail.empty())
+    {
+        for (int i = 1; i < trail.size(); i++)
+        {
+            float trailAlpha = fadeVal * (1.0f - float(i) / (trail.size()));
+            DrawLineEx(trail[i - 1], trail[i], side * 1.5f, Fade(color, trailAlpha));
+        }
+    }
+
     switch (shape)
     {
         case CIRCLE:
             DrawCircleV(position, side, Fade(color, fadeVal)); 
-            if (trailEffect && !trail.empty())
-            {
-                for (int i = 1; i < trail.size(); i++)
-                {
-                    float trailAlpha = fadeVal * (1.0f - float(i)/(trail.size()));
-                    DrawLineEx(trail[i - 1], trail[i], side*1.5f, Fade(color, trailAlpha));
-                }
-            }
             break;
         case SQUARE: 
             DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, Fade(color,fadeVal));

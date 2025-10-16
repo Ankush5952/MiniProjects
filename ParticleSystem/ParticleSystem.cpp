@@ -120,6 +120,7 @@ int main()
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
 		if (IsKeyPressed(KEY_F)) fadeEffect = !fadeEffect;
+		if (IsKeyPressed(KEY_T)) trailEffect = !trailEffect;
 		if (IsKeyPressed(KEY_B)) boundary = !boundary;
 		
 		//particle properties
@@ -228,7 +229,7 @@ int main()
 		{
 			frequency += 0.1f;
 		}
-		if (IsKeyPressed(KEY_T))
+		if (IsKeyPressed(KEY_LEFT_SHIFT))
 		{
 			if(currentEmitterIndex != -1) emitters[currentEmitterIndex]->enabled = !emitters[currentEmitterIndex]->enabled;
 		}
