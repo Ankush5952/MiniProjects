@@ -83,11 +83,18 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		velocityRangeY.x, velocityRangeY.y
 	);
 
+	//double fontsize = WIDTH * 0.00050625 * HEIGHT * 0.00050625;
+	double fontsize = double(WIDTH)/ HEIGHT * 2;
+	Vector2 label_vect = MeasureTextEx(GetFontDefault(), labels, fontsize, 1);
+	Vector2 value_vect = MeasureTextEx(GetFontDefault(), values, fontsize, 1);
+
 	char fps[20];
 	sprintf_s(fps, "FPS: %i", GetFPS());
 
-	DrawRectangle(0, 0, 327, HEIGHT, Fade(BLACK, 0.7));
-	DrawText(labels, WIDTH * 0.007f, HEIGHT * 0.05, 15, GOLD);
-	DrawText(values, WIDTH*0.11f, HEIGHT * 0.05, 15, GOLD);
+	DrawRectangle(0, 0, WIDTH*0.007f + label_vect.x + value_vect.x + 30, HEIGHT, Fade(BLACK, 0.7));
+	//DrawText(labels, WIDTH * 0.007f, HEIGHT * 0.05, fontsize, GOLD);
+	//DrawText(values, WIDTH*0.11f, HEIGHT * 0.05, fontsize, GOLD);
+	DrawText(labels, WIDTH*0.007f, HEIGHT * 0.05, fontsize, GOLD);
+	DrawText(values, WIDTH*0.007f + label_vect.x + 20, HEIGHT * 0.05, fontsize, GOLD);
 	DrawText(fps, WIDTH - 100, 10, 20, GREEN);
 }
