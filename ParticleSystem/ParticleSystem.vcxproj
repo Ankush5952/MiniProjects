@@ -145,6 +145,10 @@
     <ClInclude Include="preset_manager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="particle_frag.glsl" />
+    <None Include="particle_vert.glsl">
+      <FileType>Document</FileType>
+    </None>
     <None Include="presets.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

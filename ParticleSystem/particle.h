@@ -26,6 +26,8 @@ namespace ParticleSystem
 	class Particle
 	{
 	private:
+	//Vars
+
 		Vector2 position = { 0,0 };
 		Vector2 velocity = { 0,0 };
 		ParticleShape shape = CIRCLE;
@@ -38,7 +40,6 @@ namespace ParticleSystem
 		Vector2 n1 = { 0,0 }, n2 = { 0,0 }, n3 = { 0,0 };
 
 		std::deque<Vector2> trail;
-		//int frameCount = 0;
 		
 		static constexpr float MIN_DIST_TRAIL = 16.0f;
 	
@@ -70,6 +71,11 @@ namespace ParticleSystem
 		void draw();
 		void resetParticle();
 		void updateTriangleGeometry();
+
+	//Shaders
+
+		static void loadShader();
+		static void unloadShader();
 
 		//s = { CIRCLE, SQUARE, TRIANGLE }
 		//a = { RADIUS, SIDE,   SIDE }

@@ -1,5 +1,27 @@
 #include "particle.h"
 
+void ParticleSystem::Particle::loadShader()
+{
+    if (!isParticleShaderLoaded)
+    {
+        particleShader = LoadShader("particle_vert.glsl", "particle_frag.glsl");
+        isParticleShaderLoaded = true;
+    }
+
+    lifetimeLoc = GetShaderLocation(particleShader, "lifetime");
+    timeLoc = GetShaderLocation(particleShader, "timeSinceLifeBegan");
+    fadeLoc = GetShaderLocation(particleShader, "fadeEnabled");
+}
+
+void ParticleSystem::Particle::unloadShader()
+{
+    if (isParticleShaderLoaded)
+    {
+        UnloadShader(particleShader);
+        isParticleShaderLoaded = false;
+    }
+}
+
 Vector2 ParticleSystem::Particle::getPos() const
 {
     return position;
@@ -211,7 +233,14 @@ void ParticleSystem::Particle::draw()
         }
     }
 
-    switch (shape)
+    int fadeInt = fadeEffect;
+    SetShaderValue(particleShader, lifetimeLoc, &lifetime, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(particleShader, timeLoc, &timeSinceLifeBegan, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
+
+    BeginShaderMode(particleShader);
+
+    /*switch (shape)
     {
         case CIRCLE:
             DrawCircleV(position, side, Fade(color, fadeVal)); 
@@ -224,7 +253,24 @@ void ParticleSystem::Particle::draw()
             break;
         default:
             DrawCircleV(position, side, Fade(color,fadeVal));
+    }*/
+
+    switch (shape)
+    {
+    case CIRCLE:
+        DrawCircleV(position, side, color);
+        break;
+    case SQUARE:
+        DrawRectangle(position.x - side * 0.5f, position.y - side * 0.5f, side, side, color);
+        break;
+    case TRIANGLE:
+        DrawTriangle(v2, v1, v3, color);
+        break;
+    default:
+        DrawCircleV(position, side, color);
     }
+
+    EndShaderMode();
 }
 
 void ParticleSystem::Particle::resetParticle()

@@ -28,6 +28,12 @@ extern int prevH;
 
 extern Font default_font;
 
+extern Shader particleShader;
+extern bool isParticleShaderLoaded;
+extern int lifetimeLoc;
+extern int timeLoc;
+extern int fadeLoc;
+
 extern const int CELLSIZE;
 extern int GRIDW;
 extern int GRIDH;

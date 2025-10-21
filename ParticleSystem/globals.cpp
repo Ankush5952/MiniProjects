@@ -18,6 +18,12 @@ int prevH = HEIGHT;
 
 Font default_font;
 
+Shader particleShader = { 0 };
+bool isParticleShaderLoaded = false;
+int lifetimeLoc;
+int timeLoc;
+int fadeLoc;
+
 const int CELLSIZE = 20;
 int GRIDW = WIDTH / CELLSIZE;
 int GRIDH = HEIGHT / CELLSIZE;

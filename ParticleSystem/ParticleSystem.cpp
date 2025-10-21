@@ -107,6 +107,9 @@ int main()
 	currentPresetName = prema.getCurrentPreset().name;
 	ParticleSystem::ParticleEmitterManager emitterManager;
 	const auto& emitters = emitterManager.getEmitters();
+
+//SHADER
+	ParticleSystem::Particle::loadShader();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())
@@ -293,4 +296,7 @@ int main()
 
 		EndDrawing();
 	}
+
+	ParticleSystem::Particle::unloadShader();
+	CloseWindow();
 }
