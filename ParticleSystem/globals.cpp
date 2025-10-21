@@ -25,7 +25,7 @@ bool isGridEnabled = false;
 
 int shapeIndex = 0;
 int collissionIndex = 0;
-float particleLifetime = 0.1f;
+float particleLifetime = 0;
 int particleSize = 3;
 std::vector<Color> colorPresets = {  WHITE,   RED,   DARKBLUE,   GREEN,   YELLOW,   GRAY,   BROWN,  ORANGE,  PINK , PURPLE };
 const char* colors[] = { "WHITE", "RED", "D.BLUE", "GREEN", "YELLOW", "GRAY", "BROWN","ORANGE","PINK","PURPLE" };

@@ -99,7 +99,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 	sprintf_s(fps, "FPS: %i", GetFPS());
 
 	DrawRectangle(0, 0, rectWidth, HEIGHT, Fade(BLACK, 0.7)); //BG RECT
-	DrawTextEx(default_font, labels, { left_padding, up_padding }, fontsize, 0.5, GOLD);
-	DrawTextEx(default_font, values, { values_x, up_padding }, fontsize, 0.5, GOLD);
+	DrawTextEx(default_font, labels, { left_padding, up_padding }, fontsize, 0.5, PINK);
+	DrawTextEx(default_font, values, { values_x, up_padding }, fontsize, 0.5, PINK);
 	DrawText(fps, WIDTH - 100, 10, 20, GREEN); //FPS
 }

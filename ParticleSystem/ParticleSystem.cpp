@@ -115,7 +115,7 @@ int main()
 		float dt = GetFrameTime();
 		dt = fmin(dt, 0.016f);
 
-	//EVENT HANDLING
+	//INPUT HANDLING
 		//toggles
 		if (IsKeyPressed(KEY_G)) isGridEnabled = !isGridEnabled;
 		if (IsKeyPressed(KEY_TAB)) showControls = !showControls;
