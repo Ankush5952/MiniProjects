@@ -26,6 +26,13 @@ extern int heightBeforeFS;
 extern int prevW;
 extern int prevH;
 
+extern Font default_font;
+
+extern const int CELLSIZE;
+extern int GRIDW;
+extern int GRIDH;
+extern bool isGridEnabled;
+
 extern int shapeIndex;
 extern int collissionIndex;
 extern float particleLifetime;
@@ -44,10 +51,6 @@ extern int currentEmitterIndex;
 extern std::string currentEmitter;
 extern float frequency;
 
-extern const int CELLSIZE;
-extern int GRIDW;
-extern int GRIDH;
-extern bool isGridEnabled;
 
 extern Vector2 gravity;
 extern bool gravityEnabled;

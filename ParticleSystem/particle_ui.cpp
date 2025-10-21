@@ -39,32 +39,32 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 
 	sprintf_s(
 		values,
-		"          %i \n\n"
-		"  %s <A>\n\n"
-		"  %s <D>\n\n"
-		" %i <UP/DOWN>\n\n"
-		"%s <<-/->>\n\n"
-		"      %.2f <+/->\n\n"
-		"      %s <Q>\n\n"
-		"         %s <G>\n\n"
-		"         %s <F>\n\n"
-		"         %s <T>\n\n"
-		"         %s <B>\n\n"
-		"%s <O/P>\n\n"
-		"     ENTER\n\n"
-		"       %.2f <Z/X>\n\n"
-		"     %s <K/L>\n\n"
-		"              <R> \n\n"
-		"              <E> \n\n"
-		"           <LMB> \n\n"
-		"           <DEL> \n\n"
-		"        <BKSPC> \n\n"
-		"        <LSHIFT>\n\n"
-		"[%.2f, %.2f]\n\n"
-		"[%.2f, %.2f]\n\n"
-		"         <SPACE> \n\n"
-		"             <C> \n\n"
-		"           <TAB> \n\n",
+		"%i \n\n"
+		"%s [ A ]\n\n"
+		"%s [ D ]\n\n"
+		"%i [ UP/DOWN ]\n\n"
+		"%s [ <-/-> ]\n\n"
+		"%.2f [ +/- ]\n\n"
+		"%s [ Q ]\n\n"
+		"%s [ G ]\n\n"
+		"%s [ F ]\n\n"
+		"%s [ T ]\n\n"
+		"%s [ B ]\n\n"
+		"%s [ O/P ]\n\n"
+		"ENTER\n\n"
+		"%.2f [ Z/X ]\n\n"
+		"%s [ K/L ]\n\n"
+		"[ R ] \n\n"
+		"[ E ] \n\n"
+		"[ LMB ] \n\n"
+		"[ DEL ] \n\n"
+		"[ BKSPC ] \n\n"
+		"[ L SHIFT ]\n\n"
+		"[ %.2f, %.2f ]\n\n"
+		"[ %.2f, %.2f ]\n\n"
+		"[ SPACE ] \n\n"
+		"[ C ] \n\n"
+		"[ TAB ] \n\n",
 		particlesOnScreen,
 		shapes[shapeIndex],
 		collissions[collissionIndex],
@@ -83,18 +83,23 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		velocityRangeY.x, velocityRangeY.y
 	);
 
-	//double fontsize = WIDTH * 0.00050625 * HEIGHT * 0.00050625;
-	double fontsize = double(WIDTH)/ HEIGHT * 2;
-	Vector2 label_vect = MeasureTextEx(GetFontDefault(), labels, fontsize, 1);
-	Vector2 value_vect = MeasureTextEx(GetFontDefault(), values, fontsize, 1);
+	const double fontsize = fmin(WIDTH, HEIGHT) * 0.015;
+	const Vector2 label_vect = MeasureTextEx(default_font, labels, fontsize, 0.5);
+	const Vector2 value_vect = MeasureTextEx(default_font, values, fontsize, 0.5);
+
+	const float left_padding = WIDTH * 0.007f;
+	const float middle_padding = 5.0f;
+	const float right_padding = WIDTH * 0.007f;
+	const float up_padding = HEIGHT * 0.05f;
+
+	const float rectWidth = left_padding + label_vect.x + middle_padding + value_vect.x + right_padding;
+	const float values_x = left_padding + label_vect.x + middle_padding;
 
 	char fps[20];
 	sprintf_s(fps, "FPS: %i", GetFPS());
 
-	DrawRectangle(0, 0, WIDTH*0.007f + label_vect.x + value_vect.x + 30, HEIGHT, Fade(BLACK, 0.7));
-	//DrawText(labels, WIDTH * 0.007f, HEIGHT * 0.05, fontsize, GOLD);
-	//DrawText(values, WIDTH*0.11f, HEIGHT * 0.05, fontsize, GOLD);
-	DrawText(labels, WIDTH*0.007f, HEIGHT * 0.05, fontsize, GOLD);
-	DrawText(values, WIDTH*0.007f + label_vect.x + 20, HEIGHT * 0.05, fontsize, GOLD);
-	DrawText(fps, WIDTH - 100, 10, 20, GREEN);
+	DrawRectangle(0, 0, rectWidth, HEIGHT, Fade(BLACK, 0.7)); //BG RECT
+	DrawTextEx(default_font, labels, { left_padding, up_padding }, fontsize, 0.5, GOLD);
+	DrawTextEx(default_font, values, { values_x, up_padding }, fontsize, 0.5, GOLD);
+	DrawText(fps, WIDTH - 100, 10, 20, GREEN); //FPS
 }

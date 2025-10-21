@@ -16,6 +16,8 @@ int heightBeforeFS = HEIGHT;
 int prevW = WIDTH;
 int prevH = HEIGHT;
 
+Font default_font;
+
 const int CELLSIZE = 20;
 int GRIDW = WIDTH / CELLSIZE;
 int GRIDH = HEIGHT / CELLSIZE;
@@ -62,5 +64,7 @@ void InitializeRuntimeVariables()
 	int monitor = GetCurrentMonitor();
 	maxW = GetMonitorWidth(monitor);
 	maxH = GetMonitorHeight(monitor);
+
+	default_font = GetFontDefault();
 }
 
