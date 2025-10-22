@@ -1,4 +1,5 @@
 #pragma once
+#include<iostream>
 #include<raylib.h>
 #include<raymath.h>
 #include<vector>
@@ -33,6 +34,10 @@ extern bool isParticleShaderLoaded;
 extern int lifetimeLoc;
 extern int timeLoc;
 extern int fadeLoc;
+extern int glowLoc;
+extern int glowIntensityLoc;
+extern int centerLoc;
+extern int radiusLoc;
 
 extern const int CELLSIZE;
 extern int GRIDW;
@@ -50,6 +55,8 @@ extern Vector2 velocityRangeY;
 extern int colorIndex;
 extern bool fadeEffect;
 extern bool trailEffect;
+extern bool glowEffect;
+extern float glowIntensity;
 extern int maxTrail;
 extern bool boundary;
 extern std::string currentPresetName;

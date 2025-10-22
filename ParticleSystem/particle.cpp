@@ -11,6 +11,12 @@ void ParticleSystem::Particle::loadShader()
     lifetimeLoc = GetShaderLocation(particleShader, "lifetime");
     timeLoc = GetShaderLocation(particleShader, "timeSinceLifeBegan");
     fadeLoc = GetShaderLocation(particleShader, "fadeEnabled");
+    glowLoc = GetShaderLocation(particleShader, "glowEnabled");
+    glowIntensityLoc = GetShaderLocation(particleShader, "glowIntensity");
+    centerLoc = GetShaderLocation(particleShader, "center");
+    radiusLoc = GetShaderLocation(particleShader, "radius");
+
+    std::cout << "lifetimeloc : " << lifetimeLoc << ", timeloc : " << timeLoc << ", fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc << ", centerloc : " << centerLoc << ", radiusloc : " << radiusLoc;
 }
 
 void ParticleSystem::Particle::unloadShader()
@@ -165,16 +171,18 @@ void ParticleSystem::Particle::updateTrail()
 
 void ParticleSystem::Particle::update(float dt)
 {
-    //frameCount++;
 
     timeSinceLifeBegan += dt;
 
     velocity += gravity * dt;
 
-    if (trailEffect )
+    if (trailEffect)
     {
         updateTrail();
-        //frameCount = 1;
+    }
+    else
+    {
+        if(!trail.empty()) trail.clear();
     }
 
     position += velocity * dt;
@@ -222,6 +230,8 @@ void ParticleSystem::Particle::draw()
     if (shape == CIRCLE) thick = side * 1.5f;
     if (shape == SQUARE) thick = side * .5f;
     if (shape == TRIANGLE) thick = side * oneOverRoot3;
+
+    //draw trails
     if (trailEffect && !trail.empty())
     {
         for (int i = 1; i < trail.size(); i++)
@@ -233,28 +243,21 @@ void ParticleSystem::Particle::draw()
         }
     }
 
+    float r = side;
+    if (shape == SQUARE || shape == TRIANGLE) r = thick;
+    if (shape == TRIANGLE) r = thick;
     int fadeInt = fadeEffect;
+    int glowInt = glowEffect;
     SetShaderValue(particleShader, lifetimeLoc, &lifetime, SHADER_UNIFORM_FLOAT);
     SetShaderValue(particleShader, timeLoc, &timeSinceLifeBegan, SHADER_UNIFORM_FLOAT);
     SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
+    SetShaderValue(particleShader, centerLoc, &center, SHADER_UNIFORM_VEC2);
+    SetShaderValue(particleShader, radiusLoc, &r, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(particleShader, glowLoc, &glowInt, SHADER_UNIFORM_INT);
+    SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
 
     BeginShaderMode(particleShader);
-
-    /*switch (shape)
-    {
-        case CIRCLE:
-            DrawCircleV(position, side, Fade(color, fadeVal)); 
-            break;
-        case SQUARE: 
-            DrawRectangle(position.x - side*0.5f, position.y - side*0.5f, side, side, Fade(color,fadeVal));
-            break;
-        case TRIANGLE:
-            DrawTriangle(v2, v1, v3, Fade(color,fadeVal));
-            break;
-        default:
-            DrawCircleV(position, side, Fade(color,fadeVal));
-    }*/
-
+    //draw particle
     switch (shape)
     {
     case CIRCLE:
