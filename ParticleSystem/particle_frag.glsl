@@ -2,11 +2,9 @@
 
 in vec2 fragTexCoord;
 in vec4 fragColor;
-in float sqdistFromCenter;
+in float distFromCenter;
 
 out vec4 finalColor;
-
-uniform float radius;
 
 uniform float lifetime;
 uniform float timeSinceLifeBegan;
@@ -30,10 +28,11 @@ void main()
 	//glow
 	if(glowEnabled == 1)
 	{
-		float t = sqdistFromCenter/(radius*radius);
-		if(t > glowIntensity*glowIntensity)
+		if(distFromCenter > 0.45)
 		{
-			finalColor = vec4(t,t,t, fragColor.a);
+			float t = (1.0 - distFromCenter);
+			t = pow(t, 2.0);
+			finalColor.rgb += fragColor.rgb * t * glowIntensity;
 		}
 	}
 }

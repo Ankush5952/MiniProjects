@@ -36,8 +36,6 @@ extern int timeLoc;
 extern int fadeLoc;
 extern int glowLoc;
 extern int glowIntensityLoc;
-extern int centerLoc;
-extern int radiusLoc;
 
 extern const int CELLSIZE;
 extern int GRIDW;

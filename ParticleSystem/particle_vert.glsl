@@ -6,11 +6,9 @@ in vec4 vertexColor;
 
 uniform mat4 mvp;
 
-uniform vec2 center;
-
 out vec2 fragTexCoord;
 out vec4 fragColor;
-out float sqdistFromCenter;
+out float distFromCenter;
 
 void main()
 {
@@ -18,8 +16,5 @@ void main()
 	fragColor = vertexColor;
 	gl_Position = mvp * vec4(vertexPosition, 1.0);
 
-	float dx = vertexPosition.x - center.x;
-	float dy = vertexPosition.y - center.y;
-
-	sqdistFromCenter = (dx*dx + dy*dy);
+	distFromCenter = length(fragTexCoord - vec2(0.5,0.5));
 }

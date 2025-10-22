@@ -13,10 +13,8 @@ void ParticleSystem::Particle::loadShader()
     fadeLoc = GetShaderLocation(particleShader, "fadeEnabled");
     glowLoc = GetShaderLocation(particleShader, "glowEnabled");
     glowIntensityLoc = GetShaderLocation(particleShader, "glowIntensity");
-    centerLoc = GetShaderLocation(particleShader, "center");
-    radiusLoc = GetShaderLocation(particleShader, "radius");
 
-    std::cout << "lifetimeloc : " << lifetimeLoc << ", timeloc : " << timeLoc << ", fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc << ", centerloc : " << centerLoc << ", radiusloc : " << radiusLoc;
+    std::cout << "lifetimeloc : " << lifetimeLoc << ", timeloc : " << timeLoc << ", fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc;
 }
 
 void ParticleSystem::Particle::unloadShader()
@@ -251,8 +249,6 @@ void ParticleSystem::Particle::draw()
     SetShaderValue(particleShader, lifetimeLoc, &lifetime, SHADER_UNIFORM_FLOAT);
     SetShaderValue(particleShader, timeLoc, &timeSinceLifeBegan, SHADER_UNIFORM_FLOAT);
     SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
-    SetShaderValue(particleShader, centerLoc, &center, SHADER_UNIFORM_VEC2);
-    SetShaderValue(particleShader, radiusLoc, &r, SHADER_UNIFORM_FLOAT);
     SetShaderValue(particleShader, glowLoc, &glowInt, SHADER_UNIFORM_INT);
     SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
 
