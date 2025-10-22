@@ -220,8 +220,25 @@ void ParticleSystem::ParticleManager::draw()
 {
 	for (auto& i : particles)
 	{
-		i->draw();
+		i->drawTrail();
 	}
+
+	BeginShaderMode(particleShader);
+	for (auto& i : particles)
+	{
+		int fadeInt = fadeEffect;
+		int glowInt = glowEffect;
+		float l = i->getLifetime();
+		float t = i->getTimeSinceLifeBegan();
+		SetShaderValue(particleShader, lifetimeLoc, &l, SHADER_UNIFORM_FLOAT);
+		SetShaderValue(particleShader, timeLoc, &t, SHADER_UNIFORM_FLOAT);
+		SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
+		SetShaderValue(particleShader, glowLoc, &glowInt, SHADER_UNIFORM_INT);
+		SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
+
+		i->drawParticle();
+	}
+	EndShaderMode();
 }
 
 void ParticleSystem::ParticleManager::clean()

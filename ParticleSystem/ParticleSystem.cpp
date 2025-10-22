@@ -15,6 +15,15 @@ static void onWindowResize(ParticleSystem::ParticleManager& manager, ParticleSys
 	double heightFactor = double(HEIGHT) / double(prevH);
 	for (auto& i : pars)
 	{
+		std::deque<Vector2>& trail = i->getTrail();
+		for (Vector2& j : trail)
+		{
+			j = {
+				float(j.x * widthFactor),
+				float(j.y * heightFactor)
+			};
+		}
+
 		Vector2 currPos = i->getPos();
 		Vector2 newPos = {
 			currPos.x * widthFactor,
@@ -125,6 +134,7 @@ int main()
 		if (IsKeyPressed(KEY_F)) fadeEffect = !fadeEffect;
 		if (IsKeyPressed(KEY_T)) trailEffect = !trailEffect;
 		if (IsKeyPressed(KEY_B)) boundary = !boundary;
+		if (IsKeyPressed(KEY_H)) glowEffect = !glowEffect;
 		
 		//particle properties
 		if (IsKeyPressed(KEY_A))

@@ -19,6 +19,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"GRID\n\n"
 		"FADE\n\n"
 		"TRAIL\n\n"
+		"GLOW\n\n"
 		"BOUNDARY\n\n"
 		"PRESET\n\n"
 		"Apply Preset\n\n"
@@ -49,6 +50,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		"%s [ G ]\n\n"
 		"%s [ F ]\n\n"
 		"%s [ T ]\n\n"
+		"%s [ H ]\n\n"
 		"%s [ B ]\n\n"
 		"%s [ O/P ]\n\n"
 		"ENTER\n\n"
@@ -75,6 +77,7 @@ void ParticleSystem::ParticleUI::drawUI(ParticleSystem::ParticleManager* manager
 		(isGridEnabled) ? "ON" : "OFF",
 		(fadeEffect) ? "ON" : "OFF",
 		(trailEffect) ? "ON" : "OFF",
+		(glowEffect) ? "ON" : "OFF",
 		(boundary) ? "ON" : "OFF",
 		currentPresetName.c_str(),
 		frequency,

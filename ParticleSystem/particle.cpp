@@ -36,6 +36,11 @@ Vector2 ParticleSystem::Particle::getVelocity() const
     return velocity;
 }
 
+std::deque<Vector2>& ParticleSystem::Particle::getTrail()
+{
+    return trail;
+}
+
 int ParticleSystem::Particle::getSide() const
 {
     return side;
@@ -219,10 +224,10 @@ void ParticleSystem::Particle::update(float dt)
     if(shape == TRIANGLE) updateTriangleGeometry();
 }
 
-void ParticleSystem::Particle::draw()
+void ParticleSystem::Particle::drawTrail()
 {
     float lifePercent = timeSinceLifeBegan / lifetime;
-    float fadeVal = (fadeEffect)? 1.0 - lifePercent : 1.0f;
+    float fadeVal = (fadeEffect) ? 1.0 - lifePercent : 1.0f;
 
     float thick = 1.0f;
     if (shape == CIRCLE) thick = side * 1.5f;
@@ -240,19 +245,11 @@ void ParticleSystem::Particle::draw()
             DrawLineEx(trail[i - 1], trail[i], thick, Fade(color, trailAlpha));
         }
     }
+}
 
-    float r = side;
-    if (shape == SQUARE || shape == TRIANGLE) r = thick;
-    if (shape == TRIANGLE) r = thick;
-    int fadeInt = fadeEffect;
-    int glowInt = glowEffect;
-    SetShaderValue(particleShader, lifetimeLoc, &lifetime, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(particleShader, timeLoc, &timeSinceLifeBegan, SHADER_UNIFORM_FLOAT);
-    SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
-    SetShaderValue(particleShader, glowLoc, &glowInt, SHADER_UNIFORM_INT);
-    SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
-
-    BeginShaderMode(particleShader);
+void ParticleSystem::Particle::drawParticle()
+{
+    //BeginShaderMode(particleShader);
     //draw particle
     switch (shape)
     {
@@ -269,7 +266,7 @@ void ParticleSystem::Particle::draw()
         DrawCircleV(position, side, color);
     }
 
-    EndShaderMode();
+    //EndShaderMode();
 }
 
 void ParticleSystem::Particle::resetParticle()

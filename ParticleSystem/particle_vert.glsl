@@ -8,13 +8,10 @@ uniform mat4 mvp;
 
 out vec2 fragTexCoord;
 out vec4 fragColor;
-out float distFromCenter;
 
 void main()
 {
 	fragTexCoord = vertexTexCoord;
 	fragColor = vertexColor;
 	gl_Position = mvp * vec4(vertexPosition, 1.0);
-
-	distFromCenter = length(fragTexCoord - vec2(0.5,0.5));
 }

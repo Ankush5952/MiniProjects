@@ -47,6 +47,7 @@ namespace ParticleSystem
 	//getters
 		Vector2 getPos() const;
 		Vector2 getVelocity() const;
+		std::deque<Vector2>& getTrail();
 		int getSide() const;
 		ParticleShape getShape() const;
 		Color getColor() const;
@@ -68,7 +69,8 @@ namespace ParticleSystem
 	//misc
 		void updateTrail();
 		void update(float dt);
-		void draw();
+		void drawTrail();
+		void drawParticle();
 		void resetParticle();
 		void updateTriangleGeometry();
 

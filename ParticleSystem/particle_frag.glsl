@@ -2,7 +2,6 @@
 
 in vec2 fragTexCoord;
 in vec4 fragColor;
-in float distFromCenter;
 
 out vec4 finalColor;
 
@@ -21,18 +20,19 @@ void main()
 	//fade
 	if(fadeEnabled == 1)
 	{
-		float fadeAmount = 1.0 - (timeSinceLifeBegan/lifetime);
+		float x = (timeSinceLifeBegan/lifetime);
+		float fadeAmount = 1.0 - pow(x,5);
 		finalColor = vec4(fragColor.rgb, fragColor.a * fadeAmount);
 	}
 
 	//glow
 	if(glowEnabled == 1)
 	{
-		if(distFromCenter > 0.45)
-		{
-			float t = (1.0 - distFromCenter);
-			t = pow(t, 2.0);
-			finalColor.rgb += fragColor.rgb * t * glowIntensity;
-		}
+		float distFromCenter = length(fragTexCoord - vec2(0.5,0.5));
+		clamp(distFromCenter, 0 , 1);
+		float t = (1.0 - distFromCenter);
+		t = pow(t, 2.0);
+		finalColor.rgb += fragColor.rgb * t * glowIntensity;
+		//finalColor = vec4(distFromCenter, 0, 0, fragColor.a);
 	}
 }

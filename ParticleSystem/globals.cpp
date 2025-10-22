@@ -25,8 +25,6 @@ int timeLoc;
 int fadeLoc;
 int glowLoc;
 int glowIntensityLoc;
-int centerLoc;
-int radiusLoc;
 
 const int CELLSIZE = 20;
 int GRIDW = WIDTH / CELLSIZE;
@@ -45,7 +43,7 @@ int colorIndex = 0;
 bool fadeEffect = true;
 bool trailEffect = true;
 bool glowEffect = true;
-float glowIntensity = 0.9f;
+float glowIntensity = 0.3f;
 int maxTrail = 10;
 bool boundary = true;
 std::string currentPresetName = "NONE";
