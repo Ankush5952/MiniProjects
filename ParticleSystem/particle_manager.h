@@ -3,6 +3,12 @@
 #include"particle.h"
 namespace ParticleSystem
 {
+	static Mesh circleMesh;
+	static Mesh squareMesh;
+	static Mesh triangleMesh;
+
+	static unsigned int instanceVBO;
+
 	class ParticleManager
 	{
 	private:
@@ -28,6 +34,7 @@ namespace ParticleSystem
 		void createParticle(ParticleSystem::Particle* p);
 		void createParticle(ParticleShape s, int side = 1, float lifetime = 1.0f, Color c = WHITE, Vector2 pos = { 0,0 }, Vector2 vel = { 0,0 }, CollissionAlgo response = BOUNCE);
 		void update(float dt);
+		void drawInstancedMesh(Mesh& mesh, std::vector<ParticleInstanceData>& instances);
 		void draw();
 		void clean();
 

@@ -1,5 +1,4 @@
 #pragma once
-#define GRAPHICS_API_OPENGL_33
 #include<iostream>
 #include<raylib.h>
 #include<raymath.h>
@@ -10,7 +9,7 @@
 #include<fstream>
 #include<deque>
 #include<string>
-#include"includes/json.hpp"
+#include"json.hpp"
 #include"game_events.h"
 
 

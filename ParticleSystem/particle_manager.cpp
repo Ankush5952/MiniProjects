@@ -216,28 +216,91 @@ void ParticleSystem::ParticleManager::update(float dt)
 	batchRemoveParticles();
 }
 
+void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<ParticleInstanceData>& instances)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER,
+		instances.size() * sizeof(ParticleInstanceData),
+		instances.data(),
+		GL_DYNAMIC_DRAW
+	);
+
+	//loc = 3 : vec2 position
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, position));
+	glVertexAttribDivisor(3, 1);
+
+	//loc = 4 : float scale
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, scale));
+	glVertexAttribDivisor(4, 1);
+
+	//loc = 5 : vec4 color
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, color));
+	glVertexAttribDivisor(5, 1);
+
+	//loc = 6 : float lifetime
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, lifetime));
+	glVertexAttribDivisor(6, 1);
+
+	//loc = 7 : float timeSinceLifeBegan
+	glEnableVertexAttribArray(7);
+	glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, timeSinceLifeBegan));
+	glVertexAttribDivisor(7, 1);
+
+	SetShaderValue(particleShader, glowLoc, &glowEffect, RL_SHADER_UNIFORM_INT);
+	SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, RL_SHADER_UNIFORM_FLOAT);
+	SetShaderValue(particleShader, fadeLoc, &fadeEffect, RL_SHADER_UNIFORM_INT);
+
+
+	glBindVertexArray(mesh.vaoId);
+	glDrawElementsInstanced(
+		GL_TRIANGLES,
+		mesh.triangleCount * 3,
+		GL_UNSIGNED_SHORT,
+		0,
+		instances.size()
+	);
+}
+
 void ParticleSystem::ParticleManager::draw()
 {
+	std::vector<ParticleInstanceData> circles, squares, triangles;
 	for (auto& i : particles)
 	{
 		i->drawTrail();
+
+		ParticleInstanceData data = {
+										i->getPos(),
+										i->getSide(),
+										i->getColor(),
+										i->getLifetime(),
+										i->getTimeSinceLifeBegan()
+									};
+		switch (i->getShape())
+		{
+			case CIRCLE:
+				circles.push_back(data);
+				break;
+			case SQUARE:
+				squares.push_back(data);
+				break;
+			case TRIANGLE:
+				triangles.push_back(data);
+				break;
+			default:
+				printf("Wrong shape");
+		}
 	}
 
 	BeginShaderMode(particleShader);
-	for (auto& i : particles)
-	{
-		int fadeInt = fadeEffect;
-		int glowInt = glowEffect;
-		float l = i->getLifetime();
-		float t = i->getTimeSinceLifeBegan();
-		SetShaderValue(particleShader, lifetimeLoc, &l, SHADER_UNIFORM_FLOAT);
-		SetShaderValue(particleShader, timeLoc, &t, SHADER_UNIFORM_FLOAT);
-		SetShaderValue(particleShader, fadeLoc, &fadeInt, SHADER_UNIFORM_INT);
-		SetShaderValue(particleShader, glowLoc, &glowInt, SHADER_UNIFORM_INT);
-		SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, SHADER_UNIFORM_FLOAT);
+	
+	drawInstancedMesh(circleMesh, circles);
+	drawInstancedMesh(squareMesh, squares);
+	drawInstancedMesh(triangleMesh, triangles);
 
-		i->drawParticle();
-	}
 	EndShaderMode();
 }
 
@@ -609,5 +672,11 @@ void ParticleSystem::ParticleManager::resolveSS(ParticleSystem::Particle* s1, Pa
 
 ParticleSystem::ParticleManager::ParticleManager()
 {
-	particles.reserve(2000);
+	particles.reserve(2048);
+
+	circleMesh = Particle::generateCircleMesh();
+	squareMesh = Particle::generateSquareMesh();
+	triangleMesh = Particle::generateTriangleMesh();
+
+	glGenBuffers(1, &instanceVBO);
 }

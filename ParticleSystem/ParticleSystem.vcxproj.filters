@@ -45,6 +45,9 @@
     <ClCompile Include="particle_emitter_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="includes\glad\src\glad.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="particle.h">
@@ -71,15 +74,21 @@
     <ClInclude Include="particle_emitter_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\glad\include\glad\glad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\glad\include\KHR\khrplatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="presets.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="particle_frag.glsl">
+    <None Include="particle_vert.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="particle_vert.glsl">
+    <None Include="particle_frag.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

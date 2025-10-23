@@ -1,6 +1,6 @@
 #pragma once
 
-#include"includes.h"
+#include"includes/includes.h"
 namespace ParticleSystem
 {
 	enum CollissionAlgo
@@ -23,6 +23,17 @@ namespace ParticleSystem
 	};
 	static const char* shapes[] = { "CIRCLE", "SQUARE", "TRIANGLE" };
 
+	struct ParticleInstanceData
+	{
+		Vector2 position;
+		float scale;
+		Color color;
+		float lifetime;
+		float timeSinceLifeBegan;
+
+		//ParticleInstanceData(Vector2 pos = { 0,0 }, float s = 1.0f, Color c = WHITE, float l = -1.0f, float t = 0) position(pos), scale(s), color(c), lifetime(l), timeSinceLifeBegan(t) {};
+	};
+
 	class Particle
 	{
 	private:
@@ -31,7 +42,7 @@ namespace ParticleSystem
 		Vector2 position = { 0,0 };
 		Vector2 velocity = { 0,0 };
 		ParticleShape shape = CIRCLE;
-		int side = 1.0f;
+		float side = 1.0f;
 		Color color = WHITE;
 		float lifetime = 1.0f;
 		float timeSinceLifeBegan = 0.0f;
@@ -48,7 +59,7 @@ namespace ParticleSystem
 		Vector2 getPos() const;
 		Vector2 getVelocity() const;
 		std::deque<Vector2>& getTrail();
-		int getSide() const;
+		float getSide() const;
 		ParticleShape getShape() const;
 		Color getColor() const;
 		float getLifetime() const;
@@ -73,6 +84,12 @@ namespace ParticleSystem
 		void drawParticle();
 		void resetParticle();
 		void updateTriangleGeometry();
+
+	//Meshes
+		//call once per program - creates default meshes that can be instantiated.
+		static Mesh generateCircleMesh(int segments = 36);
+		static Mesh generateSquareMesh();
+		static Mesh generateTriangleMesh();
 
 	//Shaders
 

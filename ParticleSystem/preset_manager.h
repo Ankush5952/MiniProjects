@@ -31,7 +31,7 @@ namespace ParticleSystem
 		std::string filePath;
 
 		//constructor
-		PresetManager(const std::string& pathToFile = "presets.json");
+		PresetManager(const std::string& pathToFile = "resources/presets.json");
 		PresetManager(const PresetManager& p) = delete;
 		PresetManager& operator= (const PresetManager&) = delete;
 		PresetManager(PresetManager&&) = delete;

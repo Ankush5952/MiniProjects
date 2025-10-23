@@ -41,7 +41,7 @@ std::deque<Vector2>& ParticleSystem::Particle::getTrail()
     return trail;
 }
 
-int ParticleSystem::Particle::getSide() const
+float ParticleSystem::Particle::getSide() const
 {
     return side;
 }
@@ -287,6 +287,115 @@ void ParticleSystem::Particle::updateTriangleGeometry()
     n1 = Vector2Normalize({ -side1.y, side1.x });
     n2 = Vector2Normalize({ -side2.y, side2.x });
     n3 = Vector2Normalize({ -side3.y, side3.x });
+}
+
+Mesh ParticleSystem::Particle::generateCircleMesh(int segments)
+{
+    int vCount = segments + 1; //vertex count
+    int tCount = segments; //triangle count
+
+    Mesh circle = { 0 };
+    circle.vertexCount = vCount;
+    circle.triangleCount = tCount;
+
+    //allocate memory for vertex data
+    circle.vertices = (float*)MemAlloc(vCount * 3 * sizeof(float)); //x,y,z per vertex
+    circle.indices = (unsigned short*)MemAlloc(tCount * 3 * sizeof(unsigned short)); //3 indices per triangle
+    circle.texcoords = (float*)MemAlloc(vCount * 2 * sizeof(float)); //u,v per vertex
+    circle.colors = (unsigned char*)MemAlloc(vCount * 4 * sizeof(unsigned char)); //r,g,b,a per vertex
+
+    //default vertex center values
+    circle.vertices[0] = 0.0; //x
+    circle.vertices[1] = 0.0; //y
+    circle.vertices[2] = 0.0; //z
+    circle.texcoords[0] = 0.5; //u
+    circle.texcoords[1] = 0.5; //v
+
+    //Generate vertices in a circle
+    for (int i = 0; i < segments; i++)
+    {
+        float angle = (float)i / segments * PI * 2;
+        int vi = (i + 1) * 3; //vertex index
+        int ti = (i + 1) * 2; //texture index
+
+        //Positions (r = 1)
+        circle.vertices[vi + 0] = cosf(angle); //x
+        circle.vertices[vi + 1] = sinf(angle); //y
+        circle.vertices[vi + 2] = 0.0; //z
+
+        //UV coords
+        circle.texcoords[ti + 0] = 0.5f + 0.5f * cosf(angle); //u
+        circle.texcoords[ti + 1] = 0.5f + 0.5f * sinf(angle); //v
+
+        //Triangle indices
+        circle.indices[i * 3 + 0] = 0; //center vertex
+        circle.indices[i * 3 + 1] = i+1; //current edge vertex
+        circle.indices[i * 3 + 2] = (i+1)%segments + 1; //next edge vertex(wrapping)
+    }
+
+    UploadMesh(&circle, false);
+    return circle;
+}
+
+Mesh ParticleSystem::Particle::generateSquareMesh()
+{
+    Mesh square = { 0 };
+    square.vertexCount = 4;
+    square.triangleCount = 2;
+
+    //Allocate memory for vertex data
+    square.vertices = (float*)MemAlloc(12 * sizeof(float));
+    square.texcoords = (float*)MemAlloc(8 * sizeof(float));
+    square.colors = (unsigned char*)MemAlloc(16 * sizeof(unsigned char));
+    square.indices = (unsigned short*)MemAlloc(6 * sizeof(unsigned short));
+
+    //Vertex Positions
+    square.vertices[0] = -0.5; square.vertices[1] =  -0.5; square.vertices[2] =  0.0;
+    square.vertices[3] = -0.5; square.vertices[4] =   0.5; square.vertices[5] =  0.0;
+    square.vertices[6] =  0.5; square.vertices[7] =   0.5; square.vertices[8] =  0.0;
+    square.vertices[9] =  0.5; square.vertices[10] = -0.5; square.vertices[11] = 0.0;
+
+    //UV coords
+    square.texcoords[0] = 0.0; square.texcoords[1] = 0.0;
+    square.texcoords[2] = 0.0; square.texcoords[3] = 1.0;
+    square.texcoords[4] = 1.0; square.texcoords[5] = 1.0;
+    square.texcoords[6] = 1.0; square.texcoords[7] = 0.0;
+
+    //indices
+    square.indices[0] = 0; square.indices[1] = 1; square.indices[2] = 3;
+    square.indices[3] = 1; square.indices[4] = 2; square.indices[5] = 3;
+
+    UploadMesh(&square, false);
+    return square;
+}
+
+Mesh ParticleSystem::Particle::generateTriangleMesh()
+{
+    Mesh triangle = { 0 };
+    triangle.vertexCount = 3;
+    triangle.triangleCount = 1;
+    
+    //vertex data memory allocation
+    triangle.vertices = (float*)MemAlloc(9 * sizeof(float));
+    triangle.texcoords = (float*)MemAlloc(6 * sizeof(float));
+    triangle.colors = (unsigned char*)MemAlloc(12 * sizeof(unsigned char));
+    triangle.indices = (unsigned short*)MemAlloc(3 * sizeof(unsigned short));
+
+    //x,y,z
+    triangle.vertices[0] = -0.5; triangle.vertices[1] = -0.5  * oneOverRoot3; triangle.vertices[2] = 0.0;
+    triangle.vertices[3] =  0.0; triangle.vertices[4] =  1.25 * oneOverRoot3; triangle.vertices[5] = 0.0;
+    triangle.vertices[6] =  0.5; triangle.vertices[7] = -0.5  * oneOverRoot3; triangle.vertices[8] = 0.0;
+
+    //u,v
+    triangle.texcoords[0] = 0.0; triangle.texcoords[1] = 0.0;
+    triangle.texcoords[2] = 0.5; triangle.texcoords[3] = 0.5 * sqrt(3);
+    triangle.texcoords[4] = 0.0; triangle.texcoords[5] = 1.0;
+
+    //indices
+    triangle.indices[0] = 0; triangle.indices[1] = 1; triangle.indices[2] = 2;
+
+    UploadMesh(&triangle, false);
+    return triangle;
 }
 
 ParticleSystem::Particle::Particle(ParticleShape s, int r, float t,Color c, Vector2 pos, Vector2 vel, CollissionAlgo response)
