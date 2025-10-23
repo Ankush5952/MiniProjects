@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ParticleSystem/json.hpp
 /ParticleSystem/presets.json
+/ParticleSystem/includes/json.hpp
