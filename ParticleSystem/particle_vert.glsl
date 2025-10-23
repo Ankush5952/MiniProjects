@@ -19,14 +19,14 @@ out float fragTime;
 void main()
 {
 	//Scale
-	vec3 scaledPos = instancePosition * instanceScale;
+	vec3 scaledPos = vertexPosition * instanceScale;
 
 	//Translate
 	vec3 worldPos = vec3(instancePosition.x + scaledPos.x,
 						 instancePosition.y + scaledPos.y,
 						 scaledPos.z);
 	//Transform
-	gl_Position = mvp * vec4(vertexPosition, 1.0);
+	gl_Position = mvp * vec4(worldPos, 1.0);
 
 	fragTexCoord = vertexTexCoord;
 	fragColor = instanceColor;

@@ -41,6 +41,15 @@ void ParticleSystem::ParticleManager::batchRemoveParticles()
 	particlesToDelete.clear();
 }
 
+void ParticleSystem::ParticleManager::generateResources()
+{
+	circleMesh = Particle::generateCircleMesh();
+	squareMesh = Particle::generateSquareMesh();
+	triangleMesh = Particle::generateTriangleMesh();
+
+	glGenBuffers(1, &instanceVBO);
+}
+
 bool ParticleSystem::ParticleManager::checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b)
 {
 	bool result = false;
@@ -218,6 +227,10 @@ void ParticleSystem::ParticleManager::update(float dt)
 
 void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<ParticleInstanceData>& instances)
 {
+	//Bind VAO
+	glBindVertexArray(mesh.vaoId);
+
+	//Upload data to VBO
 	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
 	glBufferData(GL_ARRAY_BUFFER,
 		instances.size() * sizeof(ParticleInstanceData),
@@ -237,7 +250,7 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 
 	//loc = 5 : vec4 color
 	glEnableVertexAttribArray(5);
-	glVertexAttribPointer(5, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, color));
+	glVertexAttribPointer(5, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, color));
 	glVertexAttribDivisor(5, 1);
 
 	//loc = 6 : float lifetime
@@ -250,12 +263,12 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 	glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, timeSinceLifeBegan));
 	glVertexAttribDivisor(7, 1);
 
+	//Shader uniforms - glow, glowIntensity, fade
 	SetShaderValue(particleShader, glowLoc, &glowEffect, RL_SHADER_UNIFORM_INT);
 	SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, RL_SHADER_UNIFORM_FLOAT);
 	SetShaderValue(particleShader, fadeLoc, &fadeEffect, RL_SHADER_UNIFORM_INT);
 
-
-	glBindVertexArray(mesh.vaoId);
+	//Draw Call
 	glDrawElementsInstanced(
 		GL_TRIANGLES,
 		mesh.triangleCount * 3,
@@ -263,6 +276,10 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 		0,
 		instances.size()
 	);
+
+	//Unbind / Cleanup
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 void ParticleSystem::ParticleManager::draw()
@@ -673,10 +690,4 @@ void ParticleSystem::ParticleManager::resolveSS(ParticleSystem::Particle* s1, Pa
 ParticleSystem::ParticleManager::ParticleManager()
 {
 	particles.reserve(2048);
-
-	circleMesh = Particle::generateCircleMesh();
-	squareMesh = Particle::generateSquareMesh();
-	triangleMesh = Particle::generateTriangleMesh();
-
-	glGenBuffers(1, &instanceVBO);
 }

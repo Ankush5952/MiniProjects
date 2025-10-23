@@ -30,8 +30,6 @@ namespace ParticleSystem
 		Color color;
 		float lifetime;
 		float timeSinceLifeBegan;
-
-		//ParticleInstanceData(Vector2 pos = { 0,0 }, float s = 1.0f, Color c = WHITE, float l = -1.0f, float t = 0) position(pos), scale(s), color(c), lifetime(l), timeSinceLifeBegan(t) {};
 	};
 
 	class Particle

@@ -8,13 +8,11 @@ void ParticleSystem::Particle::loadShader()
         isParticleShaderLoaded = true;
     }
 
-    lifetimeLoc = GetShaderLocation(particleShader, "lifetime");
-    timeLoc = GetShaderLocation(particleShader, "timeSinceLifeBegan");
     fadeLoc = GetShaderLocation(particleShader, "fadeEnabled");
     glowLoc = GetShaderLocation(particleShader, "glowEnabled");
     glowIntensityLoc = GetShaderLocation(particleShader, "glowIntensity");
 
-    std::cout << "lifetimeloc : " << lifetimeLoc << ", timeloc : " << timeLoc << ", fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc;
+    std::cout <<"fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc;
 }
 
 void ParticleSystem::Particle::unloadShader()

@@ -27,6 +27,7 @@ namespace ParticleSystem
 		void addParticle(ParticleSystem::Particle* p);
 		void removeParticle(ParticleSystem::Particle* p);
 		void batchRemoveParticles();
+		void generateResources();
 
 	//misc
 

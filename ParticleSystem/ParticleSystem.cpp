@@ -107,10 +107,17 @@ int main()
 //WINDOW
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 	InitWindow(WIDTH, HEIGHT, TITLE);
+	if (!gladLoadGL())
+	{
+		std::cerr << "Failed to init GL Loader.\n";
+		CloseWindow();
+		return -1;
+	}
 	InitializeRuntimeVariables();
 
 //VARIABLES
 	ParticleSystem::ParticleManager manager;
+	manager.generateResources();
 	ParticleSystem::ParticleUI ui;
 	ParticleSystem::PresetManager& prema = ParticleSystem::PresetManager::get();
 	currentPresetName = prema.getCurrentPreset().name;
