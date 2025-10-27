@@ -48,6 +48,7 @@ void ParticleSystem::ParticleManager::generateResources()
 	triangleMesh = Particle::generateTriangleMesh();
 
 	glGenBuffers(1, &instanceVBO);
+	printf("\n instanceVBO := %i \n", instanceVBO);
 }
 
 bool ParticleSystem::ParticleManager::checkParticleCollission(ParticleSystem::Particle* a, ParticleSystem::Particle* b)

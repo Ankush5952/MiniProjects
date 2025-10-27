@@ -1,7 +1,7 @@
 #version 330
 
-in vec3 vertexPosition;
-in vec2 vertexTexCoord;
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec2 vertexTexCoord;
 
 layout(location = 3) in vec2 instancePosition;
 layout(location = 4) in float instanceScale;
@@ -19,14 +19,13 @@ out float fragTime;
 void main()
 {
 	//Scale
-	vec3 scaledPos = vertexPosition * instanceScale;
+	vec2 scaledPos = vertexPosition.xy * instanceScale;
 
 	//Translate
-	vec3 worldPos = vec3(instancePosition.x + scaledPos.x,
-						 instancePosition.y + scaledPos.y,
-						 scaledPos.z);
+	vec2 worldPos = scaledPos + instancePosition;
 	//Transform
-	gl_Position = mvp * vec4(worldPos, 1.0);
+	
+	gl_Position = mvp * vec4(worldPos, 0.0, 1.0);
 
 	fragTexCoord = vertexTexCoord;
 	fragColor = instanceColor;

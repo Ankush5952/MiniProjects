@@ -125,7 +125,6 @@
   <ItemGroup>
     <ClCompile Include="event.cpp" />
     <ClCompile Include="globals.cpp" />
-    <ClCompile Include="includes.h" />
     <ClCompile Include="includes\glad\src\glad.c" />
     <ClCompile Include="particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -140,6 +139,7 @@
     <ClInclude Include="game_events.h" />
     <ClInclude Include="includes\glad\include\glad\glad.h" />
     <ClInclude Include="includes\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="includes\includes.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="particle_emitter.h" />
     <ClInclude Include="particle_emitter_manager.h" />
