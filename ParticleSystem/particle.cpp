@@ -13,6 +13,13 @@ void ParticleSystem::Particle::loadShader()
     glowIntensityLoc = GetShaderLocation(particleShader, "glowIntensity");
     mvpLoc = GetShaderLocation(particleShader, "mvpMat");
 
+    posLoc = GetShaderLocationAttrib(particleShader, "instancePosition");
+    scaleLoc = GetShaderLocationAttrib(particleShader, "instanceScale");
+    colorLoc = GetShaderLocationAttrib(particleShader, "instanceColor");
+    lifeLoc = GetShaderLocationAttrib(particleShader, "instanceLife");
+    timeLoc = GetShaderLocationAttrib(particleShader, "instanceTime");
+
+    std::cout << '\n' << "{pos, scale, color, life, time} : " << posLoc << scaleLoc << colorLoc << lifeLoc << timeLoc << '\n';
     std::cout <<"fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc<<", mvpLoc : "<<mvpLoc<<'\n';
 }
 

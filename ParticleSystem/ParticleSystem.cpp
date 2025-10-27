@@ -126,6 +126,7 @@ int main()
 
 //SHADER
 	ParticleSystem::Particle::loadShader();
+	loadShaderResources();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())

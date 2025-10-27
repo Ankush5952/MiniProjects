@@ -33,13 +33,17 @@ extern Font default_font;
 
 extern Shader particleShader;
 extern bool isParticleShaderLoaded;
-extern int lifetimeLoc;
-extern int timeLoc;
 extern int fadeLoc;
 extern int glowLoc;
 extern int glowIntensityLoc;
 extern int mvpLoc;
 extern Matrix mvpMat;
+
+extern int posLoc;
+extern int scaleLoc;
+extern int colorLoc;
+extern int lifeLoc;
+extern int timeLoc;
 
 extern const int CELLSIZE;
 extern int GRIDW;
@@ -77,3 +81,4 @@ extern const double oneOverRoot3;
 extern void DrawGrid();
 
 extern void InitializeRuntimeVariables();
+extern void loadShaderResources();

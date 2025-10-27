@@ -20,13 +20,17 @@ Font default_font;
 
 Shader particleShader = { 0 };
 bool isParticleShaderLoaded = false;
-int lifetimeLoc;
-int timeLoc;
 int fadeLoc;
 int glowLoc;
 int glowIntensityLoc;
 int mvpLoc;
 Matrix mvpMat;
+
+int posLoc;
+int scaleLoc;
+int colorLoc;
+int lifeLoc;
+int timeLoc;
 
 const int CELLSIZE = 20;
 int GRIDW = WIDTH / CELLSIZE;
@@ -81,5 +85,10 @@ void InitializeRuntimeVariables()
 
 	Matrix proj = MatrixOrtho(0.0, WIDTH, HEIGHT, 0.0, -1.0, 1.0);
 	mvpMat = MatrixMultiply(MatrixIdentity(), proj);
+}
+
+void loadShaderResources()
+{
+	
 }
 

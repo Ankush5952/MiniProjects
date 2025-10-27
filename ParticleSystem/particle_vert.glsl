@@ -1,13 +1,13 @@
 #version 330
 
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec2 vertexTexCoord;
+in vec3 vertexPosition;
+in vec2 vertexTexCoord;
 
-layout(location = 3) in vec2 instancePosition;
-layout(location = 4) in float instanceScale;
-layout(location = 5) in vec4 instanceColor;
-layout(location = 6) in float instanceLife;
-layout(location = 7) in float instanceTime;
+in vec2 instancePosition;
+in float instanceScale;
+in vec4 instanceColor;
+in float instanceLife;
+in float instanceTime;
 
 uniform mat4 mvpMat;
 

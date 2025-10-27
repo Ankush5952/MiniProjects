@@ -240,29 +240,29 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 	);
 
 	//loc = 3 : vec2 position
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, position));
-	glVertexAttribDivisor(3, 1);
+	glEnableVertexAttribArray(posLoc);
+	glVertexAttribPointer(posLoc, 2, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, position));
+	glVertexAttribDivisor(posLoc, 1);
 
 	//loc = 4 : float scale
-	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, scale));
-	glVertexAttribDivisor(4, 1);
+	glEnableVertexAttribArray(scaleLoc);
+	glVertexAttribPointer(scaleLoc, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, scale));
+	glVertexAttribDivisor(scaleLoc, 1);
 
 	//loc = 5 : vec4 color
-	glEnableVertexAttribArray(5);
-	glVertexAttribPointer(5, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, color));
-	glVertexAttribDivisor(5, 1);
+	glEnableVertexAttribArray(colorLoc);
+	glVertexAttribPointer(colorLoc, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, color));
+	glVertexAttribDivisor(colorLoc, 1);
 
 	//loc = 6 : float lifetime
-	glEnableVertexAttribArray(6);
-	glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, lifetime));
-	glVertexAttribDivisor(6, 1);
+	glEnableVertexAttribArray(lifeLoc);
+	glVertexAttribPointer(lifeLoc, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, lifetime));
+	glVertexAttribDivisor(lifeLoc, 1);
 
 	//loc = 7 : float timeSinceLifeBegan
-	glEnableVertexAttribArray(7);
-	glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, timeSinceLifeBegan));
-	glVertexAttribDivisor(7, 1);
+	glEnableVertexAttribArray(timeLoc);
+	glVertexAttribPointer(timeLoc, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstanceData), (void*)offsetof(ParticleInstanceData, timeSinceLifeBegan));
+	glVertexAttribDivisor(timeLoc, 1);
 
 	//Shader uniforms - glow, glowIntensity, fade
 	SetShaderValue(particleShader, glowLoc, &glowEffect, RL_SHADER_UNIFORM_INT);
