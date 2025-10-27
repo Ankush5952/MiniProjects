@@ -9,7 +9,7 @@ layout(location = 5) in vec4 instanceColor;
 layout(location = 6) in float instanceLife;
 layout(location = 7) in float instanceTime;
 
-uniform mat4 mvp;
+uniform mat4 mvpMat;
 
 out vec2 fragTexCoord;
 out vec4 fragColor;
@@ -25,7 +25,7 @@ void main()
 	vec2 worldPos = scaledPos + instancePosition;
 	//Transform
 	
-	gl_Position = mvp * vec4(worldPos, 0.0, 1.0);
+	gl_Position = mvpMat * vec4(worldPos, 0.0, 1.0);
 
 	fragTexCoord = vertexTexCoord;
 	fragColor = instanceColor;

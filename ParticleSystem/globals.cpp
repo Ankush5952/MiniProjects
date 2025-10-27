@@ -25,6 +25,8 @@ int timeLoc;
 int fadeLoc;
 int glowLoc;
 int glowIntensityLoc;
+int mvpLoc;
+Matrix mvpMat;
 
 const int CELLSIZE = 20;
 int GRIDW = WIDTH / CELLSIZE;
@@ -76,5 +78,8 @@ void InitializeRuntimeVariables()
 	maxH = GetMonitorHeight(monitor);
 
 	default_font = GetFontDefault();
+
+	Matrix proj = MatrixOrtho(0.0, WIDTH, HEIGHT, 0.0, -1.0, 1.0);
+	mvpMat = MatrixMultiply(MatrixIdentity(), proj);
 }
 

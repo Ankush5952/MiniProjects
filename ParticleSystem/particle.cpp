@@ -11,8 +11,9 @@ void ParticleSystem::Particle::loadShader()
     fadeLoc = GetShaderLocation(particleShader, "fadeEnabled");
     glowLoc = GetShaderLocation(particleShader, "glowEnabled");
     glowIntensityLoc = GetShaderLocation(particleShader, "glowIntensity");
+    mvpLoc = GetShaderLocation(particleShader, "mvpMat");
 
-    std::cout <<"fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc<<'\n';
+    std::cout <<"fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc<<", mvpLoc : "<<mvpLoc<<'\n';
 }
 
 void ParticleSystem::Particle::unloadShader()

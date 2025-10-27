@@ -38,6 +38,8 @@ extern int timeLoc;
 extern int fadeLoc;
 extern int glowLoc;
 extern int glowIntensityLoc;
+extern int mvpLoc;
+extern Matrix mvpMat;
 
 extern const int CELLSIZE;
 extern int GRIDW;
