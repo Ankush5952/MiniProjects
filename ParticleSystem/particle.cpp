@@ -19,8 +19,8 @@ void ParticleSystem::Particle::loadShader()
     lifeLoc = GetShaderLocationAttrib(particleShader, "instanceLife");
     timeLoc = GetShaderLocationAttrib(particleShader, "instanceTime");
 
-    std::cout << '\n' << "{pos, scale, color, life, time} : " << posLoc << scaleLoc << colorLoc << lifeLoc << timeLoc << '\n';
-    std::cout <<"fadeloc : " << fadeLoc << ", glowloc : " << glowLoc << ", GIloc : " << glowIntensityLoc<<", mvpLoc : "<<mvpLoc<<'\n';
+    printf("{pos : %i, scale : %i, color : %i, life : %i, time : %i}\n", posLoc, scaleLoc, colorLoc, lifeLoc, timeLoc);
+    printf("{fade : %i, glow : %i, glowIntensity : %i, mvp : %i}\n", fadeLoc, glowLoc, glowIntensityLoc, mvpLoc);
 }
 
 void ParticleSystem::Particle::unloadShader()

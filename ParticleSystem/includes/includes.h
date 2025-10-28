@@ -81,4 +81,3 @@ extern const double oneOverRoot3;
 extern void DrawGrid();
 
 extern void InitializeRuntimeVariables();
-extern void loadShaderResources();

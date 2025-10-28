@@ -84,11 +84,6 @@ void InitializeRuntimeVariables()
 	default_font = GetFontDefault();
 
 	Matrix proj = MatrixOrtho(0.0, WIDTH, HEIGHT, 0.0, -1.0, 1.0);
-	mvpMat = MatrixMultiply(MatrixIdentity(), proj);
-}
-
-void loadShaderResources()
-{
-	
+	mvpMat = proj;
 }
 

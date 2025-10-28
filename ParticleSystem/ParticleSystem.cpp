@@ -42,6 +42,9 @@ static void onWindowResize(ParticleSystem::ParticleManager& manager, ParticleSys
 		};
 		i->setPos(newPos);
 	}
+
+	Matrix proj = MatrixOrtho(0.0, WIDTH, HEIGHT, 0.0, -1.0, 1.0);
+	mvpMat = proj;
 }
 
 static void HandleFullScreenToggle()
@@ -126,7 +129,6 @@ int main()
 
 //SHADER
 	ParticleSystem::Particle::loadShader();
-	loadShaderResources();
 	
 //MAIN LOOP
 	while (!WindowShouldClose())

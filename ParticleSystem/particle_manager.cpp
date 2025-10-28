@@ -268,6 +268,7 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 	SetShaderValue(particleShader, glowLoc, &glowEffect, RL_SHADER_UNIFORM_INT);
 	SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, RL_SHADER_UNIFORM_FLOAT);
 	SetShaderValue(particleShader, fadeLoc, &fadeEffect, RL_SHADER_UNIFORM_INT);
+
 	SetShaderValueMatrix(particleShader, mvpLoc, mvpMat);
 
 	//Draw Call

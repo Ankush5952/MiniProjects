@@ -3,11 +3,11 @@
 in vec3 vertexPosition;
 in vec2 vertexTexCoord;
 
-in vec2 instancePosition;
-in float instanceScale;
-in vec4 instanceColor;
-in float instanceLife;
-in float instanceTime;
+layout(location = 10) in vec2 instancePosition;
+layout(location = 11) in float instanceScale;
+layout(location = 12) in vec4 instanceColor;
+layout(location = 13) in float instanceLife;
+layout(location = 14) in float instanceTime;
 
 uniform mat4 mvpMat;
 
@@ -23,8 +23,8 @@ void main()
 
 	//Translate
 	vec2 worldPos = scaledPos + instancePosition;
+
 	//Transform
-	
 	gl_Position = mvpMat * vec4(worldPos, 0.0, 1.0);
 
 	fragTexCoord = vertexTexCoord;
