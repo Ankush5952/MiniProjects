@@ -30,10 +30,10 @@ void main()
 	//glow
 	if(glowEnabled == 1)
 	{
-		float distFromCenter = length(fragTexCoord - vec2(0.5,0.5));
+		float distFromCenter = length(fragTexCoord - vec2(0.5,0.5)) * 0.7071;
 		distFromCenter = clamp(distFromCenter, 0.0, 1.0);
 		float t = (1.0 - distFromCenter);
 		t = pow(t, 2.0);
-		finalColor.rgb += fragColor.rgb * t * glowIntensity;
+		finalColor.rgb = mix(finalColor.rgb, finalColor.rgb * 2.0, t * glowIntensity);
 	}
 }
