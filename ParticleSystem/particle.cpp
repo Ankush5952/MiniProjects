@@ -320,7 +320,7 @@ Mesh ParticleSystem::Particle::generateCircleMesh(int segments)
     //Generate vertices in a circle
     for (int i = 0; i < segments; i++)
     {
-        float angle = (float)i / segments * PI * 2;
+        float angle = (float)(segments - i) / segments * PI * 2;
         int vi = (i + 1) * 3; //vertex index
         int ti = (i + 1) * 2; //texture index
 
