@@ -265,7 +265,8 @@ void ParticleSystem::ParticleManager::drawInstancedMesh(Mesh& mesh, std::vector<
 	glVertexAttribDivisor(timeLoc, 1);
 
 	//Shader uniforms - glow, glowIntensity, fade
-	SetShaderValue(particleShader, glowLoc, &glowEffect, RL_SHADER_UNIFORM_INT);
+	int gE = glowEffect;
+	SetShaderValue(particleShader, glowLoc, &gE, RL_SHADER_UNIFORM_INT);
 	SetShaderValue(particleShader, glowIntensityLoc, &glowIntensity, RL_SHADER_UNIFORM_FLOAT);
 	SetShaderValue(particleShader, fadeLoc, &fadeEffect, RL_SHADER_UNIFORM_INT);
 
