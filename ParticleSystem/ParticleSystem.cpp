@@ -215,6 +215,7 @@ int main()
 		if (IsKeyPressed(KEY_E))
 		{
 			emitterManager.createEmitter(prema.getCurrentPreset(), GetMousePosition(), frequency);
+			if (currentEmitterIndex == -1) currentEmitterIndex = 0, currentEmitter = emitters[0]->name;
 		}
 		if (IsKeyPressed(KEY_R))
 		{
@@ -235,6 +236,7 @@ int main()
 					frequency
 				}
 			);
+			if (currentEmitterIndex == -1) currentEmitterIndex = 0, currentEmitter = emitters[0]->name;
 		}
 		if (IsMouseButtonPressed(0))
 		{

@@ -22,6 +22,7 @@ void ParticleSystem::ParticleEmitterManager::createEmitter(ParticleSystem::Parti
 void ParticleSystem::ParticleEmitterManager::createEmitter(const ParticleSystem::ParticleEmitter emitter)
 {
 	ParticleSystem::ParticleEmitter* temp = new ParticleSystem::ParticleEmitter(emitter);
+	temp->name = "Emitter" + std::to_string(emitters.size());
 	emitters.push_back(temp);
 }
 
