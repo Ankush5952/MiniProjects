@@ -34,7 +34,7 @@ void main()
 		float distFromCenter = length(fragTexCoord - vec2(0.5,0.5))/0.7071;
 		distFromCenter = clamp(distFromCenter, 0.0, 1.0);
 		float t = ( distFromCenter);
-		t = pow(t, 5.0);
+		t = pow(t, 2.0);
 		
 		finalColor = vec4(finalColor.rgb + finalColor.rgb * t * glowIntensity, finalColor.a);
 	}

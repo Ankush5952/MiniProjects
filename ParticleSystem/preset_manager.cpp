@@ -309,7 +309,7 @@ void ParticleSystem::PresetManager::createDefaultPresets()
     presets.push_back(Preset(
         "Water",
         CIRCLE,
-        2,
+        3,
         -1.0f,
         DARKBLUE,
         FLOW,

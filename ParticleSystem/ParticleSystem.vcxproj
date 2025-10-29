@@ -152,7 +152,7 @@
     <None Include="particle_vert.glsl">
       <FileType>Document</FileType>
     </None>
-    <None Include="presets.json" />
+    <None Include="resources\presets.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
