@@ -1,14 +1,19 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
+
 #include<raylib.h>
 #include<raymath.h>
 #include<rlgl.h>
+#include<raygui.h>
+
 #include"includes/glad/include/glad/glad.h"
 #include<vector>
 #include<unordered_set>
 #include<fstream>
 #include<deque>
 #include<string>
+
 #include"json.hpp"
 #include"game_events.h"
 

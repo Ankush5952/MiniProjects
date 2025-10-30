@@ -8,9 +8,22 @@ namespace ParticleSystem
 	private:
 		std::vector<ParticleEmitter*> emitters;
 
+		ParticleEmitterManager() = default;
+		ParticleEmitterManager(const ParticleEmitterManager& m) = delete;
+		ParticleEmitterManager& operator= (const ParticleEmitterManager&) = delete;
+		ParticleEmitterManager(ParticleEmitterManager&&) = delete;
+		ParticleEmitterManager& operator= (ParticleEmitterManager&&) = delete;
+
 	public:
 		//getters
 		const std::vector<ParticleEmitter*>& getEmitters() const;
+
+		static ParticleEmitterManager& get()
+		{
+			static ParticleEmitterManager instance;
+			return instance;
+		}
+		std::string getNamesFormatted() const;
 
 		//update
 		void update(ParticleManager* manager);

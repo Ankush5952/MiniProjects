@@ -50,6 +50,7 @@ namespace ParticleSystem
 		int getCurrentPresetIndex() const;
 		int getPresetCount() const;
 		std::vector<std::string> getPresetNames() const;
+		std::string getNamesFormatted() const;
 
 		//setters
 		void addPreset(const Preset& p);
@@ -57,6 +58,7 @@ namespace ParticleSystem
 		void nextPreset();
 		void prevPreset();
 		void setPresetIndex(int index);
+		void applyPreset(const ParticleSystem::Preset& preset);
 
 		//File
 		bool loadFromFile();

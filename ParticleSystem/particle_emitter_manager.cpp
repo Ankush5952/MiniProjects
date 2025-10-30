@@ -46,6 +46,18 @@ void ParticleSystem::ParticleEmitterManager::clean()
 	emitters.clear();
 }
 
+std::string ParticleSystem::ParticleEmitterManager::getNamesFormatted() const
+{
+	std::string names = "NONE;";
+	for (auto& i : emitters)
+	{
+		names += i->name + ';';
+	}
+	names.pop_back();
+
+	return names;
+}
+
 ParticleSystem::ParticleEmitterManager::~ParticleEmitterManager()
 {
 	clean();

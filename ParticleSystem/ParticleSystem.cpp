@@ -1,3 +1,4 @@
+#define RAYGUI_IMPLEMENTATION
 #include"includes/includes.h"
 #include"particle_ui.h"
 #include"preset_manager.h"
@@ -85,26 +86,6 @@ static void HandleResize(ParticleSystem::ParticleManager& manager, ParticleSyste
 	}
 }
 
-static void applyPreset(const ParticleSystem::Preset& preset)
-{
-	particleLifetime = preset.lifetime;
-	particleSize = preset.size;
-	shapeIndex = preset.shape;
-	collissionIndex = preset.algo;
-	Color drawParticleColor = preset.color;
-	velocityRangeX = { -preset.velocity.x, preset.velocity.x };
-	velocityRangeY = { -preset.velocity.y, preset.velocity.y };
-	colorIndex = 0;
-	for (auto& i : colorPresets)
-	{
-		if (i.r == drawParticleColor.r && i.b == drawParticleColor.b && i.g == drawParticleColor.g)
-		{
-			break;
-		}
-		colorIndex++;
-	}
-}
-
 int main()
 {
 //WINDOW
@@ -124,7 +105,7 @@ int main()
 	ParticleSystem::ParticleUI ui;
 	ParticleSystem::PresetManager& prema = ParticleSystem::PresetManager::get();
 	currentPresetName = prema.getCurrentPreset().name;
-	ParticleSystem::ParticleEmitterManager emitterManager;
+	ParticleSystem::ParticleEmitterManager& emitterManager = ParticleSystem::ParticleEmitterManager::get();
 	const auto& emitters = emitterManager.getEmitters();
 
 //SHADER
@@ -147,131 +128,16 @@ int main()
 		if (IsKeyPressed(KEY_H)) glowEffect = !glowEffect;
 		
 		//particle properties
-		if (IsKeyPressed(KEY_A))
+		if (IsKeyPressed(KEY_ENTER))
 		{
-			shapeIndex++;
-			shapeIndex %= 3;
-		}
-		if (IsKeyPressed(KEY_D))
-		{
-			collissionIndex++;
-			collissionIndex %= 7;
-		}
-		if (IsKeyPressed(KEY_UP))
-		{
-			particleSize++;
-		}
-		if (IsKeyPressed(KEY_DOWN))
-		{
-			particleSize = fmax(1, particleSize - 1);
-		}
-		if (IsKeyPressed(KEY_RIGHT))
-		{
-			colorIndex = fmin(9, colorIndex + 1);
-		}
-		if (IsKeyPressed(KEY_LEFT))
-		{
-			colorIndex = fmax(0, colorIndex - 1);
+			if (currentEmitterIndex != 0)
+			{
+				emitterManager.getEmitters()[currentEmitterIndex - 1]->setPos(GetMousePosition());
+			}
 		}
 		if (IsKeyPressed(KEY_C))
 		{
 			manager.clean();
-		}
-		if (IsKeyPressed(KEY_KP_ADD))
-		{
-			particleLifetime++;
-		}
-		if (IsKeyPressed(KEY_KP_SUBTRACT))
-		{
-			particleLifetime = fmax(-1, particleLifetime - 1);
-		}
-		if (IsKeyPressed(KEY_P))
-		{
-			prema.nextPreset();
-			currentPresetName = prema.getCurrentPreset().name;
-		}
-		if (IsKeyPressed(KEY_O))
-		{
-			prema.prevPreset();
-			currentPresetName = prema.getCurrentPreset().name;
-		}
-		if (IsKeyPressed(KEY_ENTER))
-		{
-			applyPreset(prema.getCurrentPreset());
-		}
-		if (IsKeyPressed(KEY_K))
-		{
-			currentEmitterIndex = fmax(-1, currentEmitterIndex - 1);
-			currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
-		}
-		if (IsKeyPressed(KEY_L))
-		{
-			if(emitters.size() > 0)
-			{
-				currentEmitterIndex = fmin(currentEmitterIndex + 1, emitters.size()-1);
-				currentEmitter = emitters[currentEmitterIndex]->name;
-			}
-		}
-		if (IsKeyPressed(KEY_E))
-		{
-			emitterManager.createEmitter(prema.getCurrentPreset(), GetMousePosition(), frequency);
-			if (currentEmitterIndex == -1) currentEmitterIndex = 0, currentEmitter = emitters[0]->name;
-		}
-		if (IsKeyPressed(KEY_R))
-		{
-			emitterManager.createEmitter(
-				{
-					{
-						ParticleSystem::ParticleShape(shapeIndex),
-						particleSize,
-						particleLifetime,
-						colorPresets[colorIndex],
-						GetMousePosition(),
-						{0,0},
-						ParticleSystem::CollissionAlgo(collissionIndex)
-					},
-					GetMousePosition(),
-					{ -100,-100 },
-					{ 100,100 },
-					frequency
-				}
-			);
-			if (currentEmitterIndex == -1) currentEmitterIndex = 0, currentEmitter = emitters[0]->name;
-		}
-		if (IsMouseButtonPressed(0))
-		{
-			if (currentEmitterIndex != -1) 
-			{
-				emitters[currentEmitterIndex]->setPos(GetMousePosition());
-				emitters[currentEmitterIndex]->enabled = true;
-			}
-		}
-		if (IsKeyDown(KEY_Z))
-		{
-			frequency = fmax(0.1f, frequency - 0.1f);
-		}
-		if (IsKeyDown(KEY_X))
-		{
-			frequency += 0.1f;
-		}
-		if (IsKeyPressed(KEY_LEFT_SHIFT))
-		{
-			if(currentEmitterIndex != -1) emitters[currentEmitterIndex]->enabled = !emitters[currentEmitterIndex]->enabled;
-		}
-		if (IsKeyPressed(KEY_DELETE)) 
-		{
-			if(currentEmitterIndex != -1)
-			{
-				emitterManager.removeEmitter(emitters[currentEmitterIndex]);
-				currentEmitterIndex = Clamp(currentEmitterIndex, -1, emitters.size() - 1);
-				currentEmitter = (currentEmitterIndex == -1) ? "NONE" : emitters[currentEmitterIndex]->name;
-			}
-		}
-		if (IsKeyPressed(KEY_BACKSPACE)) 
-		{
-			emitterManager.clean();
-			currentEmitterIndex = -1;
-			currentEmitter = "NONE";
 		}
 
 		//external forces

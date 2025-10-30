@@ -53,7 +53,7 @@ float glowIntensity = 2.0f;
 int maxTrail = 10;
 bool boundary = true;
 std::string currentPresetName = "NONE";
-int currentEmitterIndex = -1;
+int currentEmitterIndex = 0;
 std::string currentEmitter = "NONE";
 float frequency = 1.0;
 

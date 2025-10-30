@@ -166,6 +166,17 @@ std::vector<std::string> ParticleSystem::PresetManager::getPresetNames() const
     return presetNames;
 }
 
+std::string ParticleSystem::PresetManager::getNamesFormatted() const
+{
+    std::string names = "";
+    for (auto& i : presets)
+    {
+        names += i.name + ';';
+    }
+    names.pop_back();
+    return names;
+}
+
 void ParticleSystem::PresetManager::addPreset(const Preset& p)
 {
     presets.push_back(p);
@@ -372,6 +383,26 @@ void ParticleSystem::PresetManager::createDefaultPresets()
     ));
 
     currentPresetIndex = 0;
+}
+
+void ParticleSystem::PresetManager::applyPreset(const ParticleSystem::Preset& preset)
+{
+    particleLifetime = preset.lifetime;
+    particleSize = preset.size;
+    shapeIndex = preset.shape;
+    collissionIndex = preset.algo;
+    Color drawParticleColor = preset.color;
+    velocityRangeX = { -preset.velocity.x, preset.velocity.x };
+    velocityRangeY = { -preset.velocity.y, preset.velocity.y };
+    colorIndex = 0;
+    for (auto& i : colorPresets)
+    {
+        if (i.r == drawParticleColor.r && i.b == drawParticleColor.b && i.g == drawParticleColor.g)
+        {
+            break;
+        }
+        colorIndex++;
+    }
 }
 
 ParticleSystem::PresetManager::PresetManager(const std::string& pathToFile)
