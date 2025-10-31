@@ -9,13 +9,17 @@ URL : <a href = "https://github.com/nlohmann/json">nlohmann/json Github</a></pre
   <li>Simple Particle Simulator Sandbox</li>
   <li>Multi shape functionality</li>
   <li>Shape-Shape collision</li>
-  <li>Simple Text-based UI</li>
   <li>Defined Keyboard controls</li>
   <li>runtime parameter variation</li>
   <li>gravity toggle</li>
   <li>boundary toggle</li>
   <li>fade toggle</li>
+  <li>Glow Toggle</li>
+  <li>Interactable UI</li>
   <li>Preset Types like Fire, Smoke, Explosion</li>
+  <li>Particle Emitters</li>
+  <li>Particle Effects using GLSL Shaders/li>
+  <li>Batch Instance Drawing</li>
 </ul>
 
 <pre>A work in progress</pre>
